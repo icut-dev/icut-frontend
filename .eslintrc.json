@@ -1,0 +1,35 @@
+{
+  "plugins": ["eslint-plugin-import-helpers", "prettier"],
+  "extends": ["next/core-web-vitals", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "quoteProps": "as-needed",
+        "trailingComma": "none",
+        "singleQuote": true,
+        "printWidth": 80,
+        "jsxSingleQuote": true
+      }
+    ],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "never",
+        "groups": [
+          "module",
+          "/^~/core/",
+          "/^~/implementation/",
+          "/^~/infra/",
+          "/^~/main/",
+          "/^~/presentation/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": false
+        }
+      }
+    ]
+  }
+}
