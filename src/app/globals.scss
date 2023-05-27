@@ -1,3 +1,5 @@
+@import './variables';
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -38,6 +40,15 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --light-text: #f4ede8;
+  --light-200: #b5b4b8;
+
+  --dark-100: #201f24;
+  --dark-200: #2a282c;
+  --dark-300: #1e1e1e;
+
+  --primary-400: #ff9000;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -87,12 +98,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: $dark-background;
 }
 
 a {

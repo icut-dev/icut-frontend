@@ -1,10 +1,10 @@
+'use client';
+
 import React from 'react';
-import { makeLogin } from '~/appRoot/main/factories/pages/login/login.factoy';
+import { makeLogin } from '~/appRoot/main/factories/pages/login/login.factory';
 
 const Login: React.FC = () => {
-  return makeLogin({
-    message: 'Olá'
-  });
+  return makeLogin();
 };
 
 export default Login;

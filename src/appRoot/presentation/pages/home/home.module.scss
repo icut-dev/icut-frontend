@@ -1,0 +1,39 @@
+.container {
+  background: var(--dark-100);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background: var(--dark-300);
+  padding: 24px;
+  height: 120px;
+
+  span {
+    font-size: 18px;
+    margin-left: 16px;
+  }
+}
+
+.main_container {
+  padding: 24px;
+  height: calc(100vh - 120px);
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+  row-gap: 32px;
+  grid-template-columns: repeat(2, calc(50% - 8px));
+
+  li {
+    list-style: none;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--light-text);
+  margin-bottom: 40px;
+}
