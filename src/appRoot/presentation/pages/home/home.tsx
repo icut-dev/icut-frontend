@@ -8,6 +8,7 @@ import transformationIcon from '../../../../../public/assets/transformation.svg'
 import { ServiceItem } from '../../components/service-item';
 
 import styles from './home.module.scss';
+import { HiOutlineClock } from 'react-icons/all';
 
 function HomePageComponent() {
   return (
@@ -25,39 +26,93 @@ function HomePageComponent() {
       </header>
 
       <main className={styles.main_container}>
-        <h2 className={styles.title}>
-          Qual serviço <br /> você deseja hoje?
-        </h2>
+        <div className={styles.home_next_appointments}>
+          <h2>
+            Próximos <br /> agendamentos
+          </h2>
 
-        <ul className={styles.list}>
-          <ServiceItem
-            id='1'
-            title='Cabelo'
-            price={40}
-            icon={{ alt: 'clipper', src: clipperIcon }}
-          />
+          <ul className={styles.home_next_appointments_content}>
+            <li className={styles.home_next_appointment}>
+              <div className={styles.home_next_appointment_date}>
+                <p className={styles.home_next_appointment_day}>24</p>
+                <p className={styles.home_next_appointment_month}>Maio</p>
+                <p className={styles.home_next_appointment_separator}>-</p>
+                <p className={styles.home_next_appointment_time}>09:00</p>
+              </div>
 
-          <ServiceItem
-            id='2'
-            title='Barba'
-            price={40}
-            icon={{ alt: 'beard', src: beardIcon }}
-          />
+              <div className={styles.home_next_appointment_detail}>
+                <div>
+                  <p className={styles.home_next_appointment_barber_name}>
+                    Hugo Hideki
+                  </p>
+                  <p className={styles.home_next_appointment_service}>Barba</p>
+                </div>
 
-          <ServiceItem
-            id='3'
-            title='Acabamento'
-            price={40}
-            icon={{ alt: 'straight razor', src: straightRazorIcon }}
-          />
+                <p className={styles.home_next_appointment_duration}>
+                  <HiOutlineClock /> 30 minutos
+                </p>
+              </div>
+            </li>
 
-          <ServiceItem
-            id='4'
-            title='Completo'
-            price={40}
-            icon={{ alt: 'transformation', src: transformationIcon }}
-          />
-        </ul>
+            <li className={styles.home_next_appointment}>
+              <div className={styles.home_next_appointment_date}>
+                <p className={styles.home_next_appointment_day}>24</p>
+                <p className={styles.home_next_appointment_month}>Maio</p>
+                <p className={styles.home_next_appointment_separator}>-</p>
+                <p className={styles.home_next_appointment_time}>09:00</p>
+              </div>
+
+              <div className={styles.home_next_appointment_detail}>
+                <div>
+                  <p className={styles.home_next_appointment_barber_name}>
+                    Hugo Hideki
+                  </p>
+                  <p className={styles.home_next_appointment_service}>Barba</p>
+                </div>
+
+                <p className={styles.home_next_appointment_duration}>
+                  <HiOutlineClock /> 30 minutos
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div className={styles.home_services}>
+          <h2 className={styles.title}>
+            Qual serviço <br /> você deseja hoje?
+          </h2>
+
+          <ul className={styles.list}>
+            <ServiceItem
+              id='1'
+              title='Cabelo'
+              price={40}
+              icon={{ alt: 'clipper', src: clipperIcon }}
+            />
+
+            <ServiceItem
+              id='2'
+              title='Barba'
+              price={40}
+              icon={{ alt: 'beard', src: beardIcon }}
+            />
+
+            <ServiceItem
+              id='3'
+              title='Acabamento'
+              price={40}
+              icon={{ alt: 'straight razor', src: straightRazorIcon }}
+            />
+
+            <ServiceItem
+              id='4'
+              title='Completo'
+              price={40}
+              icon={{ alt: 'transformation', src: transformationIcon }}
+            />
+          </ul>
+        </div>
       </main>
     </div>
   );

@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  align-items: center;
+
+  color: var(--light-200);
+  padding: 16px;
+  border: 1px solid var(--dark-200);
+  border-radius: 8px;
+  width: 100%;
+  background: var(--dark-200);
+  cursor: pointer;
+
+  transition: background-color 200ms linear;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  svg {
+    margin-right: 16px;
+  }
+}
+
+.selected {
+  border: 1px solid #ff9000;
+  cursor: default;
+  color: var(--light-text);
+
+  &:hover {
+    filter: brightness(1);
+  }
+}

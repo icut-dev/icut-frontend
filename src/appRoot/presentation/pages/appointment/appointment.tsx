@@ -1,14 +1,13 @@
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 import { MdOutlineEditCalendar } from 'react-icons/md';
 
-import { ServiceItem } from '../../components/service-item';
+import { ServiceItem } from '../../components';
+import { AppointmentBarber } from './components/barber';
 
 import beardIcon from '../../../../../public/assets/beard.svg';
 
 import styles from './appointment.module.scss';
-import { AppointmentBarber } from './components/barber';
 
 function AppointmentPageComponent() {
   const router = useRouter();
@@ -126,7 +125,7 @@ function AppointmentPageComponent() {
       </main>
 
       <footer className={styles.appointment_footer}>
-        <button>Avançar</button>
+        <button onClick={() => router.push('/payment')}>Avançar</button>
       </footer>
     </div>
   );
