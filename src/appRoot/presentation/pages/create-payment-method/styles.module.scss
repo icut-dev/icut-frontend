@@ -1,0 +1,40 @@
+.container {
+  padding: 40px 24px;
+}
+
+.payment_button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ff9000;
+  border-radius: 8px;
+  border: none;
+  padding: 8px 16px;
+  width: 100%;
+  height: 48px;
+  font-weight: 600;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(0.85);
+    transition: filter 200ms linear;
+  }
+}
+
+.form {
+  div + div {
+    margin-top: 16px;
+  }
+}
+
+.create_payment_method_footer {
+  padding: 0 24px 16px;
+
+  position: fixed;
+  height: 80px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: 0;
+}

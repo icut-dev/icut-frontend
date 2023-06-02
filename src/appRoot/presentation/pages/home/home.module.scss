@@ -6,8 +6,9 @@
   display: flex;
   align-items: center;
   background: var(--dark-300);
-  padding: 24px;
+  // padding: 24px;
   height: 120px;
+  cursor: pointer;
 
   span {
     font-size: 18px;
@@ -21,7 +22,7 @@
 }
 
 .home_next_appointments {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 
   h2 {
     font-size: 18px;
@@ -31,11 +32,8 @@
   }
 
   .home_next_appointments_content {
-    display: flex;
-    overflow: scroll;
-
-    .home_next_appointment + .home_next_appointment {
-      margin-left: 12px;
+    .home_next_appointment_swiper_slide {
+      width: 80%;
     }
   }
 
@@ -43,7 +41,6 @@
     display: flex;
     background: var(--dark-200);
     border-radius: 16px;
-    min-width: 256px;
 
     .home_next_appointment_date {
       display: flex;

@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 import { MdOutlineEditCalendar } from 'react-icons/md';
 
-import { ServiceItem } from '../../components';
+import { Header, ServiceItem } from '../../components';
 import { AppointmentBarber } from './components/barber';
 
 import beardIcon from '../../../../../public/assets/beard.svg';
@@ -15,11 +15,7 @@ function AppointmentPageComponent() {
   return (
     <div className={styles.appointment_container}>
       <header className={styles.appointment_header}>
-        <div className={styles.appointment_logo}>
-          <HiOutlineChevronLeft size={24} onClick={router.back} />
-
-          <h1>Agendamento</h1>
-        </div>
+        <Header title='Agendamento' />
 
         <div className={styles.appointment_info}>
           <ServiceItem

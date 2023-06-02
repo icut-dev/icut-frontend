@@ -1,4 +1,11 @@
 import Image from 'next/image';
+import { HiOutlineClock } from 'react-icons/all';
+import { Pagination, Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+// import "swiper/css/navigation";
 
 import beardIcon from '../../../../../public/assets/beard.svg';
 import clipperIcon from '../../../../../public/assets/clipper.svg';
@@ -8,12 +15,14 @@ import transformationIcon from '../../../../../public/assets/transformation.svg'
 import { ServiceItem } from '../../components/service-item';
 
 import styles from './home.module.scss';
-import { HiOutlineClock } from 'react-icons/all';
+import { useRouter } from 'next/navigation';
 
 function HomePageComponent() {
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <header className={styles.header} onClick={() => router.push('/profile')}>
         <Image
           src={'https://github.com/IagoSoLima.png'}
           alt='Iago Lima'
@@ -31,7 +40,65 @@ function HomePageComponent() {
             Próximos <br /> agendamentos
           </h2>
 
-          <ul className={styles.home_next_appointments_content}>
+          <Swiper
+            // pagination={true}
+            slidesPerView={'auto'}
+            spaceBetween={24}
+            modules={[Pagination]}
+            className={styles.home_next_appointments_content}
+          >
+            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
+              <li className={styles.home_next_appointment}>
+                <div className={styles.home_next_appointment_date}>
+                  <p className={styles.home_next_appointment_day}>24</p>
+                  <p className={styles.home_next_appointment_month}>Maio</p>
+                  <p className={styles.home_next_appointment_separator}>-</p>
+                  <p className={styles.home_next_appointment_time}>09:00</p>
+                </div>
+
+                <div className={styles.home_next_appointment_detail}>
+                  <div>
+                    <p className={styles.home_next_appointment_barber_name}>
+                      Hugo Hideki
+                    </p>
+                    <p className={styles.home_next_appointment_service}>
+                      Barba
+                    </p>
+                  </div>
+
+                  <p className={styles.home_next_appointment_duration}>
+                    <HiOutlineClock /> 30 minutos
+                  </p>
+                </div>
+              </li>
+            </SwiperSlide>
+            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
+              <li className={styles.home_next_appointment}>
+                <div className={styles.home_next_appointment_date}>
+                  <p className={styles.home_next_appointment_day}>24</p>
+                  <p className={styles.home_next_appointment_month}>Maio</p>
+                  <p className={styles.home_next_appointment_separator}>-</p>
+                  <p className={styles.home_next_appointment_time}>09:00</p>
+                </div>
+
+                <div className={styles.home_next_appointment_detail}>
+                  <div>
+                    <p className={styles.home_next_appointment_barber_name}>
+                      Hugo Hideki
+                    </p>
+                    <p className={styles.home_next_appointment_service}>
+                      Barba
+                    </p>
+                  </div>
+
+                  <p className={styles.home_next_appointment_duration}>
+                    <HiOutlineClock /> 30 minutos
+                  </p>
+                </div>
+              </li>
+            </SwiperSlide>
+          </Swiper>
+          {/* <ul className={styles.home_next_appointments_content}>
             <li className={styles.home_next_appointment}>
               <div className={styles.home_next_appointment_date}>
                 <p className={styles.home_next_appointment_day}>24</p>
@@ -75,7 +142,7 @@ function HomePageComponent() {
                 </p>
               </div>
             </li>
-          </ul>
+          </ul> */}
         </div>
 
         <div className={styles.home_services}>

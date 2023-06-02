@@ -14,6 +14,11 @@ function RegisterPageComponent() {
         <InputText name='name' label='Nome completo' />
         <InputText name='email' label='E-mail' />
         <InputText name='password' label='Senha' type='password' />
+        <InputText
+          name='confirmPassword'
+          label='Confirme a senha'
+          type='password'
+        />
 
         <button
           className={styles.button}

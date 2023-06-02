@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   MdPix,
@@ -12,19 +12,27 @@ import {
 import { PaymentMethod } from '~/appRoot/presentation/pages/payment/components/payment-method';
 
 import styles from './payment.module.scss';
+import { Header } from '../../components';
 
 function PaymentPageComponent() {
   const router = useRouter();
 
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>(null);
 
+  const handlePay = useCallback(() => {
+    if (!paymentMethodId) return;
+
+    if (['3', '4'].includes(paymentMethodId)) {
+      router.push('/payment/create');
+      return;
+    }
+
+    router.push('/success');
+  }, [paymentMethodId]);
+
   return (
     <div className={styles.container}>
-      <header className={styles.payment_header}>
-        <HiOutlineChevronLeft size={24} onClick={router.back} />
-
-        <h1>Métodos de pagamento</h1>
-      </header>
+      <Header title='Métodos de pagamento' />
 
       <p>Escolha o método que deseja utilizar.</p>
 
@@ -84,10 +92,7 @@ function PaymentPageComponent() {
           </li>
         </ul>
 
-        <button
-          className={styles.pay_button}
-          onClick={() => router.push('/success')}
-        >
+        <button className={styles.pay_button} onClick={handlePay}>
           <span>Pagar agora</span>
           <span>R$ 40,00</span>
         </button>
