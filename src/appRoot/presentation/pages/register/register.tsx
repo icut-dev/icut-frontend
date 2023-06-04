@@ -1,29 +1,35 @@
 import { useRouter } from 'next/navigation';
 import InputText from '../../components/form/input-text';
 
-import styles from './login.module.scss';
+import styles from './register.module.scss';
 
-function LoginPageComponent() {
+function RegisterPageComponent() {
   const router = useRouter();
 
   return (
     <div className={styles.container}>
-      <p>Faça seu login</p>
+      <p>Crie sua conta</p>
 
       <form className={styles.form}>
+        <InputText name='name' label='Nome completo' />
         <InputText name='email' label='E-mail' />
         <InputText name='password' label='Senha' type='password' />
+        <InputText
+          name='confirmPassword'
+          label='Confirme a senha'
+          type='password'
+        />
 
         <button
           className={styles.button}
           type='button'
-          onClick={() => router.push('/home')}
+          onClick={() => router.push('/login')}
         >
-          Entrar
+          Cadastrar
         </button>
       </form>
     </div>
   );
 }
 
-export default LoginPageComponent;
+export default RegisterPageComponent;

@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+
+  h1 {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--light-200);
+  }
+
+  svg {
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    color: var(--light-200);
+  }
+}

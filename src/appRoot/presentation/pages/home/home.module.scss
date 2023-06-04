@@ -1,0 +1,117 @@
+.container {
+  background: var(--dark-100);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background: var(--dark-300);
+  // padding: 24px;
+  height: 120px;
+  cursor: pointer;
+
+  span {
+    font-size: 18px;
+    margin-left: 16px;
+  }
+}
+
+.main_container {
+  padding: 24px;
+  height: calc(100vh - 120px);
+}
+
+.home_next_appointments {
+  margin-bottom: 40px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--light-text);
+    margin-bottom: 16px;
+  }
+
+  .home_next_appointments_content {
+    .home_next_appointment_swiper_slide {
+      width: 80%;
+    }
+  }
+
+  .home_next_appointment {
+    display: flex;
+    background: var(--dark-200);
+    border-radius: 16px;
+
+    .home_next_appointment_date {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      padding: 12px;
+      background: var(--primary-400);
+      border-radius: 16px 0 16px 16px;
+
+      .home_next_appointment_day {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 24px;
+      }
+
+      .home_next_appointment_month,
+      .home_next_appointment_separator {
+        line-height: 24px;
+      }
+
+      .home_next_appointment_time {
+        line-height: 16px;
+      }
+    }
+
+    .home_next_appointment_detail {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 12px;
+
+      .home_next_appointment_barber_name {
+        font-weight: 500;
+      }
+
+      .home_next_appointment_service {
+        color: var(--light-200);
+        font-size: 14px;
+      }
+
+      .home_next_appointment_duration {
+        display: flex;
+        align-items: center;
+
+        color: var(--light-200);
+        font-size: 14px;
+
+        svg {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+  row-gap: 32px;
+  grid-template-columns: repeat(2, calc(50% - 8px));
+
+  li {
+    list-style: none;
+  }
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--light-text);
+  margin-bottom: 40px;
+}
