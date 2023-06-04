@@ -1,5 +1,4 @@
 import Image from 'next/image';
-
 import styles from './barber.module.scss';
 
 interface AppointmentBarberProps {
@@ -16,7 +15,7 @@ export function AppointmentBarber({
   id,
   name,
   time,
-  image
+  image,
 }: AppointmentBarberProps) {
   return (
     <li className={styles.appointment_barber}>
@@ -29,7 +28,7 @@ export function AppointmentBarber({
       <input
         type='radio'
         id={`${id}::${time}`}
-        name={`barber`}
+        name='barber'
         value={`${id}::${time}`}
       />
     </li>

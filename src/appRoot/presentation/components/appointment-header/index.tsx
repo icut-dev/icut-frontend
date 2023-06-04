@@ -1,11 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 import { MdOutlineEditCalendar } from 'react-icons/md';
-
-import { ServiceItem } from '../service-item';
-
 import beardIcon from '../../../../../public/assets/beard.svg';
-
+import { ServiceItem } from '../service-item/service-item';
 import styles from './styles.module.scss';
 
 export function AppointmentHeader() {
@@ -25,7 +22,7 @@ export function AppointmentHeader() {
           price={35}
           icon={{
             src: beardIcon,
-            alt: 'Barba'
+            alt: 'Barba',
           }}
         />
 
@@ -34,7 +31,7 @@ export function AppointmentHeader() {
 
           <p>24 de maio de 2023</p>
 
-          <button>
+          <button type='button'>
             <MdOutlineEditCalendar size={20} color='#FF9000' />
 
             <span>Trocar data</span>

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation';
 import InputText from '../../components/form/input-text';
-
 import styles from './login.module.scss';
 
 function LoginPageComponent() {

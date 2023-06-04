@@ -1,21 +1,18 @@
 import Image from 'next/image';
-
+import { HiOutlineClock } from 'react-icons/all';
 import beardIcon from '../../../../../public/assets/beard.svg';
 import clipperIcon from '../../../../../public/assets/clipper.svg';
 import straightRazorIcon from '../../../../../public/assets/razor.svg';
 import transformationIcon from '../../../../../public/assets/transformation.svg';
-
-import { ServiceItem } from '../../components/service-item';
-
+import { ServiceItem } from '../../components/service-item/service-item';
 import styles from './home.module.scss';
-import { HiOutlineClock } from 'react-icons/all';
 
 function HomePageComponent() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <Image
-          src={'https://github.com/IagoSoLima.png'}
+          src='https://github.com/IagoSoLima.png'
           alt='Iago Lima'
           width={48}
           height={48}

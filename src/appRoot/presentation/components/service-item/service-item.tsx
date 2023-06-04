@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import { HiChevronRight } from 'react-icons/hi';
-
-import styles from './service-item.module.scss';
+import Link from 'next/link';
 import { useMemo } from 'react';
+import { HiChevronRight } from 'react-icons/hi';
+import styles from './service-item.module.scss';
 
 interface ServiceItemProps {
   id?: string;
@@ -16,12 +15,14 @@ interface ServiceItemProps {
 }
 
 export function ServiceItem({ id, title, price, icon }: ServiceItemProps) {
-  const priceFormatted = useMemo(() => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(price);
-  }, [price]);
+  const priceFormatted = useMemo(
+    () =>
+      new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(price),
+    [price],
+  );
 
   if (id) {
     return (
