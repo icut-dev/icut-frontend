@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   MdPix,
   BsCashCoin,
@@ -9,6 +9,7 @@ import {
   CiLock,
 } from 'react-icons/all';
 import { PaymentMethod } from '~/appRoot/presentation/pages/payment/components/payment-method';
+import { Header } from '../../components';
 import styles from './payment.module.scss';
 
 function PaymentPageComponent() {
@@ -16,13 +17,20 @@ function PaymentPageComponent() {
 
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>(null);
 
+  const handlePay = useCallback(() => {
+    if (!paymentMethodId) return;
+
+    if (['3', '4'].includes(paymentMethodId)) {
+      router.push('/payment/create');
+      return;
+    }
+
+    router.push('/success');
+  }, [paymentMethodId]);
+
   return (
     <div className={styles.container}>
-      <header className={styles.payment_header}>
-        <HiOutlineChevronLeft size={24} onClick={router.back} />
-
-        <h1>Métodos de pagamento</h1>
-      </header>
+      <Header title='Métodos de pagamento' />
 
       <p>Escolha o método que deseja utilizar.</p>
 
@@ -82,11 +90,7 @@ function PaymentPageComponent() {
           </li>
         </ul>
 
-        <button
-          type='button'
-          className={styles.pay_button}
-          onClick={() => router.push('/success')}
-        >
+        <button type='button' className={styles.pay_button} onClick={handlePay}>
           <span>Pagar agora</span>
           <span>R$ 40,00</span>
         </button>
