@@ -1,0 +1,40 @@
+.list_item {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 16px 20px;
+  background: var(--dark-200);
+  min-width: 144px;
+  height: 144px;
+  border-radius: 8px;
+}
+
+.list_item_content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  p {
+    color: var(--light-200);
+  }
+
+  svg {
+    color: var(--light-200);
+  }
+}
+
+.icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #47321b;
+  padding: 12px;
+  border-radius: 8px;
+
+  width: 80px;
+  height: 80px;
+
+  position: absolute;
+  top: -16px;
+}
