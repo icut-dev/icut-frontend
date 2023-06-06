@@ -22,6 +22,8 @@ function LoginPageComponent() {
           Entrar
         </button>
       </form>
+
+      <footer>Made by team ICUT - DEVELOP</footer>
     </div>
   );
 }
