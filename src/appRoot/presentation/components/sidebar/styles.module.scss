@@ -1,0 +1,29 @@
+.container {
+  min-width: 160px;
+  max-width: 160px;
+  margin-right: 56px;
+}
+
+.nav_list {
+  .nav_link + .nav_link {
+    margin-top: 16px;
+  }
+}
+
+.nav_link {
+  list-style: none;
+
+  a {
+    display: flex;
+  }
+
+  span {
+    margin-left: 16px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  &:hover {
+    color: var(--light-200);
+  }
+}
