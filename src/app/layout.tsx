@@ -9,13 +9,14 @@ export const metadata = {
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
+  style: ['normal'],
   subsets: ['latin'],
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='pt-br'>
-      <body className={`${poppins.className}`}>{children}</body>
+      <body className={poppins.className}>{children}</body>
     </html>
   );
 }
