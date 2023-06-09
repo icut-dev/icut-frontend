@@ -1,10 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
-
-import InputText from '../../components/form/input-text';
-
-import styles from './styles.module.scss';
 import { Header } from '../../components';
+import InputText from '../../components/form/input-text';
+import styles from './styles.module.scss';
 
 function CreatePaymentMethodPageComponent() {
   const router = useRouter();

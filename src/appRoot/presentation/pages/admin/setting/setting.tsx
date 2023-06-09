@@ -1,8 +1,8 @@
+import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
+import { InputText } from '~/appRoot/presentation/components';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import styles from './styles.module.scss';
-import { InputText } from '~/appRoot/presentation/components';
-import { useForm } from 'react-hook-form';
 
 function AdminEmployeePageComponent() {
   const { handleSubmit, register } = useForm();
