@@ -24,6 +24,7 @@ const BaseInputText: ForwardRefRenderFunction<
       ref={ref}
       type='text'
       id={name}
+      name={name}
       placeholder='Digite aqui...'
       {...rest}
     />
