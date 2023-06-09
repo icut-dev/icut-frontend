@@ -8,12 +8,13 @@ import styles from './input-text.module.scss';
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
+  error?: any;
 }
 
 const BaseInputText: ForwardRefRenderFunction<
   HTMLInputElement,
   InputTextProps
-> = ({ name, label, ...rest }, ref) => (
+> = ({ name, label, error, ...rest }, ref) => (
   <div className={styles.inputContainer}>
     <label className={styles.label} htmlFor={name}>
       {label}
@@ -28,6 +29,8 @@ const BaseInputText: ForwardRefRenderFunction<
       placeholder='Digite aqui...'
       {...rest}
     />
+
+    {!!error && <span className={styles.error}>{error.message}</span>}
   </div>
 );
 

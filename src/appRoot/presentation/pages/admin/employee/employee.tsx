@@ -1,15 +1,28 @@
+import { useRouter } from 'next/navigation';
 import { FiEdit } from 'react-icons/fi';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import styles from './styles.module.scss';
 
 function AdminEmployeePageComponent() {
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
       <Sidebar />
 
       <main className={styles.content}>
         <section className={styles.header}>
-          <h1>Funcionários</h1>
+          <div>
+            <h1>Funcionários</h1>
+
+            <button
+              type='button'
+              className={styles.add_button}
+              onClick={() => router.push('/admin/employee/create')}
+            >
+              Adicionar
+            </button>
+          </div>
         </section>
 
         <section>
@@ -17,7 +30,7 @@ function AdminEmployeePageComponent() {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Agendamentos diários</th>
+                <th>Agend.</th>
                 <th>Telefones</th>
                 <th>Status</th>
                 <th />
@@ -45,7 +58,10 @@ function AdminEmployeePageComponent() {
                 </td>
 
                 <td className={styles.actions}>
-                  <button type='button'>
+                  <button
+                    type='button'
+                    onClick={() => router.push('/admin/employee/create')}
+                  >
                     <FiEdit />
                     Editar
                   </button>
