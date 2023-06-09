@@ -16,7 +16,7 @@
   span {
     display: block;
     font-size: 14px;
-    color: var(--white-600);
+    color: var(--white-700);
   }
 
   &::after {
@@ -57,7 +57,7 @@
 
 .currentDay {
   .date {
-    color: var(--primary-400);
+    color: var(--primary-800);
   }
 }
 
@@ -108,7 +108,7 @@
   .phoneNumber {
     font-weight: 300;
     font-size: 12px;
-    color: var(--white-600);
+    color: var(--white-700);
   }
 
   img {

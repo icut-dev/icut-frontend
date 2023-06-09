@@ -1,29 +1,11 @@
 .container {
-  min-width: 256px;
-  max-width: 256px;
-  margin-right: 32px;
+  min-width: 224px;
+  max-width: 224px;
+  margin-right: 96px;
 }
 
 .nav_list {
-  .nav_link + .nav_link {
-    margin-top: 16px;
-  }
-}
-
-.nav_link {
-  list-style: none;
-
-  a {
-    display: flex;
-  }
-
-  span {
-    margin-left: 16px;
-    font-weight: 500;
-    font-size: 16px;
-  }
-
-  &:hover {
-    color: var(--light-200);
+  > * + * {
+    margin-top: 0.5rem;
   }
 }

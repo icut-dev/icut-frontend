@@ -1,11 +1,5 @@
-import Link from 'next/link';
-import {
-  FiCalendar,
-  FiClipboard,
-  FiCoffee,
-  FiSettings,
-  FiUsers,
-} from 'react-icons/fi';
+import { FiCalendar, FiClipboard, FiSettings, FiUsers } from 'react-icons/fi';
+import { NavLink } from './nav-link';
 import styles from './styles.module.scss';
 
 export function Sidebar() {
@@ -13,33 +7,21 @@ export function Sidebar() {
     <aside className={styles.container}>
       <div>
         <ul className={`${styles.nav_list}`}>
-          <li className={`${styles.nav_link}`}>
-            <Link href='/admin/appointment'>
-              <FiCalendar />
-              <span>Agendamentos</span>
-            </Link>
-          </li>
+          <NavLink href='/admin/appointment' icon={FiCalendar}>
+            Agendamentos
+          </NavLink>
 
-          <li className={`${styles.nav_link}`}>
-            <Link href='/admin/service'>
-              <FiClipboard />
-              <span>Serviços</span>
-            </Link>
-          </li>
+          <NavLink href='/admin/service' icon={FiClipboard}>
+            Serviços
+          </NavLink>
 
-          <li className={`${styles.nav_link} ${styles.active}`}>
-            <Link href='/admin/employee'>
-              <FiUsers />
-              <span>Funcionários</span>
-            </Link>
-          </li>
+          <NavLink href='/admin/employee' icon={FiUsers}>
+            Funcionários
+          </NavLink>
 
-          <li className={`${styles.nav_link} ${styles.active}`}>
-            <Link href='/admin/setting'>
-              <FiSettings />
-              <span>Configuração</span>
-            </Link>
-          </li>
+          <NavLink href='/admin/setting' icon={FiSettings}>
+            Configuração
+          </NavLink>
         </ul>
       </div>
     </aside>
