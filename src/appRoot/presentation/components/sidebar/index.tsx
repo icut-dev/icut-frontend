@@ -14,28 +14,28 @@ export function Sidebar() {
       <div>
         <ul className={`${styles.nav_list}`}>
           <li className={`${styles.nav_link}`}>
-            <Link href='/admin/dashboard'>
+            <Link href='/admin/appointment'>
               <FiCalendar />
               <span>Agendamentos</span>
             </Link>
           </li>
 
           <li className={`${styles.nav_link}`}>
-            <Link href='/admin/dashboard'>
+            <Link href='/admin/service'>
               <FiClipboard />
               <span>Serviços</span>
             </Link>
           </li>
 
           <li className={`${styles.nav_link} ${styles.active}`}>
-            <Link href='/admin/dashboard'>
+            <Link href='/admin/employee'>
               <FiUsers />
               <span>Funcionários</span>
             </Link>
           </li>
 
           <li className={`${styles.nav_link} ${styles.active}`}>
-            <Link href='/admin/dashboard'>
+            <Link href='/admin/setting'>
               <FiSettings />
               <span>Configuração</span>
             </Link>

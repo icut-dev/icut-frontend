@@ -3,7 +3,7 @@ import { FiClipboard, FiClock, FiEdit } from 'react-icons/fi';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import styles from './styles.module.scss';
 
-function AdminEmployeesPageComponent() {
+function AdminEmployeePageComponent() {
   return (
     <div className={styles.container}>
       <Sidebar />
@@ -81,4 +81,4 @@ function AdminEmployeesPageComponent() {
   );
 }
 
-export default AdminEmployeesPageComponent;
+export default AdminEmployeePageComponent;

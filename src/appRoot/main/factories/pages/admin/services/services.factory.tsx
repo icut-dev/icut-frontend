@@ -1,3 +1,3 @@
-import { AdminServicesTag } from '~/appRoot/presentation/pages/admin/services';
+import { AdminServiceTag } from '~/appRoot/presentation/pages/admin/service';
 
-export const makeAdminServices = () => <AdminServicesTag />;
+export const makeAdminService = () => <AdminServiceTag />;
