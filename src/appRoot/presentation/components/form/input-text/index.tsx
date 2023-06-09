@@ -7,7 +7,7 @@ import styles from './input-text.module.scss';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  label: string;
+  label?: string;
   error?: any;
 }
 
@@ -16,9 +16,11 @@ const BaseInputText: ForwardRefRenderFunction<
   InputTextProps
 > = ({ name, label, error, ...rest }, ref) => (
   <div className={styles.inputContainer}>
-    <label className={styles.label} htmlFor={name}>
-      {label}
-    </label>
+    {label && (
+      <label className={styles.label} htmlFor={name}>
+        {label}
+      </label>
+    )}
 
     <input
       className={styles.input}
