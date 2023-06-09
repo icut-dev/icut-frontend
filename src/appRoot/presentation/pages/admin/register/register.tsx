@@ -5,6 +5,7 @@ import { FiMinusCircle, FiPlus } from 'react-icons/fi';
 import * as yup from 'yup';
 import { Button, InputText } from '~/appRoot/presentation/components';
 import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
+import InputSelect from '~/appRoot/presentation/components/form/input-select';
 import styles from './styles.module.scss';
 
 const schema = yup.object().shape({
@@ -24,9 +25,25 @@ const schema = yup.object().shape({
         .required('Por favor, informe a descrição do telefone'),
     }),
   ),
+  password: yup
+    .string()
+    .required('Por favor, informe a senha')
+    .min(6, 'A senha deve ter pelo menos 6 caracteres'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
+  cnpj: yup.string().required('Por favor, informe o CNPJ'),
+  corporateName: yup.string().required('Por favor, informe o nome da empresa'),
+  corporateEmail: yup
+    .string()
+    .required('Por favor, informe o e-mail da empresa')
+    .email('E-mail inválido'),
+  representativeName: yup
+    .string()
+    .required('Por favor, informe o nome do representante'),
 });
 
-function AdminProfilePageComponent() {
+function AdminRegisterPageComponent() {
   const router = useRouter();
 
   const {
@@ -37,25 +54,25 @@ function AdminProfilePageComponent() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      username: 'Thalles Rodrigues',
-      firstName: 'Thalles',
-      lastName: 'Rodrigues',
-      cpf: '000.000.000-00',
-      email: 'thalles@icut.com.br',
+      username: '',
+      firstName: '',
+      lastName: '',
+      cpf: '',
+      email: '',
+      typeUser: '2',
       phones: [
         {
-          number: '(11) 99999-9999',
-          description: 'Celular principal',
-        },
-        {
-          number: '(12) 97070-6060',
-          description: 'Celular secundário',
-        },
-        {
-          number: '(21) 9999-9999',
-          description: 'Fixo',
+          number: '',
+          description: '',
         },
       ],
+
+      cnpj: '',
+      corporateName: '',
+      corporateEmail: '',
+      representativeName: '',
+      password: '',
+      confirmPassword: '',
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -85,6 +102,14 @@ function AdminProfilePageComponent() {
 
   return (
     <div className={styles.container}>
+      <header>
+        <h1>Cadastro de administrador</h1>
+        <p>
+          Cadastre um administrador para acessar o sistema e gerenciar os
+          agendamentos, funcionários, serviços e entre outras funcionalidades.
+        </p>
+      </header>
+
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <Fieldset legendTitle='Dados pessoais'>
           <InputText
@@ -110,6 +135,7 @@ function AdminProfilePageComponent() {
           <InputText
             error={errors.email}
             label='E-mail'
+            type='email'
             {...register('email')}
           />
 
@@ -119,6 +145,22 @@ function AdminProfilePageComponent() {
             label='CPF'
             {...register('cpf')}
           />
+
+          <div className={styles.namesContainer}>
+            <InputText
+              error={errors.password}
+              label='Senha'
+              type='password'
+              {...register('password')}
+            />
+
+            <InputText
+              error={errors.confirmPassword}
+              label='Confirmar senha'
+              type='password'
+              {...register('confirmPassword')}
+            />
+          </div>
         </Fieldset>
 
         <Fieldset legendTitle='Telefones' legend={legendElement}>
@@ -148,6 +190,33 @@ function AdminProfilePageComponent() {
           ))}
         </Fieldset>
 
+        <Fieldset legendTitle='Dados do estabelecimento'>
+          <InputText
+            label='Razão social'
+            error={errors.corporateName}
+            {...register('corporateName')}
+          />
+
+          <InputText
+            label='Responsável legal'
+            error={errors.representativeName}
+            {...register('representativeName')}
+          />
+
+          <InputText
+            placeholder='Ex.: 00.000.000/0000-00'
+            label='CNPJ'
+            error={errors.cnpj}
+            {...register('cnpj')}
+          />
+
+          <InputText
+            label='E-mail'
+            error={errors.corporateEmail}
+            {...register('corporateEmail')}
+          />
+        </Fieldset>
+
         <div className={styles.buttonsContainer}>
           <Button
             type='button'
@@ -159,7 +228,7 @@ function AdminProfilePageComponent() {
           </Button>
 
           <Button type='submit' className={styles.saveButton}>
-            Salvar
+            Cadastrar
           </Button>
         </div>
       </form>
@@ -167,4 +236,4 @@ function AdminProfilePageComponent() {
   );
 }
 
-export default AdminProfilePageComponent;
+export default AdminRegisterPageComponent;

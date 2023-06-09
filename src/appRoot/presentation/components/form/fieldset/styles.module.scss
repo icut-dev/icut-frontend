@@ -1,0 +1,32 @@
+.fieldsetContainer {
+  padding: 0.75rem 0;
+  border: none;
+
+  .legendContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 1rem;
+
+    > span {
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      margin-top: 2.5rem;
+      width: 100%;
+      border-bottom: 1px solid var(--white-200);
+    }
+  }
+}
+
+.fieldsetContent {
+  > * + * {
+    margin-top: 1rem;
+  }
+}

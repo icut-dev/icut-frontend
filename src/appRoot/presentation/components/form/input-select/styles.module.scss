@@ -1,0 +1,23 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 4px;
+}
+
+.input {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  padding: 4px 12px;
+}
+
+.error {
+  color: var(--red-400);
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
