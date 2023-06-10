@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
-
 import styles from './styles.module.scss';
 
 interface HeaderProps {

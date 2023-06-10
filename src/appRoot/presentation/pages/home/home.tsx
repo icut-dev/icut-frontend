@@ -1,38 +1,33 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { HiOutlineClock } from 'react-icons/all';
-import { Pagination, Navigation } from 'swiper';
+import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
-// import "swiper/css/navigation";
-
 import beardIcon from '../../../../../public/assets/beard.svg';
 import clipperIcon from '../../../../../public/assets/clipper.svg';
 import straightRazorIcon from '../../../../../public/assets/razor.svg';
 import transformationIcon from '../../../../../public/assets/transformation.svg';
-
-import { ServiceItem } from '../../components/service-item';
-
+import { ServiceItem } from '../../components';
 import styles from './home.module.scss';
-import { useRouter } from 'next/navigation';
 
 function HomePageComponent() {
-  const router = useRouter();
-
   return (
     <div className={styles.container}>
-      <header className={styles.header} onClick={() => router.push('/profile')}>
-        <Image
-          src={'https://github.com/IagoSoLima.png'}
-          alt='Iago Lima'
-          width={48}
-          height={48}
-          style={{ borderRadius: '8px' }}
-        />
+      <Link href='/profile'>
+        <header className={styles.header}>
+          <Image
+            src='https://github.com/IagoSoLima.png'
+            alt='Iago Lima'
+            width={48}
+            height={48}
+            style={{ borderRadius: '8px' }}
+          />
 
-        <span>Olá, Iago Lima</span>
-      </header>
+          <span>Olá, Iago Lima</span>
+        </header>
+      </Link>
 
       <main className={styles.main_container}>
         <div className={styles.home_next_appointments}>
@@ -42,7 +37,7 @@ function HomePageComponent() {
 
           <Swiper
             // pagination={true}
-            slidesPerView={'auto'}
+            slidesPerView='auto'
             spaceBetween={24}
             modules={[Pagination]}
             className={styles.home_next_appointments_content}

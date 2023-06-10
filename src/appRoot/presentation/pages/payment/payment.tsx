@@ -1,18 +1,16 @@
-import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import {
   MdPix,
   BsCashCoin,
   BsCreditCard2Back,
   BsCreditCard2Front,
   HiOutlineChevronLeft,
-  CiLock
+  CiLock,
 } from 'react-icons/all';
-
 import { PaymentMethod } from '~/appRoot/presentation/pages/payment/components/payment-method';
-
-import styles from './payment.module.scss';
 import { Header } from '../../components';
+import styles from './payment.module.scss';
 
 function PaymentPageComponent() {
   const router = useRouter();
@@ -92,7 +90,7 @@ function PaymentPageComponent() {
           </li>
         </ul>
 
-        <button className={styles.pay_button} onClick={handlePay}>
+        <button type='button' className={styles.pay_button} onClick={handlePay}>
           <span>Pagar agora</span>
           <span>R$ 40,00</span>
         </button>

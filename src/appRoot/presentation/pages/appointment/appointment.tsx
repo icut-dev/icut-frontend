@@ -1,13 +1,9 @@
 import { useRouter } from 'next/navigation';
-import { HiOutlineChevronLeft } from 'react-icons/hi';
 import { MdOutlineEditCalendar } from 'react-icons/md';
-
-import { Header, ServiceItem } from '../../components';
-import { AppointmentBarber } from './components/barber';
-
 import beardIcon from '../../../../../public/assets/beard.svg';
-
+import { Header, ServiceItem } from '../../components';
 import styles from './appointment.module.scss';
+import { AppointmentBarber } from './components/barber';
 
 function AppointmentPageComponent() {
   const router = useRouter();
@@ -23,7 +19,7 @@ function AppointmentPageComponent() {
             price={35}
             icon={{
               src: beardIcon,
-              alt: 'Barba'
+              alt: 'Barba',
             }}
           />
 
@@ -32,7 +28,7 @@ function AppointmentPageComponent() {
 
             <p>24 de maio de 2023</p>
 
-            <button>
+            <button type='button'>
               <MdOutlineEditCalendar size={20} color='#FF9000' />
 
               <span>Trocar data</span>
@@ -54,7 +50,7 @@ function AppointmentPageComponent() {
               time='0800'
               image={{
                 src: 'https://github.com/hugoedagi.png',
-                alt: 'Hugo'
+                alt: 'Hugo',
               }}
             />
             <AppointmentBarber
@@ -63,7 +59,7 @@ function AppointmentPageComponent() {
               time='0800'
               image={{
                 src: 'https://github.com/ThallesRodri.png',
-                alt: 'Thalles'
+                alt: 'Thalles',
               }}
             />
             <AppointmentBarber
@@ -72,7 +68,7 @@ function AppointmentPageComponent() {
               time='0800'
               image={{
                 src: 'https://github.com/IagoSoLima.png',
-                alt: 'Iago'
+                alt: 'Iago',
               }}
             />
           </ul>
@@ -88,7 +84,7 @@ function AppointmentPageComponent() {
               time='0900'
               image={{
                 src: 'https://github.com/ThallesRodri.png',
-                alt: 'Thalles'
+                alt: 'Thalles',
               }}
             />
           </ul>
@@ -104,7 +100,7 @@ function AppointmentPageComponent() {
               time='0930'
               image={{
                 src: 'https://github.com/hugoedagi.png',
-                alt: 'Hugo'
+                alt: 'Hugo',
               }}
             />
             <AppointmentBarber
@@ -113,7 +109,7 @@ function AppointmentPageComponent() {
               time='0930'
               image={{
                 src: 'https://github.com/ThallesRodri.png',
-                alt: 'Thalles'
+                alt: 'Thalles',
               }}
             />
           </ul>
@@ -121,7 +117,9 @@ function AppointmentPageComponent() {
       </main>
 
       <footer className={styles.appointment_footer}>
-        <button onClick={() => router.push('/payment')}>Avançar</button>
+        <button type='button' onClick={() => router.push('/payment')}>
+          Avançar
+        </button>
       </footer>
     </div>
   );

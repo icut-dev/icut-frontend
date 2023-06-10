@@ -3,8 +3,6 @@
 import React from 'react';
 import { makeRegister } from '~/appRoot/main/factories/pages/register/register.factory';
 
-const Register: React.FC = () => {
-  return makeRegister();
-};
+const Register: React.FC = () => makeRegister();
 
 export default Register;

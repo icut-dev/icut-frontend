@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HiArrowRight, HiArrowUp } from 'react-icons/hi';
-
 import styles from './page.module.scss';
 
 export default function Home() {
@@ -33,6 +32,7 @@ export default function Home() {
 
       <footer className={`${styles.button_group} ${styles.container}`}>
         <button
+          type='button'
           className={`${styles.button} ${styles.button_register}`}
           onClick={() => router.push('/register')}
         >
@@ -43,6 +43,7 @@ export default function Home() {
         </button>
 
         <button
+          type='button'
           className={`${styles.button} ${styles.button_login}`}
           onClick={() => router.push('/login')}
         >
