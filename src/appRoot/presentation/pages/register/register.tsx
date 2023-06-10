@@ -1,11 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
+import { toast, ToastContainer } from 'react-toastify';
 import * as yup from 'yup';
+import { UserRole } from '~/appRoot/core/domain/models';
+import {
+  CreateUser,
+  ICreateUser,
+} from '~/appRoot/core/domain/usecases/create-user';
 import { Button, InputText } from '~/appRoot/presentation/components';
 import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
+import { useCreateUser } from '../../hooks';
 import styles from './styles.module.scss';
 
 const schema = yup.object().shape({
@@ -35,8 +43,14 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
 });
 
-function AdminRegisterPageComponent() {
+interface Props {
+  remoteCreateUser: ICreateUser;
+}
+
+function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
   const router = useRouter();
+
+  const createUser = useCreateUser({ remoteCreateUser });
 
   const {
     handleSubmit,
@@ -67,9 +81,38 @@ function AdminRegisterPageComponent() {
     name: 'phones',
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    await createUser.mutateAsync(
+      {
+        cpf: data.cpf,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        password: data.password,
+        username: data.username,
+        typeUser: UserRole.CLIENT,
+        listTelephones: data.phones.map((phone: any) => ({
+          telephoneNumber: phone.number,
+          telephoneDescription: phone.description,
+        })),
+      },
+      {
+        onSuccess: () => {
+          router.push('/login');
+        },
+      },
+    );
   };
+
+  useEffect(() => {
+    if (createUser.isError) {
+      toast.error((createUser.error as CreateUser.Error).message);
+    }
+
+    if (createUser.isSuccess) {
+      toast.success('Usuário criado com sucesso');
+    }
+  }, [createUser.error, createUser.isError, createUser.isSuccess]);
 
   const legendElement = (
     <button
@@ -89,6 +132,7 @@ function AdminRegisterPageComponent() {
 
   return (
     <div className={styles.container}>
+      <ToastContainer autoClose={2000} />
       <header>
         <h1>Cadastro de cliente</h1>
         <p>
@@ -136,13 +180,15 @@ function AdminRegisterPageComponent() {
           <div className={styles.namesContainer}>
             <InputText
               error={errors.password}
-              label='Nome'
+              label='Senha'
+              type='password'
               {...register('password')}
             />
 
             <InputText
               error={errors.confirmPassword}
-              label='Sobrenome'
+              label='Confirmar senha'
+              type='password'
               {...register('confirmPassword')}
             />
           </div>
@@ -185,7 +231,11 @@ function AdminRegisterPageComponent() {
             Voltar
           </Button>
 
-          <Button type='submit' className={styles.saveButton}>
+          <Button
+            type='submit'
+            className={styles.saveButton}
+            isLoading={createUser.isLoading}
+          >
             Cadastrar
           </Button>
         </div>
