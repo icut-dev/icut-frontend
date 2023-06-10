@@ -7,10 +7,7 @@ import { FiMinusCircle, FiPlus } from 'react-icons/fi';
 import { toast, ToastContainer } from 'react-toastify';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
-import {
-  CreateUser,
-  ICreateUser,
-} from '~/appRoot/core/domain/usecases/create-user';
+import { UserCreate, IUserCreate } from '~/appRoot/core/domain/usecases';
 import { Button, InputText } from '~/appRoot/presentation/components';
 import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
 import { useCreateUser } from '../../hooks';
@@ -44,7 +41,7 @@ const schema = yup.object().shape({
 });
 
 interface Props {
-  remoteCreateUser: ICreateUser;
+  remoteCreateUser: IUserCreate;
 }
 
 function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
@@ -106,7 +103,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
 
   useEffect(() => {
     if (createUser.isError) {
-      toast.error((createUser.error as CreateUser.Error).message);
+      toast.error((createUser.error as UserCreate.Error).message);
     }
 
     if (createUser.isSuccess) {

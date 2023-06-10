@@ -3,22 +3,19 @@ import {
   HttpClient,
   HttpStatusCodeEnum,
 } from '~/appRoot/core/domain/protocols';
-import {
-  ICreateUser,
-  CreateUser,
-} from '~/appRoot/core/domain/usecases/create-user';
+import { IUserCreate, UserCreate } from '~/appRoot/core/domain/usecases';
 
-export namespace RemoteCreateUserNamespace {
-  export type Model = CreateUser.Model;
+export namespace RemoteUserCreateNamespace {
+  export type Model = UserCreate.Model;
 }
 
-export class RemoteCreateUser implements ICreateUser {
+export class RemoteUserCreate implements IUserCreate {
   constructor(
     private readonly url: string,
-    private readonly httpClient: HttpClient<RemoteCreateUserNamespace.Model>,
+    private readonly httpClient: HttpClient<RemoteUserCreateNamespace.Model>,
   ) {}
 
-  async create(params: CreateUser.Params): Promise<void> {
+  async create(params: UserCreate.Params): Promise<void> {
     const httpResponse = await this.httpClient.request({
       method: 'post',
       url: this.url,

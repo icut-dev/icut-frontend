@@ -1,7 +1,7 @@
 import { PreconditionFailedError } from '../errors/precondition-failed';
 import { UserModel, UserRole } from '../models';
 
-export namespace CreateUser {
+export namespace UserCreate {
   export type Params = {
     cpf: string;
     email: string;
@@ -23,6 +23,6 @@ export namespace CreateUser {
   export type Result = Promise<void>;
 }
 
-export interface ICreateUser {
-  create(data: CreateUser.Params): CreateUser.Result;
+export interface IUserCreate {
+  create(data: UserCreate.Params): UserCreate.Result;
 }
