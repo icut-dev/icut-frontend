@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 import {
   ForwardRefRenderFunction,
   SelectHTMLAttributes,
