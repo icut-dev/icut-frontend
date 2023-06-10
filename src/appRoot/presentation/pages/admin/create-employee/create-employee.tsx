@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import * as yup from 'yup';
-import { InputText } from '~/appRoot/presentation/components';
-import { Sidebar } from '~/appRoot/presentation/components/sidebar';
+import { Sidebar, InputText } from '~/appRoot/presentation/components';
 import styles from './styles.module.scss';
 
 const schema = yup.object({

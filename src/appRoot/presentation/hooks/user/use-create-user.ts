@@ -1,9 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { PreconditionFailedError } from '~/appRoot/core/domain/errors/precondition-failed';
-import {
-  CreateUser,
-  ICreateUser,
-} from '~/appRoot/core/domain/usecases/create-user';
+import { CreateUser, ICreateUser } from '~/appRoot/core/domain/usecases';
 
 interface UseCreateUser {
   remoteCreateUser: ICreateUser;
