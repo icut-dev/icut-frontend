@@ -26,7 +26,7 @@ function PaymentPageComponent() {
     }
 
     router.push('/success');
-  }, [paymentMethodId]);
+  }, [paymentMethodId, router]);
 
   return (
     <div className={styles.container}>
