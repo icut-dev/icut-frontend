@@ -6,7 +6,7 @@ import { FiEdit, FiMinusCircle, FiPlus } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
-import { IUserCreate } from '~/appRoot/core/domain/usecases';
+import { IUserFindById, IUserUpdate } from '~/appRoot/core/domain/usecases';
 import {
   Button,
   Sidebar,
@@ -14,79 +14,106 @@ import {
   InputRow,
   InputText,
 } from '~/appRoot/presentation/components';
-import { useUserCreate } from '~/appRoot/presentation/hooks';
+import { useUserFindById, useUserUpdate } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
 
 interface Props {
-  remoteUserCreate: IUserCreate;
+  userId: number;
+  remoteUserUpdate: IUserUpdate;
+  remoteUserFindById: IUserFindById;
 }
 
-interface EmployeeCreateForm {
+interface EmployeeUpdateForm {
   cpf: string;
   email: string;
   firstName: string;
   lastName: string;
   username: string;
-  password: string;
   phones: { number: string; description: string }[];
 }
 
 const schema = yup.object({
-  name: yup.string().required('Por favor, informe seu nome'),
+  username: yup.string().required('Por favor, informe seu nome de usuário'),
+  firstName: yup.string().required('Por favor, informe seu nome'),
   lastName: yup.string().required('Por favor, informe seu último nome'),
   cpf: yup.string().required('Por favor, informe seu CPF'),
   email: yup.string().required('Por favor, informe seu e-mail'),
-  phoneNumber: yup.string().required('Por favor, informe seu telefone'),
+  phones: yup.array().of(
+    yup.object().shape({
+      number: yup.string().required('Por favor, informe seu némero'),
+      description: yup.string().required('Por favor, informe sua descrição'),
+    }),
+  ),
 });
 
-function AdminCreateEmployeePageComponent({ remoteUserCreate }: Props) {
+function AdminCreateEmployeePageComponent({
+  userId,
+  remoteUserUpdate,
+  remoteUserFindById,
+}: Props) {
   const router = useRouter();
 
-  const userCreate = useUserCreate({ remoteCreateUser: remoteUserCreate });
+  const userUpdate = useUserUpdate({ remoteUserUpdate });
+  const userFindById = useUserFindById({
+    params: { id: userId },
+    remoteUserFindById,
+  });
 
   const {
     handleSubmit,
     register,
     control,
+    setValue,
     formState: { errors },
-  } = useForm<EmployeeCreateForm>({
+  } = useForm<EmployeeUpdateForm>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      phones: [{ number: '', description: '' }],
-    },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'phones',
   });
 
-  const onSubmit = async (data: EmployeeCreateForm) => {
-    await userCreate.mutateAsync({
+  const onSubmit = async (data: EmployeeUpdateForm) => {
+    await userUpdate.mutateAsync({
+      id: userId,
       cpf: data.cpf,
       email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      password: data.password,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      // TODO: Remover
+      password: '123456',
       username: data.username,
-      typeUser: UserRole.EMPLOYEE,
-      listTelephones: data.phones.map((phone) => ({
-        telephoneNumber: phone.number,
-        telephoneDescription: phone.description,
-      })),
-      establishmentId: '1',
+      type_user: UserRole.EMPLOYEE,
     });
   };
 
   useEffect(() => {
-    if (userCreate.isSuccess) {
-      toast.success('Funcionário adicionado com sucesso!');
+    if (userUpdate.isSuccess) {
+      toast.success('Funcionário atualizado com sucesso!');
       router.push('/admin/employee');
     }
 
-    if (userCreate.isError) {
-      toast.error((userCreate.error as Error).message);
+    if (userUpdate.isError) {
+      toast.error((userUpdate.error as Error).message);
     }
-  }, [router, userCreate.error, userCreate.isError, userCreate.isSuccess]);
+  }, [router, userUpdate.error, userUpdate.isError, userUpdate.isSuccess]);
+
+  useEffect(() => {
+    if (!userFindById.data) return;
+
+    setValue('cpf', userFindById.data.cpf);
+    setValue('email', userFindById.data.email);
+    setValue('username', userFindById.data.username);
+    setValue('firstName', userFindById.data.first_name);
+    setValue('lastName', userFindById.data.last_name);
+    replace(
+      userFindById.data.list_telephones.map((phone, index) => ({
+        id: phone.id_telephone,
+        number: phone.telephone_number,
+        description: phone.telephone_description,
+      })),
+    );
+  }, [append, replace, setValue, userFindById.data]);
 
   const legendElement = (
     <Button
@@ -110,7 +137,7 @@ function AdminCreateEmployeePageComponent({ remoteUserCreate }: Props) {
 
       <main className={styles.content}>
         <section className={styles.header}>
-          <h1>Adicionar funcionário</h1>
+          <h1>Detalhes do funcionário</h1>
         </section>
 
         <section>
@@ -194,7 +221,7 @@ function AdminCreateEmployeePageComponent({ remoteUserCreate }: Props) {
               <Button
                 type='submit'
                 className={styles.editButton}
-                isLoading={userCreate.isLoading}
+                isLoading={userUpdate.isLoading}
               >
                 <FiEdit />
                 Salvar

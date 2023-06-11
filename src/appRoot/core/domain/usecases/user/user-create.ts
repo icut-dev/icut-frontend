@@ -1,5 +1,5 @@
-import { PreconditionFailedError } from '../errors/precondition-failed';
-import { UserModel, UserRole } from '../models';
+import { PreconditionFailedError } from '../../errors/precondition-failed';
+import { UserModel, UserRole } from '../../models';
 
 export namespace UserCreate {
   export type Params = {
@@ -7,23 +7,23 @@ export namespace UserCreate {
     email: string;
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
-    typeUser: UserRole;
-    listTelephones: Array<{
-      telephoneNumber: string;
-      telephoneDescription: string;
+    first_name: string;
+    last_name: string;
+    type_user: UserRole;
+    list_telephones: Array<{
+      telephone_number: string;
+      telephone_description: string;
     }>;
 
     establishment?: {
       cnpj: string;
       logo: string;
-      corporateName: string;
-      representativeName: string;
-      emailEstablishment: string;
+      corporate_name: string;
+      representative_name: string;
+      email_establishment: string;
     };
 
-    establishmentId?: string;
+    id_establishment?: string;
   };
 
   export type Model = UserModel;

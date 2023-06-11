@@ -1,9 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import * as yup from 'yup';
+import {
+  IEstablishmentFindById,
+  IEstablishmentUpdate,
+} from '~/appRoot/core/domain/usecases';
 import { Sidebar, Button, InputText } from '~/appRoot/presentation/components';
+import {
+  useEstablishmentUpdate,
+  useEstablishmentFindById,
+} from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
+
+interface Props {
+  remoteEstablishmentUpdate: IEstablishmentUpdate;
+  remoteEstablishmentFindById: IEstablishmentFindById;
+}
 
 interface EstablishmentUpdateForm {
   cnpj: string;
@@ -25,18 +39,54 @@ const schema = yup.object().shape({
     .email('E-mail inválido'),
 });
 
-function AdminEmployeePageComponent() {
+function AdminEmployeePageComponent({
+  remoteEstablishmentUpdate,
+  remoteEstablishmentFindById,
+}: Props) {
+  const user = { id: 3, establishmentId: 2 };
+
+  const establishmentUpdate = useEstablishmentUpdate({
+    remoteEstablishmentUpdate,
+  });
+
+  const establishmentFindById = useEstablishmentFindById({
+    params: { id: user.establishmentId },
+    remoteEstablishmentFindById,
+  });
+
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm<EstablishmentUpdateForm>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: EstablishmentUpdateForm) => {
-    console.log(data);
+  const onSubmit = async (data: EstablishmentUpdateForm) => {
+    await establishmentUpdate.mutateAsync({
+      id: user.establishmentId,
+      id_adm: user.id,
+      cnpj: data.cnpj,
+      logo: data.logo,
+      email_establishment: data.email,
+      corporate_name: data.corporateName,
+      representative_name: data.representativeName,
+    });
   };
+
+  useEffect(() => {
+    if (!establishmentFindById.data) return;
+
+    setValue('corporateName', establishmentFindById.data.corporate_name);
+    setValue(
+      'representativeName',
+      establishmentFindById.data.representative_name,
+    );
+    setValue('cnpj', establishmentFindById.data.cnpj);
+    setValue('email', establishmentFindById.data.email_establishment);
+    setValue('logo', establishmentFindById.data.logo);
+  }, [establishmentFindById.data, setValue]);
 
   return (
     <div className={styles.container}>

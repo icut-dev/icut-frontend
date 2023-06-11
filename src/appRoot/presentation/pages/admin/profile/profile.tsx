@@ -87,10 +87,10 @@ function AdminProfilePageComponent({
       id: user.id_user,
       cpf: data.cpf,
       email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      first_name: data.firstName,
+      last_name: data.lastName,
       username: data.username,
-      typeUser: UserRole.ADMIN,
+      type_user: UserRole.ADMIN,
       // TODO: REMOVER QUANDO TIRAR DO ENDPOINT
       password: '123456',
     });

@@ -99,12 +99,12 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
       {
         cpf: data.cpf,
         email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        first_name: data.firstName,
+        last_name: data.lastName,
         password: data.password,
         username: data.username,
-        typeUser: UserRole.ADMIN,
-        listTelephones: data.phones.map((phone) => ({
+        type_user: UserRole.ADMIN,
+        list_telephones: data.phones.map((phone) => ({
           telephoneNumber: phone.number,
           telephoneDescription: phone.description,
         })),
@@ -112,9 +112,9 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
         establishment: {
           cnpj: data.cnpj,
           logo: data.logo,
-          corporateName: data.corporateName,
-          emailEstablishment: data.corporateEmail,
-          representativeName: data.representativeName,
+          corporate_name: data.corporateName,
+          email_establishment: data.corporateEmail,
+          representative_name: data.representativeName,
         },
       },
       {

@@ -9,6 +9,7 @@ export * from './service/service-update';
 export * from './service/service-find-all-by-establishment';
 
 export * from './establishment/establishment-update';
+export * from './establishment/establishment-find-by-id';
 
 export * from './authentication';
 

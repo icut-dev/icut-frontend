@@ -12,6 +12,6 @@ export function useUserFindById({
 }: UseUserFindById) {
   return useQuery({
     queryFn: async () => remoteUserFindById.findById(params),
-    queryKey: ['user', params.id],
+    queryKey: ['user', params],
   });
 }

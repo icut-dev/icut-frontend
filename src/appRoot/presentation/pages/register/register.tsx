@@ -83,12 +83,12 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
       {
         cpf: data.cpf,
         email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        first_name: data.firstName,
+        last_name: data.lastName,
         password: data.password,
         username: data.username,
-        typeUser: UserRole.CLIENT,
-        listTelephones: data.phones.map((phone: any) => ({
+        type_user: UserRole.CLIENT,
+        list_telephones: data.phones.map((phone: any) => ({
           telephoneNumber: phone.number,
           telephoneDescription: phone.description,
         })),

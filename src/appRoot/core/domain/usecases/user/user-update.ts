@@ -7,9 +7,9 @@ export namespace UserUpdate {
     cpf: string;
     email: string;
     username: string;
-    firstName: string;
-    lastName: string;
-    typeUser: UserRole;
+    first_name: string;
+    last_name: string;
+    type_user: UserRole;
 
     // TODO: Remover
     password: string;
