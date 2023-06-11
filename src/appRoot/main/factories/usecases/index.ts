@@ -11,3 +11,5 @@ export * from './remote-employee-find-all-by-establishment';
 
 export * from './remote-service-delete';
 export * from './remote-service-find-all-by-establishment';
+
+export * from './phone/remote-phone-find-all-by-user-id';

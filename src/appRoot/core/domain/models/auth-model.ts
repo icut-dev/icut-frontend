@@ -1,15 +1,17 @@
+import { UserRole } from './user-model';
+
 export type AuthModel = {
-  idUser: number;
+  id_user: number;
   username: string;
   email: string;
   name: string;
-  userLastName: string;
-  userType: 1;
-  createdAt: Date;
-  updateAt: Date;
-  deletedAt: Date | null;
+  user_last_name: string;
+  user_type: UserRole;
+  created_at: Date;
+  update_at: Date;
+  deleted_at: Date | null;
   active: boolean;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
 };

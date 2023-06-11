@@ -1,11 +1,38 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
+import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
 import * as yup from 'yup';
-import { Button, InputText } from '~/appRoot/presentation/components';
-import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
+import { UserRole } from '~/appRoot/core/domain/models';
+import {
+  IPhoneFindAllByUserId,
+  IUserFindById,
+  IUserUpdate,
+} from '~/appRoot/core/domain/usecases';
+import { Button, InputText, Fieldset } from '~/appRoot/presentation/components';
+import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
+import { useUserUpdate, useUserFindById } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
+
+interface Props {
+  remoteUserUpdate: IUserUpdate;
+  remoteUserFindById: IUserFindById;
+  remotePhoneFindAllByUserId: IPhoneFindAllByUserId;
+}
+
+interface UserForm {
+  username: string;
+  firstName: string;
+  lastName: string;
+  cpf: string;
+  email: string;
+  phones: {
+    id?: number;
+    number: string;
+    description: string;
+  }[];
+}
 
 const schema = yup.object().shape({
   username: yup.string().required('Por favor, informe o nome de usuário'),
@@ -26,45 +53,47 @@ const schema = yup.object().shape({
   ),
 });
 
-function AdminProfilePageComponent() {
+function AdminProfilePageComponent({
+  remoteUserUpdate,
+  remoteUserFindById,
+}: Props) {
   const router = useRouter();
+
+  const { user } = useContext(AuthContext);
+  const userUpdate = useUserUpdate({ remoteUserUpdate });
+  const userFindById = useUserFindById({
+    params: { id: user.id_user },
+    remoteUserFindById,
+  });
 
   const {
     handleSubmit,
     register,
     control,
+    setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<UserForm>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      username: 'Thalles Rodrigues',
-      firstName: 'Thalles',
-      lastName: 'Rodrigues',
-      cpf: '000.000.000-00',
-      email: 'thalles@icut.com.br',
-      phones: [
-        {
-          number: '(11) 99999-9999',
-          description: 'Celular principal',
-        },
-        {
-          number: '(12) 97070-6060',
-          description: 'Celular secundário',
-        },
-        {
-          number: '(21) 9999-9999',
-          description: 'Fixo',
-        },
-      ],
-    },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'phones',
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    if (!user) return;
+
+    await userUpdate.mutateAsync({
+      id: user.id_user,
+      cpf: data.cpf,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      username: data.username,
+      typeUser: UserRole.ADMIN,
+      // TODO: REMOVER QUANDO TIRAR DO ENDPOINT
+      password: '123456',
+    });
   };
 
   const legendElement = (
@@ -82,6 +111,23 @@ function AdminProfilePageComponent() {
       Adicionar telefone
     </button>
   );
+
+  useEffect(() => {
+    if (!userFindById.data) return;
+
+    setValue('cpf', userFindById.data.cpf);
+    setValue('email', userFindById.data.email);
+    setValue('username', userFindById.data.username);
+    setValue('firstName', userFindById.data.first_name);
+    setValue('lastName', userFindById.data.last_name);
+    replace(
+      userFindById.data.list_telephones.map((phone, index) => ({
+        id: phone.id_telephone,
+        number: phone.telephone_number,
+        description: phone.telephone_description,
+      })),
+    );
+  }, [append, replace, setValue, userFindById.data]);
 
   return (
     <div className={styles.container}>
@@ -125,11 +171,13 @@ function AdminProfilePageComponent() {
           {fields.map((field, index) => (
             <div key={field.id} className={styles.phonesContainer}>
               <InputText
+                disabled
                 placeholder='Ex.: (11) 99999-9999'
                 error={errors?.phones?.[index]?.number}
                 {...register(`phones.${index}.number`)}
               />
               <InputText
+                disabled
                 placeholder='Ex.: Celular principal'
                 error={errors?.phones?.[index]?.description}
                 {...register(`phones.${index}.description`)}
@@ -158,7 +206,11 @@ function AdminProfilePageComponent() {
             Voltar
           </Button>
 
-          <Button type='submit' className={styles.saveButton}>
+          <Button
+            type='submit'
+            className={styles.saveButton}
+            isLoading={userUpdate.isLoading}
+          >
             Salvar
           </Button>
         </div>

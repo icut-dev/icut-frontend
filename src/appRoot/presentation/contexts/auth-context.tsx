@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { setCookie, destroyCookie } from 'nookies';
 import {
@@ -9,6 +11,7 @@ import {
   createContext,
 } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { UserRole } from '~/appRoot/core/domain/models';
 import {
   Authentication,
   IAuthentication,
@@ -23,7 +26,7 @@ type SignInCredentials = {
 type AuthContextData = {
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => void;
-  user?: Authentication.Model;
+  user: Authentication.Model;
   isAuthenticated: boolean;
 };
 
@@ -41,7 +44,9 @@ let authChannel: BroadcastChannel;
 export function AuthProvider({ children, authentication }: AuthProviderProps) {
   const router = useRouter();
   const login = useLogin({ remote: authentication });
-  const [user, setUser] = useState<Authentication.Model>();
+  const [user, setUser] = useState<Authentication.Model>(
+    {} as Authentication.Model,
+  );
   const isAuthenticated = !!user;
 
   const signOut = useCallback(() => {
@@ -64,21 +69,29 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
           onSuccess(data) {
             if (!data) return;
 
-            const { accessToken, refreshToken } = data;
+            const { access_token, refresh_token } = data;
 
-            setCookie(undefined, 'icut.token', accessToken, {
+            setCookie(undefined, 'icut.token', access_token, {
               maxAge: 60 * 60 * 24 * 30, // 30 days
               path: '/',
             });
 
-            setCookie(undefined, 'icut.refreshToken', refreshToken, {
+            setCookie(undefined, 'icut.refreshToken', refresh_token, {
               maxAge: 60 * 60 * 24 * 30, // 30 days
               path: '/',
             });
+
+            if (
+              data.user_type === UserRole.ADMIN ||
+              data.user_type === UserRole.EMPLOYEE
+            ) {
+              router.replace('/admin/appointment');
+            } else {
+              router.replace('/home');
+            }
 
             setUser(data);
 
-            router.push('/home');
             authChannel.postMessage('signIn');
           },
         },
@@ -91,7 +104,7 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
     authChannel = new BroadcastChannel('auth');
 
     // eslint-disable-next-line prettier/prettier
-    authChannel.onmessage = message => {
+    authChannel.onmessage = (message) => {
       switch (message.data) {
         case 'signOut':
           signOut();

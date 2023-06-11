@@ -1,20 +1,18 @@
-import { PreconditionFailedError } from '../errors/precondition-failed';
-import { UserModel, UserRole } from '../models';
+import { PreconditionFailedError } from '../../errors/precondition-failed';
+import { UserModel, UserRole } from '../../models';
 
 export namespace UserUpdate {
   export type Params = {
-    id: string;
+    id: number;
     cpf: string;
     email: string;
     username: string;
-    password: string;
     firstName: string;
     lastName: string;
     typeUser: UserRole;
-    listTelephones: Array<{
-      telephoneNumber: string;
-      telephoneDescription: string;
-    }>;
+
+    // TODO: Remover
+    password: string;
   };
 
   export type Model = UserModel;

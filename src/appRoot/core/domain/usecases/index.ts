@@ -1,17 +1,19 @@
-export * from './employee-create';
-export * from './employee-update';
-export * from './employee-delete';
-export * from './employee-find-by-id';
-export * from './employee-find-all-by-establishment';
+export * from './employee/employee-create';
+export * from './employee/employee-update';
+export * from './employee/employee-delete';
+export * from './employee/employee-find-by-id';
+export * from './employee/employee-find-all-by-establishment';
 
-export * from './service-delete';
-export * from './service-update';
-export * from './service-find-all-by-establishment';
+export * from './service/service-delete';
+export * from './service/service-update';
+export * from './service/service-find-all-by-establishment';
 
-export * from './establishment-update';
+export * from './establishment/establishment-update';
 
 export * from './authentication';
 
-export * from './user-update';
-export * from './user-create';
-export * from './user-find-by-id';
+export * from './user/user-update';
+export * from './user/user-create';
+export * from './user/user-find-by-id';
+
+export * from './phones/phones-find-all-by-user-id';

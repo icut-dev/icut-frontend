@@ -1,9 +1,9 @@
-import { PreconditionFailedError } from '../errors/precondition-failed';
-import { UserModel } from '../models';
+import { PreconditionFailedError } from '../../errors/precondition-failed';
+import { UserModel } from '../../models';
 
 export namespace UserFindById {
   export type Params = {
-    id: string;
+    id: number;
   };
 
   export type Model = UserModel;

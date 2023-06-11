@@ -1,13 +1,15 @@
-export * from './remote-user-create';
-export * from './remote-user-update';
-export * from './remote-user-find-by-id';
+export * from './user/remote-user-create';
+export * from './user/remote-user-update';
+export * from './user/remote-user-find-by-id';
 
 export * from './remote-authentication-login';
 
-export * from './remote-establishment-update';
+export * from './establishment/remote-establishment-update';
 
-export * from './remote-service-delete';
-export * from './remote-service-find-all-by-establishment';
+export * from './service/remote-service-delete';
+export * from './service/remote-service-find-all-by-establishment';
 
-export * from './remote-employee-delete';
-export * from './remote-employee-find-all-by-establishment';
+export * from './employee/remote-employee-delete';
+export * from './employee/remote-employee-find-all-by-establishment';
+
+export * from './phone/remote-phone-find-all-by-user-id';

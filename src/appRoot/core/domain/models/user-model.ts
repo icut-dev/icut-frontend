@@ -5,17 +5,17 @@ export enum UserRole {
 }
 
 export type UserModel = {
-  id: string;
+  id: number;
   cpf: string;
   email: string;
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  typeUser: UserRole;
-  listTelephones: Array<{
-    idTelephone: string;
-    telephoneNumber: string;
-    telephoneDescription: string;
+  first_name: string;
+  last_name: string;
+  type_user: UserRole;
+  list_telephones: Array<{
+    id_telephone: number;
+    telephone_number: string;
+    telephone_description: string;
   }>;
 };
