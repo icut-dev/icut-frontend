@@ -2,9 +2,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import * as yup from 'yup';
-import { InputText } from '~/appRoot/presentation/components';
-import { Sidebar } from '~/appRoot/presentation/components/sidebar';
+import { Sidebar, Button, InputText } from '~/appRoot/presentation/components';
 import styles from './styles.module.scss';
+
+interface EstablishmentUpdateForm {
+  cnpj: string;
+  logo: string;
+  email: string;
+  corporateName: string;
+  representativeName: string;
+}
 
 const schema = yup.object().shape({
   corporateName: yup.string().required('Por favor, informe a razão social'),
@@ -23,11 +30,13 @@ function AdminEmployeePageComponent() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({
+  } = useForm<EstablishmentUpdateForm>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: EstablishmentUpdateForm) => {
+    console.log(data);
+  };
 
   return (
     <div className={styles.container}>
@@ -55,6 +64,7 @@ function AdminEmployeePageComponent() {
 
               <InputText
                 label='CNPJ'
+                placeholder='Ex.: 00.000.000/0000-00'
                 error={errors.cnpj}
                 {...register('cnpj')}
               />
@@ -64,13 +74,19 @@ function AdminEmployeePageComponent() {
                 error={errors.email}
                 {...register('email')}
               />
+
+              <InputText
+                label='Logo url'
+                error={errors.logo}
+                {...register('logo')}
+              />
             </div>
 
             <div className={styles.buttonsContainer}>
-              <button type='submit' className={styles.editButton}>
+              <Button type='submit' className={styles.editButton}>
                 <FiEdit />
                 Salvar
-              </button>
+              </Button>
             </div>
           </form>
         </section>

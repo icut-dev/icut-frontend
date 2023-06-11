@@ -33,7 +33,7 @@
 
   .home_next_appointments_content {
     .home_next_appointment_swiper_slide {
-      width: 80%;
+      width: 400px;
     }
   }
 
@@ -102,7 +102,7 @@
   display: grid;
   gap: 16px;
   row-gap: 32px;
-  grid-template-columns: repeat(2, calc(50% - 8px));
+  grid-template-columns: repeat(6, calc(16.66% - 8px));
 
   li {
     list-style: none;
@@ -114,4 +114,28 @@
   font-weight: 400;
   color: var(--light-text);
   margin-bottom: 40px;
+}
+
+@media (max-width: 1080px) {
+  .list {
+    display: grid;
+    gap: 16px;
+    row-gap: 32px;
+    grid-template-columns: repeat(4, calc(25% - 8px));
+  }
+}
+
+@media (max-width: 720px) {
+  .list {
+    display: grid;
+    gap: 16px;
+    row-gap: 32px;
+    grid-template-columns: repeat(2, calc(50% - 8px));
+  }
+
+  .home_next_appointments_content {
+    .home_next_appointment_swiper_slide {
+      width: 80% !important;
+    }
+  }
 }

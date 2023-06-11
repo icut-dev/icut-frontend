@@ -7,11 +7,11 @@ export namespace EmployeeFindAllByEstablishment {
 
   export type Model = EmployeeModel;
 
-  export type Result = Promise<void>;
+  export type Result = Model[] | undefined;
 }
 
 export interface IEmployeeFindAllByEstablishment {
   findAllByEstablishment(
     params: EmployeeFindAllByEstablishment.Params,
-  ): EmployeeFindAllByEstablishment.Result;
+  ): Promise<EmployeeFindAllByEstablishment.Result>;
 }

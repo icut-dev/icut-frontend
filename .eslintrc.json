@@ -25,6 +25,8 @@
     "prettier"
   ],
   "rules": {
+    "brace-style": "off",
+    "arrow-parens": "off",
     "no-empty-function": "off",
     "no-useless-constructor": "off",
     "jsx-a11y/control-has-associated-label": "off",

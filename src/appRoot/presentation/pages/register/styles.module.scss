@@ -1,7 +1,19 @@
+@media (max-width: 720px) {
+  .namesContainer {
+    display: flex;
+    flex-direction: column;
+
+    > div + div {
+      margin-top: 1rem;
+      margin-left: 0 !important;
+    }
+  }
+}
+
 .container {
   margin: 3rem auto;
-  width: 650px;
-  padding: 0 0 2rem 0;
+  max-width: 650px;
+  padding: 0 2rem 2rem;
 
   header {
     margin-bottom: 2rem;

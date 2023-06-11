@@ -31,9 +31,7 @@ function HomePageComponent() {
 
       <main className={styles.main_container}>
         <div className={styles.home_next_appointments}>
-          <h2>
-            Próximos <br /> agendamentos
-          </h2>
+          <h2>Próximos agendamentos</h2>
 
           <Swiper
             // pagination={true}
@@ -141,9 +139,7 @@ function HomePageComponent() {
         </div>
 
         <div className={styles.home_services}>
-          <h2 className={styles.title}>
-            Qual serviço <br /> você deseja hoje?
-          </h2>
+          <h2 className={styles.title}>Qual serviço você deseja hoje?</h2>
 
           <ul className={styles.list}>
             <ServiceItem

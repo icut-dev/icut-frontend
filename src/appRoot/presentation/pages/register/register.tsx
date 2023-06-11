@@ -8,9 +8,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
 import { UserCreate, IUserCreate } from '~/appRoot/core/domain/usecases';
-import { Button, InputText } from '~/appRoot/presentation/components';
+import { Button, InputRow, InputText } from '~/appRoot/presentation/components';
 import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
-import { useCreateUser } from '../../hooks';
+import { useUserCreate } from '../../hooks';
 import styles from './styles.module.scss';
 
 const schema = yup.object().shape({
@@ -47,7 +47,7 @@ interface Props {
 function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
   const router = useRouter();
 
-  const createUser = useCreateUser({ remoteCreateUser });
+  const userCreate = useUserCreate({ remoteCreateUser });
 
   const {
     handleSubmit,
@@ -79,7 +79,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
   });
 
   const onSubmit = async (data: any) => {
-    await createUser.mutateAsync(
+    await userCreate.mutateAsync(
       {
         cpf: data.cpf,
         email: data.email,
@@ -102,14 +102,14 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
   };
 
   useEffect(() => {
-    if (createUser.isError) {
-      toast.error((createUser.error as UserCreate.Error).message);
+    if (userCreate.isError) {
+      toast.error((userCreate.error as UserCreate.Error).message);
     }
 
-    if (createUser.isSuccess) {
+    if (userCreate.isSuccess) {
       toast.success('Usuário criado com sucesso');
     }
-  }, [createUser.error, createUser.isError, createUser.isSuccess]);
+  }, [userCreate.error, userCreate.isError, userCreate.isSuccess]);
 
   const legendElement = (
     <button
@@ -129,7 +129,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
 
   return (
     <div className={styles.container}>
-      <ToastContainer autoClose={2000} />
+      <ToastContainer />
       <header>
         <h1>Cadastro de cliente</h1>
         <p>
@@ -147,7 +147,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
             {...register('username')}
           />
 
-          <div className={styles.namesContainer}>
+          <InputRow>
             <InputText
               error={errors.firstName}
               label='Nome'
@@ -159,7 +159,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
               label='Sobrenome'
               {...register('lastName')}
             />
-          </div>
+          </InputRow>
 
           <InputText
             error={errors.email}
@@ -193,7 +193,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
 
         <Fieldset legendTitle='Telefones' legend={legendElement}>
           {fields.map((field, index) => (
-            <div key={field.id} className={styles.phonesContainer}>
+            <InputRow key={field.id}>
               <InputText
                 placeholder='Ex.: (11) 99999-9999'
                 error={errors?.phones?.[index]?.number}
@@ -214,7 +214,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
                   <FiMinusCircle size={16} />
                 </button>
               )}
-            </div>
+            </InputRow>
           ))}
         </Fieldset>
 
@@ -231,7 +231,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
           <Button
             type='submit'
             className={styles.saveButton}
-            isLoading={createUser.isLoading}
+            isLoading={userCreate.isLoading}
           >
             Cadastrar
           </Button>

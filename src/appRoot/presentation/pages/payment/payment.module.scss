@@ -1,4 +1,6 @@
 .container {
+  margin: 0 auto;
+  max-width: 720px;
   padding: 40px 24px;
 
   p {
@@ -52,7 +54,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  margin: 0 auto;
+  max-width: 720px;
   background: var(--dark-200);
   padding: 24px;
 

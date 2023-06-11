@@ -1,12 +1,43 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
-import { Button, InputText } from '~/appRoot/presentation/components';
-import { Fieldset } from '~/appRoot/presentation/components/form/fieldset';
-import InputSelect from '~/appRoot/presentation/components/form/input-select';
+import { UserRole } from '~/appRoot/core/domain/models';
+import { IUserCreate } from '~/appRoot/core/domain/usecases';
+import {
+  Button,
+  InputText,
+  Fieldset,
+  InputRow,
+} from '~/appRoot/presentation/components';
+import { useUserCreate } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
+
+interface Props {
+  remoteUserCreate: IUserCreate;
+}
+
+interface CreateForm {
+  username: string;
+  firstName: string;
+  lastName: string;
+  cpf: string;
+  email: string;
+  phones: {
+    number: string;
+    description: string;
+  }[];
+  password: string;
+  confirmPassword: string;
+  logo: string;
+  cnpj: string;
+  corporateName: string;
+  corporateEmail: string;
+  representativeName: string;
+}
 
 const schema = yup.object().shape({
   username: yup.string().required('Por favor, informe o nome de usuário'),
@@ -43,36 +74,19 @@ const schema = yup.object().shape({
     .required('Por favor, informe o nome do representante'),
 });
 
-function AdminRegisterPageComponent() {
+function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
   const router = useRouter();
+  const userCreate = useUserCreate({ remoteCreateUser: remoteUserCreate });
 
   const {
     handleSubmit,
     register,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<CreateForm>({
     resolver: yupResolver(schema),
     defaultValues: {
-      username: '',
-      firstName: '',
-      lastName: '',
-      cpf: '',
-      email: '',
-      typeUser: '2',
-      phones: [
-        {
-          number: '',
-          description: '',
-        },
-      ],
-
-      cnpj: '',
-      corporateName: '',
-      corporateEmail: '',
-      representativeName: '',
-      password: '',
-      confirmPassword: '',
+      phones: [{ number: '', description: '' }],
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -80,9 +94,47 @@ function AdminRegisterPageComponent() {
     name: 'phones',
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: CreateForm) => {
+    await userCreate.mutateAsync(
+      {
+        cpf: data.cpf,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        password: data.password,
+        username: data.username,
+        typeUser: UserRole.ADMIN,
+        listTelephones: data.phones.map((phone) => ({
+          telephoneNumber: phone.number,
+          telephoneDescription: phone.description,
+        })),
+
+        establishment: {
+          cnpj: data.cnpj,
+          logo: data.logo,
+          corporateName: data.corporateName,
+          emailEstablishment: data.corporateEmail,
+          representativeName: data.representativeName,
+        },
+      },
+      {
+        onSuccess: () => {
+          router.push('/login');
+        },
+      },
+    );
   };
+
+  useEffect(() => {
+    if (userCreate.isError) {
+      toast.error((userCreate.error as Error).message);
+    }
+
+    if (userCreate.isSuccess) {
+      toast.success('Administrador cadastrado com sucesso');
+      router.push('/login');
+    }
+  }, [router, userCreate.error, userCreate.isError, userCreate.isSuccess]);
 
   const legendElement = (
     <button
@@ -118,7 +170,7 @@ function AdminRegisterPageComponent() {
             {...register('username')}
           />
 
-          <div className={styles.namesContainer}>
+          <InputRow>
             <InputText
               error={errors.firstName}
               label='Nome'
@@ -130,7 +182,7 @@ function AdminRegisterPageComponent() {
               label='Sobrenome'
               {...register('lastName')}
             />
-          </div>
+          </InputRow>
 
           <InputText
             error={errors.email}
@@ -146,7 +198,7 @@ function AdminRegisterPageComponent() {
             {...register('cpf')}
           />
 
-          <div className={styles.namesContainer}>
+          <InputRow>
             <InputText
               error={errors.password}
               label='Senha'
@@ -160,12 +212,12 @@ function AdminRegisterPageComponent() {
               type='password'
               {...register('confirmPassword')}
             />
-          </div>
+          </InputRow>
         </Fieldset>
 
         <Fieldset legendTitle='Telefones' legend={legendElement}>
           {fields.map((field, index) => (
-            <div key={field.id} className={styles.phonesContainer}>
+            <InputRow key={field.id}>
               <InputText
                 placeholder='Ex.: (11) 99999-9999'
                 error={errors?.phones?.[index]?.number}
@@ -186,7 +238,7 @@ function AdminRegisterPageComponent() {
                   <FiMinusCircle size={16} />
                 </button>
               )}
-            </div>
+            </InputRow>
           ))}
         </Fieldset>
 
@@ -214,6 +266,12 @@ function AdminRegisterPageComponent() {
             label='E-mail'
             error={errors.corporateEmail}
             {...register('corporateEmail')}
+          />
+
+          <InputText
+            label='Logo link'
+            error={errors.logo}
+            {...register('logo')}
           />
         </Fieldset>
 

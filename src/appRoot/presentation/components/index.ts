@@ -1,4 +1,6 @@
 export { Header } from './header';
+export { Fieldset } from './form/fieldset';
+export { InputRow } from './form/input-row';
 export { Sidebar } from './sidebar';
 export { default as InputText } from './form/input-text';
 export { default as InputSelect } from './form/input-select';

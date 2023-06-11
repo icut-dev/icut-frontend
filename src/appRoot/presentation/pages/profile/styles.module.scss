@@ -1,4 +1,6 @@
 .container {
+  max-width: 720px;
+  margin: 0 auto;
   padding: 40px 24px;
 }
 
@@ -47,6 +49,8 @@
 
 .create_payment_method_footer {
   padding: 0 24px 40px;
+  max-width: 720px;
+  margin: 0 auto;
 
   position: fixed;
   height: 148px;

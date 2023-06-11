@@ -1,8 +1,9 @@
 import { PreconditionFailedError } from '../errors/precondition-failed';
 import { UserModel, UserRole } from '../models';
 
-export namespace UserCreate {
+export namespace UserUpdate {
   export type Params = {
+    id: string;
     cpf: string;
     email: string;
     username: string;
@@ -14,16 +15,6 @@ export namespace UserCreate {
       telephoneNumber: string;
       telephoneDescription: string;
     }>;
-
-    establishment?: {
-      cnpj: string;
-      logo: string;
-      corporateName: string;
-      representativeName: string;
-      emailEstablishment: string;
-    };
-
-    establishmentId?: string;
   };
 
   export type Model = UserModel;
@@ -33,6 +24,6 @@ export namespace UserCreate {
   export type Result = Promise<void>;
 }
 
-export interface IUserCreate {
-  create(data: UserCreate.Params): UserCreate.Result;
+export interface IUserUpdate {
+  update(data: UserUpdate.Params): UserUpdate.Result;
 }
