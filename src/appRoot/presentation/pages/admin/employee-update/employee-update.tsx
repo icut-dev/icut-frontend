@@ -80,8 +80,6 @@ function AdminCreateEmployeePageComponent({
       email: data.email,
       first_name: data.firstName,
       last_name: data.lastName,
-      // TODO: Remover
-      password: '123456',
       username: data.username,
       type_user: UserRole.EMPLOYEE,
     });

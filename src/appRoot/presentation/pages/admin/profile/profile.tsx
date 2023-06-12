@@ -91,8 +91,6 @@ function AdminProfilePageComponent({
       last_name: data.lastName,
       username: data.username,
       type_user: UserRole.ADMIN,
-      // TODO: REMOVER QUANDO TIRAR DO ENDPOINT
-      password: '123456',
     });
   };
 

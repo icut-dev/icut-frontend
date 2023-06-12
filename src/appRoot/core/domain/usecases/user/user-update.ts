@@ -10,9 +10,6 @@ export namespace UserUpdate {
     first_name: string;
     last_name: string;
     type_user: UserRole;
-
-    // TODO: Remover
-    password: string;
   };
 
   export type Model = UserModel;

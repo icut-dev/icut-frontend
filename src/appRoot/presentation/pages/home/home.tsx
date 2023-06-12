@@ -5,27 +5,31 @@ import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { useContext } from 'react';
 import beardIcon from '../../../../../public/assets/beard.svg';
 import clipperIcon from '../../../../../public/assets/clipper.svg';
 import straightRazorIcon from '../../../../../public/assets/razor.svg';
 import transformationIcon from '../../../../../public/assets/transformation.svg';
 import { ServiceItem } from '../../components';
+import { AuthContext } from '../../contexts/auth-context';
 import styles from './home.module.scss';
 
 function HomePageComponent() {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className={styles.container}>
       <Link href='/profile'>
         <header className={styles.header}>
           <Image
             src='https://github.com/IagoSoLima.png'
-            alt='Iago Lima'
+            alt={user.username}
             width={48}
             height={48}
             style={{ borderRadius: '8px' }}
           />
 
-          <span>Olá, Iago Lima</span>
+          <span>Olá, {user.username}</span>
         </header>
       </Link>
 
@@ -37,7 +41,6 @@ function HomePageComponent() {
             // pagination={true}
             slidesPerView='auto'
             spaceBetween={24}
-            modules={[Pagination]}
             className={styles.home_next_appointments_content}
           >
             <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
