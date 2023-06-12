@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { setCookie, destroyCookie } from 'nookies';
+import { setCookie, destroyCookie, parseCookies } from 'nookies';
 import {
   useMemo,
   useState,
@@ -50,8 +50,9 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
   const isAuthenticated = !!user;
 
   const signOut = useCallback(() => {
-    destroyCookie(undefined, 'icut.token');
-    destroyCookie(undefined, 'icut.refreshToken');
+    destroyCookie({}, 'icut.token', { path: '' });
+    destroyCookie({}, 'icut.refreshToken', { path: '' });
+    destroyCookie({}, 'icut.user', { path: '' });
 
     authChannel.postMessage('signOut');
 
@@ -77,6 +78,11 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
             });
 
             setCookie(undefined, 'icut.refreshToken', refresh_token, {
+              maxAge: 60 * 60 * 24 * 30, // 30 days
+              path: '/',
+            });
+
+            setCookie(undefined, 'icut.user', JSON.stringify(data), {
               maxAge: 60 * 60 * 24 * 30, // 30 days
               path: '/',
             });
@@ -122,13 +128,21 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
 
   useEffect(() => {
     if (login.isError) {
-      toast.error((login.error as any).message);
+      toast.error((login.error as Error).message);
     }
 
     if (login.isSuccess) {
       toast.success('Login realizado com sucesso!');
     }
   }, [login.error, login.isError, login.isSuccess]);
+
+  useEffect(() => {
+    if (Object.keys(user).length > 0) return;
+
+    const { 'icut.user': iCutUser } = parseCookies();
+
+    setUser(JSON.parse(iCutUser || '{}'));
+  }, [user]);
 
   const values = useMemo(
     () => ({

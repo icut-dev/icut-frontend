@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
 import scissorsIcon from '../../../../../../public/assets/logo-scissors.svg';
+import { Button } from '../../button';
 import styles from './styles.module.scss';
 
 export function Header() {
-  const { user } = useContext(AuthContext);
+  const router = useRouter();
+  const { user, signOut } = useContext(AuthContext);
 
   return (
     <header className={styles.container}>
@@ -15,21 +18,35 @@ export function Header() {
         <span className={styles.logo}>iCut</span>
       </div>
 
-      <Link href='/admin/profile'>
+      {Object.keys(user).length > 0 ? (
         <div className={styles.profileContainer}>
-          <div className={styles.profile}>
-            <span>{user.username}</span>
-            <span className={styles.profileEmail}>{user.email}</span>
-          </div>
+          <Button variant='ghost' onClick={signOut}>
+            Sair
+          </Button>
+          <Link href='/admin/profile'>
+            <div className={styles.profileContainer}>
+              <div className={styles.profile}>
+                <span>{user.username}</span>
+                <span className={styles.profileEmail}>{user.email}</span>
+              </div>
 
-          <Image
-            src='https://github.com/ManoMartins.png'
-            alt='Manoel Martins'
-            width={64}
-            height={64}
-          />
+              <Image
+                src='https://github.com/ManoMartins.png'
+                alt='Manoel Martins'
+                width={64}
+                height={64}
+              />
+            </div>
+          </Link>
         </div>
-      </Link>
+      ) : (
+        <div className={styles.buttonsContainer}>
+          <Button variant='ghost' onClick={() => router.push('/login')}>
+            Entrar
+          </Button>
+          <Button onClick={() => router.push('/register')}>Cadastrar</Button>
+        </div>
+      )}
     </header>
   );
 }

@@ -41,3 +41,12 @@
     border-radius: 50%;
   }
 }
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+
+  button + button {
+    margin-left: 1rem;
+  }
+}
