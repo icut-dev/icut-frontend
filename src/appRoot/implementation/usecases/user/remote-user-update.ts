@@ -1,4 +1,3 @@
-import { PreconditionFailedError } from '~/appRoot/core/domain/errors/precondition-failed';
 import {
   HttpClient,
   HttpStatusCodeEnum,
@@ -23,12 +22,12 @@ export class RemoteUserUpdate implements IUserUpdate {
     });
 
     switch (httpResponse.statusCode) {
-      case HttpStatusCodeEnum.preconditionFailed:
-        throw new PreconditionFailedError(
-          'As informações de login já estão sendo utilizadas',
-        );
+      case HttpStatusCodeEnum.ok:
+        return;
       default:
-        break;
+        throw new Error(
+          'Não foi possível atualizar o usuário. Tente novamente mais tarde.',
+        );
     }
   }
 }

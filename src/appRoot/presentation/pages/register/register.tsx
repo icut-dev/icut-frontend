@@ -89,8 +89,8 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
         username: data.username,
         type_user: UserRole.CLIENT,
         list_telephones: data.phones.map((phone: any) => ({
-          telephoneNumber: phone.number,
-          telephoneDescription: phone.description,
+          telephone_number: phone.number,
+          telephone_description: phone.description,
         })),
       },
       {

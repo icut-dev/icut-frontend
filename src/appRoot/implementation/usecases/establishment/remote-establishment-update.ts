@@ -1,4 +1,7 @@
-import { HttpClient } from '~/appRoot/core/domain/protocols';
+import {
+  HttpClient,
+  HttpStatusCodeEnum,
+} from '~/appRoot/core/domain/protocols';
 import {
   EstablishmentUpdate,
   IEstablishmentUpdate,
@@ -18,6 +21,8 @@ export class RemoteEstablishmentUpdate implements IEstablishmentUpdate {
     });
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCodeEnum.ok:
+        return;
       default:
         throw new Error(
           'Não foi possível atualizar o estabelecimento. Tente novamente mais tarde.',

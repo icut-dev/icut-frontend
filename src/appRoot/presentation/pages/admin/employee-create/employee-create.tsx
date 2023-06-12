@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiEdit, FiMinusCircle, FiPlus } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import {
   InputRow,
   InputText,
 } from '~/appRoot/presentation/components';
+import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
 import { useUserCreate } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
 
@@ -53,6 +54,8 @@ const schema = yup.object({
 function AdminCreateEmployeePageComponent({ remoteUserCreate }: Props) {
   const router = useRouter();
 
+  const { user } = useContext(AuthContext);
+
   const userCreate = useUserCreate({ remoteCreateUser: remoteUserCreate });
 
   const {
@@ -84,8 +87,7 @@ function AdminCreateEmployeePageComponent({ remoteUserCreate }: Props) {
         telephone_number: phone.number,
         telephone_description: phone.description,
       })),
-      // TODO: Adicionar id do estabelecimento do usuário que tiver logado
-      id_establishment: '2',
+      id_establishment: user.id_establishment,
     });
   };
 

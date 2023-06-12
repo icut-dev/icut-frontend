@@ -23,7 +23,7 @@ export namespace UserCreate {
       email_establishment: string;
     };
 
-    id_establishment?: string;
+    id_establishment?: number;
   };
 
   export type Model = UserModel;
