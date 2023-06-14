@@ -5,6 +5,7 @@ export * from './user/remote-user-find-by-id';
 export * from './remote-authentication-login';
 
 export * from './establishment/remote-establishment-update';
+export * from './establishment/remote-establishment-find-all';
 export * from './establishment/remote-establishment-find-by-id';
 
 export * from './service/remote-service-create';

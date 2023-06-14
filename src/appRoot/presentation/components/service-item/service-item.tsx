@@ -5,7 +5,7 @@ import { HiChevronRight } from 'react-icons/hi';
 import styles from './service-item.module.scss';
 
 interface ServiceItemProps {
-  id?: string;
+  id?: number;
   title: string;
   price: number;
   icon: {
@@ -39,7 +39,9 @@ export function ServiceItem({ id, title, price, icon }: ServiceItemProps) {
                 <p>{priceFormatted}</p>
               </div>
 
-              <HiChevronRight size={24} />
+              <div className={styles.list_item_content_icon}>
+                <HiChevronRight size={24} />
+              </div>
             </div>
           </div>
         </Link>

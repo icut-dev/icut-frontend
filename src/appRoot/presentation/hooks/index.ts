@@ -7,6 +7,7 @@ export * from './phone/use-phone-find-all-by-user-id';
 export * from './authentication/use-login';
 
 export * from './establishment/use-establishment-update';
+export * from './establishment/use-establishment-find-all';
 export * from './establishment/use-establishment-find-by-id';
 
 export * from './service/use-service-create';
