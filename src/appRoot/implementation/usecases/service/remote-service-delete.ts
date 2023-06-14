@@ -1,4 +1,7 @@
-import { HttpClient } from '~/appRoot/core/domain/protocols';
+import {
+  HttpClient,
+  HttpStatusCodeEnum,
+} from '~/appRoot/core/domain/protocols';
 import { IServiceDelete, ServiceDelete } from '~/appRoot/core/domain/usecases';
 
 export class RemoteServiceDelete implements IServiceDelete {
@@ -14,6 +17,8 @@ export class RemoteServiceDelete implements IServiceDelete {
     });
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCodeEnum.ok:
+        return;
       default:
         throw new Error('Não foi possível remover o serviço');
     }

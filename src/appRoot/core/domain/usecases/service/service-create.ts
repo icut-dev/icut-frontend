@@ -1,6 +1,5 @@
-export namespace ServiceUpdate {
+export namespace ServiceCreate {
   export type Params = {
-    id: number;
     valor: number;
     type_service: number;
     time_duration: string;
@@ -11,6 +10,6 @@ export namespace ServiceUpdate {
   export type Result = void;
 }
 
-export interface IServiceUpdate {
-  update(params: ServiceUpdate.Params): Promise<ServiceUpdate.Result>;
+export interface IServiceCreate {
+  create(params: ServiceCreate.Params): Promise<ServiceCreate.Result>;
 }

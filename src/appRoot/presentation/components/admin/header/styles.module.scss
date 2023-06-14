@@ -22,6 +22,10 @@
   display: flex;
   align-items: center;
 
+  a {
+    margin-left: 2rem;
+  }
+
   .profile {
     display: flex;
     flex-direction: column;

@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   isLoading?: boolean;
-  color?: 'primary' | 'blackAlpha';
+  color?: 'primary' | 'blackAlpha' | 'delete' | 'secondary';
   variant?: 'ghost' | 'solid';
 }
 

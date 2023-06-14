@@ -8,3 +8,9 @@ export * from './authentication/use-login';
 
 export * from './establishment/use-establishment-update';
 export * from './establishment/use-establishment-find-by-id';
+
+export * from './service/use-service-create';
+export * from './service/use-service-delete';
+export * from './service/use-service-update';
+export * from './service/use-service-find-by-id';
+export * from './service/use-service-find-all-by-establishment';

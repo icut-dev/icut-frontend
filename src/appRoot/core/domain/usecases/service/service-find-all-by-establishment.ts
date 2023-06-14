@@ -1,8 +1,8 @@
-import { ServiceModel } from '../models';
+import { ServiceModel } from '../../models';
 
 export namespace ServiceFindAllByEstablishment {
   export type Params = {
-    establishmentId: string;
+    establishmentId: number;
   };
 
   export type Model = ServiceModel;

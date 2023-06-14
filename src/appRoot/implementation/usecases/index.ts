@@ -7,7 +7,10 @@ export * from './remote-authentication-login';
 export * from './establishment/remote-establishment-update';
 export * from './establishment/remote-establishment-find-by-id';
 
+export * from './service/remote-service-create';
+export * from './service/remote-service-update';
 export * from './service/remote-service-delete';
+export * from './service/remote-service-find-by-id';
 export * from './service/remote-service-find-all-by-establishment';
 
 export * from './employee/remote-employee-delete';

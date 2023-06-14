@@ -7,8 +7,11 @@ export * from './remote-authentication-login';
 export * from './remote-employee-delete';
 export * from './remote-employee-find-all-by-establishment';
 
-export * from './remote-service-delete';
-export * from './remote-service-find-all-by-establishment';
+export * from './service/remote-service-update';
+export * from './service/remote-service-create';
+export * from './service/remote-service-delete';
+export * from './service/remote-service-find-by-id';
+export * from './service/remote-service-find-all-by-establishment';
 
 export * from './phone/remote-phone-find-all-by-user-id';
 

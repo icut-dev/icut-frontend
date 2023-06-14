@@ -1,4 +1,7 @@
-import { HttpClient } from '~/appRoot/core/domain/protocols';
+import {
+  HttpClient,
+  HttpStatusCodeEnum,
+} from '~/appRoot/core/domain/protocols';
 import { IServiceUpdate, ServiceUpdate } from '~/appRoot/core/domain/usecases';
 
 export class RemoteServiceUpdate implements IServiceUpdate {
@@ -15,6 +18,8 @@ export class RemoteServiceUpdate implements IServiceUpdate {
     });
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCodeEnum.ok:
+        return;
       default:
         throw new Error('Não foi possível atualizar o serviço');
     }

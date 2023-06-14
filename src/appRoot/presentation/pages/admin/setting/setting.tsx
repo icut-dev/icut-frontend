@@ -133,7 +133,7 @@ function AdminEmployeePageComponent({
             </div>
 
             <div className={styles.buttonsContainer}>
-              <Button type='submit' className={styles.editButton}>
+              <Button type='submit'>
                 <FiEdit />
                 Salvar
               </Button>

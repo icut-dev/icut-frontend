@@ -5,7 +5,9 @@ export * from './employee/employee-find-by-id';
 export * from './employee/employee-find-all-by-establishment';
 
 export * from './service/service-delete';
+export * from './service/service-create';
 export * from './service/service-update';
+export * from './service/service-find-by-id';
 export * from './service/service-find-all-by-establishment';
 
 export * from './establishment/establishment-update';
