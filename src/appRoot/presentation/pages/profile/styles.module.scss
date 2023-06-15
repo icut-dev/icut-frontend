@@ -1,7 +1,7 @@
 .container {
   max-width: 720px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 40px 24px 180px;
 }
 
 .button {
@@ -61,7 +61,7 @@
   padding: 0 24px 40px;
   max-width: 720px;
   margin: 0 auto;
-
+  background: var(--dark-300);
   position: fixed;
   height: 148px;
   bottom: 0;

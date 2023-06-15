@@ -276,21 +276,21 @@ function ProfilePageComponent({
         </Fieldset>
 
         <footer className={styles.create_payment_method_footer}>
-          <button
+          <Button
             className={styles.button}
             type='button'
             onClick={() => router.push('/home')}
           >
             Confirmar mudanças
-          </button>
+          </Button>
 
-          <button
+          <Button
             className={styles.outline_button}
             type='button'
             onClick={() => router.push('/login')}
           >
             Sair
-          </button>
+          </Button>
         </footer>
       </form>
     </div>
