@@ -20,6 +20,16 @@
     border-bottom: 1px solid var(--white-200);
   }
 }
+.container_buttons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+  margin-top: 2rem;
+
+  button {
+    margin-right: 20px;
+  }
+}
 
 .content {
   width: 100%;
@@ -33,6 +43,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .buttonsContainer {

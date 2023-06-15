@@ -1,24 +1,32 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { Ref, useContext, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
 import {
   IPhoneFindAllByUserId,
+  IUserAvatar,
   IUserFindById,
   IUserUpdate,
 } from '~/appRoot/core/domain/usecases';
 import { Button, InputText, Fieldset } from '~/appRoot/presentation/components';
 import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
-import { useUserUpdate, useUserFindById } from '~/appRoot/presentation/hooks';
+import {
+  useUserUpdate,
+  useUserFindById,
+  useUserAvatar,
+} from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
+import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 interface Props {
   remoteUserUpdate: IUserUpdate;
   remoteUserFindById: IUserFindById;
   remotePhoneFindAllByUserId: IPhoneFindAllByUserId;
+  remoteUserAvatar: IUserAvatar;
 }
 
 interface UserForm {
@@ -56,6 +64,7 @@ const schema = yup.object().shape({
 function AdminProfilePageComponent({
   remoteUserUpdate,
   remoteUserFindById,
+  remoteUserAvatar,
 }: Props) {
   const router = useRouter();
 
@@ -65,6 +74,12 @@ function AdminProfilePageComponent({
     params: { id: user.id_user },
     remoteUserFindById,
   });
+  const avatarUpload = useUserAvatar({ remoteUserAvatar });
+
+  const fileInputRef: Ref<HTMLInputElement> = useRef(null);
+
+  const userAvatar = userFindById.data?.avatar_image || '';
+  const [image, setImage] = useState<File | null>(null);
 
   const {
     handleSubmit,
@@ -80,6 +95,10 @@ function AdminProfilePageComponent({
     name: 'phones',
   });
 
+  const handleInputFileClick = () => {
+    fileInputRef?.current.click();
+  };
+
   const onSubmit = async (data: any) => {
     if (!user) return;
 
@@ -92,6 +111,16 @@ function AdminProfilePageComponent({
       username: data.username,
       type_user: UserRole.ADMIN,
     });
+  };
+
+  const onSubmitImage = async () => {
+    if (!image) return;
+
+    await avatarUpload.mutateAsync({
+      file: image,
+    });
+
+    setImage(null);
   };
 
   const legendElement = (
@@ -136,10 +165,67 @@ function AdminProfilePageComponent({
     );
   }, [append, replace, setValue, userFindById.data]);
 
+  useEffect(() => {
+    if (avatarUpload.isSuccess) {
+      toast.success('Foto de perfil atualizada com sucesso!');
+    }
+
+    if (avatarUpload.isError) {
+      toast.error((avatarUpload.error as Error).message);
+    }
+  }, [
+    router,
+    avatarUpload.error,
+    avatarUpload.isError,
+    avatarUpload.isSuccess,
+  ]);
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <Fieldset legendTitle='Dados pessoais'>
+          <Image
+            src={image ? URL.createObjectURL(image) : userAvatar}
+            alt={user?.username}
+            width={120}
+            height={120}
+            onClick={handleInputFileClick}
+          />
+
+          <input
+            ref={fileInputRef}
+            type='file'
+            accept='image/png, image/jpeg, image/jpg'
+            hidden
+            onChange={async (e) => {
+              const { files } = e.target;
+
+              if (files) {
+                setImage(files[0]);
+              }
+            }}
+          />
+          {image && (
+            <div className={styles.container_buttons}>
+              <Button
+                variant='solid'
+                color='primary'
+                onClick={onSubmitImage}
+                isLoading={avatarUpload.isLoading}
+              >
+                Salvar
+              </Button>
+
+              <Button
+                variant='ghost'
+                color='primary'
+                onClick={() => setImage(null)}
+              >
+                Cancelar
+              </Button>
+            </div>
+          )}
+
           <InputText
             error={errors.username}
             label='Nome de usuário'

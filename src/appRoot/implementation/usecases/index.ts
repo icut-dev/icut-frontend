@@ -8,6 +8,7 @@ export * from './remote-authentication-login';
 export * from './establishment/remote-establishment-find-all';
 export * from './establishment/remote-establishment-find-by-id';
 export * from './establishment/remote-establishment-update';
+export * from './establishment/remote-establishment-upload-logo';
 
 export * from './service/remote-service-create';
 export * from './service/remote-service-delete';

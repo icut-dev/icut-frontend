@@ -13,6 +13,7 @@ export * from './service/service-update';
 export * from './establishment/establishment-find-all';
 export * from './establishment/establishment-find-by-id';
 export * from './establishment/establishment-update';
+export * from './establishment/establishment-upload-logo';
 
 export * from './authentication';
 

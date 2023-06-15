@@ -1,6 +1,7 @@
 export * from './remote-user-create';
 export * from './remote-user-update';
 export * from './remote-user-find-by-id';
+export * from './remote-user-avatar';
 
 export * from './remote-authentication-login';
 
@@ -17,6 +18,7 @@ export * from './phone/remote-phone-find-all-by-user-id';
 
 export * from './establishment/remote-establishment-update';
 export * from './establishment/remote-establishment-find-by-id';
+export * from './establishment/remote-establishment-upload-logo';
 
 export * from './schedule/remote-schedule-create';
 export * from './schedule/remote-schedule-find-all';

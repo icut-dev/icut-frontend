@@ -3,6 +3,7 @@ import {
   makeRemotePhoneFindAllByUserId,
   makeRemoteUserFindById,
   makeRemoteUserUpdate,
+  makeRemoteUserAvatar,
 } from '../../../usecases';
 
 export const makeAdminProfile = () => (
@@ -10,5 +11,6 @@ export const makeAdminProfile = () => (
     remoteUserUpdate={makeRemoteUserUpdate()}
     remoteUserFindById={makeRemoteUserFindById()}
     remotePhoneFindAllByUserId={makeRemotePhoneFindAllByUserId()}
+    remoteUserAvatar={makeRemoteUserAvatar()}
   />
 );

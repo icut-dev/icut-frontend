@@ -211,6 +211,7 @@ function ProfilePageComponent({
               </Button>
             </div>
           )}
+
           <InputText
             error={errors.username}
             label='Nome de usuário'

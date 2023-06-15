@@ -31,8 +31,8 @@ export function Header() {
               </div>
 
               <Image
-                src='https://github.com/ManoMartins.png'
-                alt='Manoel Martins'
+                src={user.avatar_url}
+                alt={user.name}
                 width={64}
                 height={64}
               />

@@ -1,27 +1,32 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { Ref, useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import * as yup from 'yup';
 import {
   IEstablishmentFindById,
   IEstablishmentUpdate,
+  IEstablishmentUploadLogo,
 } from '~/appRoot/core/domain/usecases';
 import { Sidebar, Button, InputText } from '~/appRoot/presentation/components';
 import {
   useEstablishmentUpdate,
   useEstablishmentFindById,
+  useEstablishmentUploadLogo,
 } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
+import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
+import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 interface Props {
   remoteEstablishmentUpdate: IEstablishmentUpdate;
   remoteEstablishmentFindById: IEstablishmentFindById;
+  remoteEstablishmentUploadLogo: IEstablishmentUploadLogo;
 }
 
 interface EstablishmentUpdateForm {
   cnpj: string;
-  logo: string;
   email: string;
   corporateName: string;
   representativeName: string;
@@ -42,37 +47,62 @@ const schema = yup.object().shape({
 function AdminEmployeePageComponent({
   remoteEstablishmentUpdate,
   remoteEstablishmentFindById,
+  remoteEstablishmentUploadLogo,
 }: Props) {
-  const user = { id: 3, establishmentId: 2 };
+  const { user } = useContext(AuthContext);
+
+  const fileInputRef: Ref<HTMLInputElement> = useRef(null);
 
   const establishmentUpdate = useEstablishmentUpdate({
     remoteEstablishmentUpdate,
   });
 
+  const establishmentUploadLogo = useEstablishmentUploadLogo({
+    remoteEstablishmentUploadLogo,
+  });
+
   const establishmentFindById = useEstablishmentFindById({
-    params: { id: user.establishmentId },
+    params: { id: user.id_establishment },
     remoteEstablishmentFindById,
   });
+
+  const [image, setImage] = useState<File | null>(null);
+
+  const handleInputFileClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
-  } = useForm<EstablishmentUpdateForm>({
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: EstablishmentUpdateForm) => {
     await establishmentUpdate.mutateAsync({
-      id: user.establishmentId,
-      id_adm: user.id,
+      id: user.id_establishment,
+      id_adm: user.id_user,
       cnpj: data.cnpj,
-      logo: data.logo,
       email_establishment: data.email,
       corporate_name: data.corporateName,
       representative_name: data.representativeName,
     });
+  };
+
+  const onSubmitImage = async () => {
+    if (!image) return;
+
+    await establishmentUploadLogo.mutateAsync({
+      id: user.id_establishment,
+      logo: image,
+    });
+
+    setImage(null);
   };
 
   useEffect(() => {
@@ -91,8 +121,21 @@ function AdminEmployeePageComponent({
       ),
     );
     setValue('email', establishmentFindById.data.email_establishment);
-    setValue('logo', establishmentFindById.data.logo);
   }, [establishmentFindById.data, setValue]);
+
+  useEffect(() => {
+    if (establishmentUploadLogo.isSuccess) {
+      toast.success('Foto de perfil atualizada com sucesso!');
+    }
+
+    if (establishmentUploadLogo.isError) {
+      toast.error((establishmentUploadLogo.error as Error).message);
+    }
+  }, [
+    establishmentUploadLogo.error,
+    establishmentUploadLogo.isError,
+    establishmentUploadLogo.isSuccess,
+  ]);
 
   return (
     <div className={styles.container}>
@@ -105,6 +148,53 @@ function AdminEmployeePageComponent({
 
         <section>
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <Image
+              src={
+                image
+                  ? URL.createObjectURL(image)
+                  : establishmentFindById.data?.logo || ''
+              }
+              alt={user?.username}
+              width={120}
+              height={120}
+              onClick={handleInputFileClick}
+            />
+
+            <input
+              ref={fileInputRef}
+              type='file'
+              accept='image/png, image/jpeg, image/jpg'
+              hidden
+              onChange={async (e) => {
+                const { files } = e.target;
+
+                if (files) {
+                  setImage(files[0]);
+                }
+              }}
+            />
+
+            {image && (
+              <div className={styles.container_buttons}>
+                <Button
+                  variant='solid'
+                  color='primary'
+                  onClick={onSubmitImage}
+                  isLoading={establishmentUploadLogo.isLoading}
+                >
+                  Salvar
+                </Button>
+
+                <Button
+                  variant='ghost'
+                  color='primary'
+                  onClick={() => setImage(null)}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            )}
+
             <div className={styles.inputsContainer}>
               <InputText
                 label='Razão social'
@@ -133,11 +223,11 @@ function AdminEmployeePageComponent({
                 {...register('email')}
               />
 
-              <InputText
+              {/* <InputText
                 label='Logo url'
                 error={errors.logo}
                 {...register('logo')}
-              />
+              /> */}
             </div>
 
             <div className={styles.buttonsContainer}>

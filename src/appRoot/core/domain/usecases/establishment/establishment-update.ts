@@ -4,7 +4,7 @@ export namespace EstablishmentUpdate {
   export type Params = {
     id: number;
     cnpj: string;
-    logo: string;
+    logo?: string;
     id_adm: number;
     corporate_name: string;
     email_establishment: string;
