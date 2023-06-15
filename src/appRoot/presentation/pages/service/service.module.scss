@@ -4,6 +4,9 @@
 
 .header {
   background: var(--dark-300);
+  list-style: none;
+
+  padding: 40px 24px 16px;
 
   > div {
     display: flex;

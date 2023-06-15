@@ -19,4 +19,5 @@ export * from './establishment/remote-establishment-update';
 export * from './establishment/remote-establishment-find-by-id';
 
 export * from './schedule/remote-schedule-create';
+export * from './schedule/remote-schedule-find-all';
 export * from './schedule/remote-schedule-day-available';

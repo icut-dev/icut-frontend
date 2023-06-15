@@ -200,4 +200,31 @@
       width: 80% !important;
     }
   }
+
+  .home_establishments_list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+
+  .home_establishment {
+    padding: 0.5rem;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .home_establishment_detail {
+    margin-left: 1rem;
+  }
 }

@@ -75,14 +75,16 @@ function AppointmentPageComponent({
       </header>
 
       <main className={styles.appointment_main}>
-        <Employees
-          remoteEmployeeFindAllByEstablishment={
-            remoteEmployeeFindAllByEstablishment
-          }
-        />
+        <div className={styles.appointment_content}>
+          <Employees
+            remoteEmployeeFindAllByEstablishment={
+              remoteEmployeeFindAllByEstablishment
+            }
+          />
 
-        <h2>Horários disponíveis</h2>
-        <Times remoteScheduleDayAvailable={remoteScheduleDayAvailable} />
+          <h2>Horários disponíveis</h2>
+          <Times remoteScheduleDayAvailable={remoteScheduleDayAvailable} />
+        </div>
       </main>
 
       <footer className={styles.appointment_footer}>

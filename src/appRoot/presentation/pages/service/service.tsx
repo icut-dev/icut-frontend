@@ -10,7 +10,7 @@ import manicureIcon from '../../../../../public/assets/manicure.svg';
 import othersIcon from '../../../../../public/assets/others.svg';
 import pedicureIcon from '../../../../../public/assets/pedicure.svg';
 import sprayIcon from '../../../../../public/assets/spray.svg';
-import { ServiceItem } from '../../components';
+import { Header, ServiceItem } from '../../components';
 import { AuthContext } from '../../contexts/auth-context';
 import { useServiceFindAllByEstablishment } from '../../hooks';
 import styles from './service.module.scss';
@@ -42,21 +42,9 @@ function ServicePageComponent({
 
   return (
     <div className={styles.container}>
-      <Link href='/profile'>
-        <header className={styles.header}>
-          <div>
-            <Image
-              src='https://github.com/IagoSoLima.png'
-              alt={user.username}
-              width={48}
-              height={48}
-              style={{ borderRadius: '8px' }}
-            />
-
-            <span>Olá, {user.username}</span>
-          </div>
-        </header>
-      </Link>
+      <header className={styles.header}>
+        <Header title='Serviços' />
+      </header>
 
       <main className={styles.main_container}>
         <div className={styles.home_services}>

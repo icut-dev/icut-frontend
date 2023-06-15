@@ -83,7 +83,13 @@ function AdminEmployeePageComponent({
       'representativeName',
       establishmentFindById.data.representative_name,
     );
-    setValue('cnpj', establishmentFindById.data.cnpj);
+    setValue(
+      'cnpj',
+      establishmentFindById.data.cnpj.replace(
+        /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+        '$1.$2.$3/$4-$5',
+      ),
+    );
     setValue('email', establishmentFindById.data.email_establishment);
     setValue('logo', establishmentFindById.data.logo);
   }, [establishmentFindById.data, setValue]);
@@ -113,6 +119,7 @@ function AdminEmployeePageComponent({
               />
 
               <InputText
+                disabled
                 label='CNPJ'
                 placeholder='Ex.: 00.000.000/0000-00'
                 error={errors.cnpj}
@@ -120,6 +127,7 @@ function AdminEmployeePageComponent({
               />
 
               <InputText
+                disabled
                 label='E-mail'
                 error={errors.email}
                 {...register('email')}

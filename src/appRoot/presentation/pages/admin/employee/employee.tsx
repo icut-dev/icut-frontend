@@ -67,7 +67,10 @@ function AdminEmployeePageComponent({
 
                   <td>
                     <span className={styles.userPhones}>
-                      {employee.user.list_telephones?.[0].telephone_number}
+                      {employee.user.list_telephones?.[0].telephone_number.replace(
+                        /(\d{2})(\d{5})(\d{4})/,
+                        '($1) $2-$3',
+                      )}
                       {employee.user.list_telephones.slice(1).length > 0 &&
                         `, +${employee.user.list_telephones.slice(1).length}`}
                     </span>

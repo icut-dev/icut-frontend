@@ -1,6 +1,5 @@
 .appointment_container {
   margin: 0 auto;
-  max-width: 720px;
 }
 
 .appointment_header {
@@ -36,7 +35,9 @@
   display: flex;
   align-items: center;
 
+  margin: 0 auto;
   margin-top: 48px;
+  max-width: 1220px;
 }
 
 .appointment_date {
@@ -76,32 +77,39 @@
 
   padding: 72px 24px 88px;
 
-  > h2 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 16px;
-    color: var(--light-text);
-  }
+  div {
+    > h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--light-text);
+    }
 
-  .appointment_hours + .appointment_hours {
-    margin-top: 32px;
-  }
+    .appointment_hours + .appointment_hours {
+      margin-top: 32px;
+    }
 
-  .appointment_hour {
-    position: relative;
-    display: block;
-    color: var(--light-text);
-    margin-bottom: 16px;
+    .appointment_hour {
+      position: relative;
+      display: block;
+      color: var(--light-text);
+      margin-bottom: 16px;
 
-    &::after {
-      content: ' ';
-      position: absolute;
-      border-top: 2px solid var(--dark-200);
-      width: 80%;
-      top: 10px;
-      left: 64px;
+      &::after {
+        content: ' ';
+        position: absolute;
+        border-top: 2px solid var(--dark-200);
+        width: 80%;
+        top: 10px;
+        left: 64px;
+      }
     }
   }
+}
+
+.appointment_content {
+  max-width: 1220px;
+  margin: 0 auto;
 }
 
 .appointment_hours {

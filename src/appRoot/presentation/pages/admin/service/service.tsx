@@ -90,18 +90,22 @@ function AdminServicePageComponent({
             <tbody>
               {serviceFindAllByEstablishment.data?.map((service) => (
                 <tr key={String(service.id)}>
-                  <td>{service.description_service}</td>
+                  <td style={{ width: '28%' }}>
+                    {service.description_service}
+                  </td>
 
-                  <td>
+                  <td style={{ width: '25%' }}>
                     <div className={styles.time}>
                       <FiClock />
                       <span>{formatTime(service.time_duration)}</span>
                     </div>
                   </td>
 
-                  <td>{formatCurrency(service.valor)}</td>
+                  <td style={{ width: '10%' }}>
+                    {formatCurrency(service.valor)}
+                  </td>
 
-                  <td>
+                  <td style={{ width: '10%' }}>
                     <span>{service.active ? 'Ativo' : 'Inativo'}</span>
                   </td>
 

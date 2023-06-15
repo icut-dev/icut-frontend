@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import Link from 'next/link';
 import { useContext } from 'react';
@@ -5,26 +6,37 @@ import { HiOutlineClock } from 'react-icons/all';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { IEstablishmentFindAll } from '~/appRoot/core/domain/usecases';
+import {
+  IEstablishmentFindAll,
+  IScheduleFindAll,
+} from '~/appRoot/core/domain/usecases';
 import { useRouter } from 'next/navigation';
-import beardIcon from '../../../../../public/assets/beard.svg';
-import clipperIcon from '../../../../../public/assets/clipper.svg';
-import straightRazorIcon from '../../../../../public/assets/razor.svg';
-import transformationIcon from '../../../../../public/assets/transformation.svg';
-import { Button, ServiceItem } from '../../components';
+import dayjs from 'dayjs';
+import { formatTime } from '~/appRoot/infra/utils';
+import { filter, sortBy } from 'lodash';
+import { Button } from '../../components';
 import { AuthContext } from '../../contexts/auth-context';
 import { ScheduleContext } from '../../contexts/schedule-context';
 import { useEstablishmentFindAll } from '../../hooks';
+import { useScheduleFindAll } from '../../hooks/schedule/use-schedule-find-all';
 import styles from './home.module.scss';
 
 interface Props {
+  remoteScheduleFindAll: IScheduleFindAll;
   remoteEstablishmentFindAll: IEstablishmentFindAll;
 }
 
-function HomePageComponent({ remoteEstablishmentFindAll }: Props) {
+function HomePageComponent({
+  remoteScheduleFindAll,
+  remoteEstablishmentFindAll,
+}: Props) {
   const router = useRouter();
   const { user } = useContext(AuthContext);
   const { setEstablishment } = useContext(ScheduleContext);
+
+  const scheduleFindAll = useScheduleFindAll({
+    remoteScheduleFindAll,
+  });
 
   const establishmentFindAll = useEstablishmentFindAll({
     remoteEstablishmentFindAll,
@@ -58,56 +70,54 @@ function HomePageComponent({ remoteEstablishmentFindAll }: Props) {
             spaceBetween={24}
             className={styles.home_next_appointments_content}
           >
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
+            {filter(
+              sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
+              (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
+            )?.map((schedule) => {
+              const formatDate = dayjs(schedule.dt_schedule_initial);
 
-                <div className={styles.home_next_appointment_detail}>
-                  <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
-                  </div>
+              const day = formatDate.format('DD');
+              const month = formatDate.format('MMM');
+              const time = formatDate.format('HH:mm');
 
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
+              return (
+                <SwiperSlide
+                  key={schedule.id_schedules}
+                  className={styles.home_next_appointment_swiper_slide}
+                >
+                  <li className={styles.home_next_appointment}>
+                    <div className={styles.home_next_appointment_date}>
+                      <p className={styles.home_next_appointment_day}>{day}</p>
+                      <p className={styles.home_next_appointment_month}>
+                        {month}
+                      </p>
+                      <p className={styles.home_next_appointment_separator}>
+                        -
+                      </p>
+                      <p className={styles.home_next_appointment_time}>
+                        {time}
+                      </p>
+                    </div>
 
-                <div className={styles.home_next_appointment_detail}>
-                  <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
-                  </div>
+                    <div className={styles.home_next_appointment_detail}>
+                      <div>
+                        <p className={styles.home_next_appointment_barber_name}>
+                          {schedule.fk_employee.fk_user.ds_user_name}
+                        </p>
+                        <p className={styles.home_next_appointment_service}>
+                          {schedule.fk_service.ds_service}
+                        </p>
+                      </div>
 
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
+                      <p className={styles.home_next_appointment_duration}>
+                        <HiOutlineClock />{' '}
+                        {formatTime(schedule.fk_service.time_duration)}
+                      </p>
+                    </div>
+                  </li>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
 
@@ -119,21 +129,25 @@ function HomePageComponent({ remoteEstablishmentFindAll }: Props) {
           <ul className={styles.home_establishments_list}>
             {establishmentFindAll.data?.map((establishment) => (
               <li key={establishment.id} className={styles.home_establishment}>
-                <img
-                  src={establishment.logo}
-                  alt={establishment.corporate_name}
-                />
-                <span className={styles.home_establishment_name}>
-                  {establishment.corporate_name}
-                </span>
-                <span className={styles.home_establishment_email}>
-                  {establishment.email_establishment}
-                </span>
+                <div>
+                  <img
+                    src={establishment.logo}
+                    alt={establishment.corporate_name}
+                  />
+
+                  <div className={styles.home_establishment_detail}>
+                    <span className={styles.home_establishment_name}>
+                      {establishment.corporate_name}
+                    </span>
+                    <span className={styles.home_establishment_email}>
+                      {establishment.email_establishment}
+                    </span>
+                  </div>
+                </div>
 
                 <Button
                   type='button'
                   onClick={() => {
-                    // eslint-disable-next-line react/destructuring-assignment
                     setEstablishment(establishment);
                     router.push(`/service/${establishment.id}`);
                   }}
