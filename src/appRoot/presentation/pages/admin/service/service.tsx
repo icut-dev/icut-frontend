@@ -6,8 +6,7 @@ import {
   IServiceFindAllByEstablishment,
   IServiceDelete,
 } from '~/appRoot/core/domain/usecases';
-import { formatCurrency } from '~/appRoot/infra/utils/format-currency';
-import { formatTime } from '~/appRoot/infra/utils/format-time';
+import { formatCurrency, formatTime } from '~/appRoot/infra/utils';
 import { Button } from '~/appRoot/presentation/components';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';

@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import { ClientProvider } from '~/appRoot/presentation/components';
 
 export const metadata = {

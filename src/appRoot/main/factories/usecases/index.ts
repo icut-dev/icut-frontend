@@ -17,3 +17,6 @@ export * from './phone/remote-phone-find-all-by-user-id';
 
 export * from './establishment/remote-establishment-update';
 export * from './establishment/remote-establishment-find-by-id';
+
+export * from './schedule/remote-schedule-create';
+export * from './schedule/remote-schedule-day-available';

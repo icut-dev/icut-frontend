@@ -13,6 +13,7 @@ import straightRazorIcon from '../../../../../public/assets/razor.svg';
 import transformationIcon from '../../../../../public/assets/transformation.svg';
 import { Button, ServiceItem } from '../../components';
 import { AuthContext } from '../../contexts/auth-context';
+import { ScheduleContext } from '../../contexts/schedule-context';
 import { useEstablishmentFindAll } from '../../hooks';
 import styles from './home.module.scss';
 
@@ -23,6 +24,7 @@ interface Props {
 function HomePageComponent({ remoteEstablishmentFindAll }: Props) {
   const router = useRouter();
   const { user } = useContext(AuthContext);
+  const { setEstablishment } = useContext(ScheduleContext);
 
   const establishmentFindAll = useEstablishmentFindAll({
     remoteEstablishmentFindAll,
@@ -130,7 +132,11 @@ function HomePageComponent({ remoteEstablishmentFindAll }: Props) {
 
                 <Button
                   type='button'
-                  onClick={() => router.push(`/service/${establishment.id}`)}
+                  onClick={() => {
+                    // eslint-disable-next-line react/destructuring-assignment
+                    setEstablishment(establishment);
+                    router.push(`/service/${establishment.id}`);
+                  }}
                 >
                   Agendar
                 </Button>

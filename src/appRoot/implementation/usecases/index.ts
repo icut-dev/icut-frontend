@@ -18,3 +18,6 @@ export * from './employee/remote-employee-delete';
 export * from './employee/remote-employee-find-all-by-establishment';
 
 export * from './phone/remote-phone-find-all-by-user-id';
+
+export * from './schedule/remote-schedule-create';
+export * from './schedule/remote-schedule-day-available';

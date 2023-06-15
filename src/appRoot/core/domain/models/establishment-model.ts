@@ -1,5 +1,5 @@
 export type EstablishmentModel = {
-  id: string;
+  id: number;
   cnpj: string;
   logo: string;
   id_adm: number;

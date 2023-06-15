@@ -1,11 +1,17 @@
 import { useRouter } from 'next/navigation';
-import { HiOutlineChevronLeft } from 'react-icons/hi';
+import { useContext } from 'react';
+import { formatCurrency } from '~/appRoot/infra/utils';
 import { Header } from '../../components';
 import InputText from '../../components/form/input-text';
+import { ScheduleContext } from '../../contexts/schedule-context';
 import styles from './styles.module.scss';
 
 function CreatePaymentMethodPageComponent() {
   const router = useRouter();
+
+  const { service } = useContext(ScheduleContext);
+
+  if (!service) return null;
 
   return (
     <div className={styles.container}>
@@ -24,7 +30,7 @@ function CreatePaymentMethodPageComponent() {
             onClick={() => router.push('/success')}
           >
             <span>Pagar agora</span>
-            <span>R$ 40,00</span>
+            <span>{formatCurrency(service.valor)}</span>
           </button>
         </footer>
       </form>

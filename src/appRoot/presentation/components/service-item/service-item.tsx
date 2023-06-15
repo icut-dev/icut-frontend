@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { HiChevronRight } from 'react-icons/hi';
+import { ServiceModel } from '~/appRoot/core/domain/models';
+import { ScheduleContext } from '../../contexts/schedule-context';
 import styles from './service-item.module.scss';
 
 interface ServiceItemProps {
@@ -12,9 +14,18 @@ interface ServiceItemProps {
     src: string;
     alt: string;
   };
+  service?: ServiceModel;
 }
 
-export function ServiceItem({ id, title, price, icon }: ServiceItemProps) {
+export function ServiceItem({
+  id,
+  title,
+  price,
+  icon,
+  service,
+}: ServiceItemProps) {
+  const { setService } = useContext(ScheduleContext);
+
   const priceFormatted = useMemo(
     () =>
       new Intl.NumberFormat('pt-BR', {
@@ -24,10 +35,10 @@ export function ServiceItem({ id, title, price, icon }: ServiceItemProps) {
     [price],
   );
 
-  if (id) {
+  if (id && service) {
     return (
       <li>
-        <Link href={`/appointment/${id}`}>
+        <Link href={`/appointment/${id}`} onClick={() => setService(service)}>
           <div className={styles.list_item}>
             <div className={styles.icon_container}>
               <Image src={icon.src} alt={icon.alt} width={60} height={60} />
@@ -51,7 +62,7 @@ export function ServiceItem({ id, title, price, icon }: ServiceItemProps) {
 
   return (
     <li>
-      <div className={styles.list_item}>
+      <div className={`${styles.list_item} ${styles.list_item_disabled}`}>
         <div className={styles.icon_container}>
           <Image src={icon.src} alt={icon.alt} width={60} height={60} />
         </div>

@@ -20,7 +20,7 @@ interface Props {
   remoteServiceFindAllByEstablishment: IServiceFindAllByEstablishment;
 }
 
-const mapIcon = {
+export const mapIcon = {
   1: clipperIcon,
   2: beardIcon,
   3: sprayIcon,
@@ -75,6 +75,7 @@ function ServicePageComponent({
                     (service.type_service as 1 | 2 | 3 | 4 | 5 | 6) || 6
                   ],
                 }}
+                service={service}
               />
             ))}
           </ul>
