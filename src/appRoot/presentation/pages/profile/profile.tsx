@@ -171,7 +171,7 @@ function ProfilePageComponent({
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <Fieldset legendTitle='Dados pessoais'>
           <Image
-            src={userAvatar}
+            src={image ? URL.createObjectURL(image) : userAvatar}
             alt={user?.username}
             width={120}
             height={120}
