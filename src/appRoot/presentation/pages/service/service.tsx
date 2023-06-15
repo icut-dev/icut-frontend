@@ -51,21 +51,27 @@ function ServicePageComponent({
           <h2 className={styles.title}>Qual serviço você deseja hoje?</h2>
 
           <ul className={styles.list}>
-            {serviceFindAllByEstablishment.data?.map((service) => (
-              <ServiceItem
-                key={service.id}
-                id={service.id}
-                title={service.description_service}
-                price={service.valor}
-                icon={{
-                  alt: service.description_service,
-                  src: mapIcon[
-                    (service.type_service as 1 | 2 | 3 | 4 | 5 | 6) || 6
-                  ],
-                }}
-                service={service}
-              />
-            ))}
+            {serviceFindAllByEstablishment.isLoading ? (
+              <div>
+                <span>Carregando...</span>
+              </div>
+            ) : (
+              serviceFindAllByEstablishment.data?.map((service) => (
+                <ServiceItem
+                  key={service.id}
+                  id={service.id}
+                  title={service.description_service}
+                  price={service.valor}
+                  icon={{
+                    alt: service.description_service,
+                    src: mapIcon[
+                      (service.type_service as 1 | 2 | 3 | 4 | 5 | 6) || 6
+                    ],
+                  }}
+                  service={service}
+                />
+              ))
+            )}
           </ul>
         </div>
       </main>

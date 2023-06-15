@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import * as yup from 'yup';
@@ -8,6 +8,7 @@ import {
   IEstablishmentUpdate,
 } from '~/appRoot/core/domain/usecases';
 import { Sidebar, Button, InputText } from '~/appRoot/presentation/components';
+import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
 import {
   useEstablishmentUpdate,
   useEstablishmentFindById,
@@ -43,14 +44,14 @@ function AdminEmployeePageComponent({
   remoteEstablishmentUpdate,
   remoteEstablishmentFindById,
 }: Props) {
-  const user = { id: 3, establishmentId: 2 };
+  const { user } = useContext(AuthContext);
 
   const establishmentUpdate = useEstablishmentUpdate({
     remoteEstablishmentUpdate,
   });
 
   const establishmentFindById = useEstablishmentFindById({
-    params: { id: user.establishmentId },
+    params: { id: user.id_establishment },
     remoteEstablishmentFindById,
   });
 
@@ -65,8 +66,8 @@ function AdminEmployeePageComponent({
 
   const onSubmit = async (data: EstablishmentUpdateForm) => {
     await establishmentUpdate.mutateAsync({
-      id: user.establishmentId,
-      id_adm: user.id,
+      id: user.id_establishment,
+      id_adm: user.id_user,
       cnpj: data.cnpj,
       logo: data.logo,
       email_establishment: data.email,

@@ -22,30 +22,34 @@ export function Employees({
 
   return (
     <ul className={styles.employees}>
-      {employeeFindAllByEstablishment.data?.map((e) => (
-        <li
-          key={e.id_employee}
-          className={`${
-            employee?.id_employee === e.id_employee
-              ? styles.employee_selected
-              : ''
-          }`}
-        >
-          <button type='button' onClick={() => setEmployee(e)}>
-            <div>
-              <img
-                src='https://github.com/ThallesRodri.png'
-                alt={e.user.first_name}
-              />
-              <span>{e.user.first_name}</span>
-            </div>
+      {employeeFindAllByEstablishment.isLoading ? (
+        <li>Carregando...</li>
+      ) : (
+        employeeFindAllByEstablishment.data?.map((e) => (
+          <li
+            key={e.id_employee}
+            className={`${
+              employee?.id_employee === e.id_employee
+                ? styles.employee_selected
+                : ''
+            }`}
+          >
+            <button type='button' onClick={() => setEmployee(e)}>
+              <div>
+                <img
+                  src='https://github.com/ThallesRodri.png'
+                  alt={e.user.first_name}
+                />
+                <span>{e.user.first_name}</span>
+              </div>
 
-            {employee?.id_employee === e.id_employee && (
-              <FiCheckCircle size={20} color='#48BB78' />
-            )}
-          </button>
-        </li>
-      ))}
+              {employee?.id_employee === e.id_employee && (
+                <FiCheckCircle size={20} color='#48BB78' />
+              )}
+            </button>
+          </li>
+        ))
+      )}
     </ul>
   );
 }
