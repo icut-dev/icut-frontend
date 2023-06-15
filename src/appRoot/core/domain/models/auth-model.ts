@@ -5,6 +5,7 @@ export type AuthModel = {
   username: string;
   email: string;
   name: string;
+  avatar_url: string;
   user_last_name: string;
   user_type: UserRole;
   created_at: Date;

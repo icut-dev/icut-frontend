@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useContext } from 'react';
 import { HiOutlineClock } from 'react-icons/all';
-import { Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useContext } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import beardIcon from '../../../../../public/assets/beard.svg';
 import clipperIcon from '../../../../../public/assets/clipper.svg';
 import straightRazorIcon from '../../../../../public/assets/razor.svg';
@@ -22,7 +21,7 @@ function HomePageComponent() {
       <Link href='/profile'>
         <header className={styles.header}>
           <Image
-            src='https://github.com/IagoSoLima.png'
+            src={user.avatar_url}
             alt={user.username}
             width={48}
             height={48}

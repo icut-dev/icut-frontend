@@ -1,21 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { Ref, useContext, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
-import { IUserFindById, IUserUpdate } from '~/appRoot/core/domain/usecases';
-import { Fieldset, Header, InputRow } from '../../components';
+import { ProfileProps } from '~/appRoot/core/domain/pages';
+import { Button, Fieldset, Header, InputRow } from '../../components';
 import InputText from '../../components/form/input-text';
 import { AuthContext } from '../../contexts/auth-context';
-import { useUserFindById, useUserUpdate } from '../../hooks';
+import { useUserAvatar, useUserFindById, useUserUpdate } from '../../hooks';
 import styles from './styles.module.scss';
-
-interface Props {
-  remoteUserUpdate: IUserUpdate;
-  remoteUserFindById: IUserFindById;
-}
 
 interface UserForm {
   username: string;
@@ -49,15 +46,24 @@ const schema = yup.object().shape({
   ),
 });
 
-function ProfilePageComponent({ remoteUserUpdate, remoteUserFindById }: Props) {
+function ProfilePageComponent({
+  remoteUserUpdate,
+  remoteUserFindById,
+  remoteUserAvatar,
+}: ProfileProps) {
   const router = useRouter();
-
   const { user } = useContext(AuthContext);
   const userUpdate = useUserUpdate({ remoteUserUpdate });
+  const avatarUpload = useUserAvatar({ remoteUserAvatar });
+
+  const fileInputRef: Ref<HTMLInputElement> = useRef(null);
+
   const userFindById = useUserFindById({
     params: { id: user.id_user },
     remoteUserFindById,
   });
+  const userAvatar = userFindById.data?.avatar_image || '';
+  const [image, setImage] = useState<File | null>(null);
 
   const {
     handleSubmit,
@@ -68,10 +74,15 @@ function ProfilePageComponent({ remoteUserUpdate, remoteUserFindById }: Props) {
   } = useForm<UserForm>({
     resolver: yupResolver(schema),
   });
+
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'phones',
   });
+
+  const handleInputFileClick = () => {
+    fileInputRef?.current.click();
+  };
 
   const onSubmit = async (data: any) => {
     if (!user) return;
@@ -85,6 +96,16 @@ function ProfilePageComponent({ remoteUserUpdate, remoteUserFindById }: Props) {
       username: data.username,
       type_user: UserRole.ADMIN,
     });
+  };
+
+  const onSubmitImage = async () => {
+    if (!image) return;
+
+    await avatarUpload.mutateAsync({
+      file: image,
+    });
+
+    setImage(null);
   };
 
   const legendElement = (
@@ -120,12 +141,67 @@ function ProfilePageComponent({ remoteUserUpdate, remoteUserFindById }: Props) {
     );
   }, [append, replace, setValue, userFindById.data]);
 
+  useEffect(() => {
+    if (avatarUpload.isSuccess) {
+      toast.success('Foto de perfil atualizada com sucesso!');
+    }
+
+    if (avatarUpload.isError) {
+      toast.error((avatarUpload.error as Error).message);
+    }
+  }, [
+    router,
+    avatarUpload.error,
+    avatarUpload.isError,
+    avatarUpload.isSuccess,
+  ]);
   return (
     <div className={styles.container}>
       <Header title='Meu perfil' />
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <Fieldset legendTitle='Dados pessoais'>
+          <Image
+            src={userAvatar}
+            alt={user?.username}
+            width={120}
+            height={120}
+            onClick={handleInputFileClick}
+          />
+
+          <input
+            ref={fileInputRef}
+            type='file'
+            accept='image/png, image/jpeg, image/jpg'
+            hidden
+            onChange={async (e) => {
+              const { files } = e.target;
+
+              if (files) {
+                setImage(files[0]);
+              }
+            }}
+          />
+          {image && (
+            <div className={styles.container_buttons}>
+              <Button
+                variant='solid'
+                color='primary'
+                onClick={onSubmitImage}
+                isLoading={avatarUpload.isLoading}
+              >
+                Salvar
+              </Button>
+
+              <Button
+                variant='ghost'
+                color='primary'
+                onClick={() => setImage(null)}
+              >
+                Cancelar
+              </Button>
+            </div>
+          )}
           <InputText
             error={errors.username}
             label='Nome de usuário'

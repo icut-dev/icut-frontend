@@ -12,6 +12,7 @@ export type UserModel = {
   password: string;
   first_name: string;
   last_name: string;
+  avatar_image: string;
   type_user: UserRole;
   list_telephones: Array<{
     id_telephone: number;
