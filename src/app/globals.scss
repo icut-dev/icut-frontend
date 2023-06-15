@@ -188,3 +188,8 @@ input {
     color-scheme: dark;
   }
 }
+
+.ReactModal__Overlay {
+  z-index: 20000 !important;
+  background: var(--black-800) !important;
+}

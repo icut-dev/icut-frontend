@@ -24,6 +24,8 @@ export * from './user/user-update';
 
 export * from './phones/phones-find-all-by-user-id';
 
+export * from './schedule/schedule-update';
+export * from './schedule/schedule-delete';
 export * from './schedule/schedule-create';
 export * from './schedule/schedule-day-available';
 export * from './schedule/schedule-find-all';

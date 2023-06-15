@@ -4,17 +4,22 @@ import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
-import { HiOutlineClock } from 'react-icons/all';
+import { useCallback, useContext, useState } from 'react';
+import { FiSettings, HiOutlineClock } from 'react-icons/all';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { ScheduleModel } from '~/appRoot/core/domain/models';
 import {
   IEstablishmentFindAll,
+  IScheduleDayAvailable,
+  IScheduleDelete,
   IScheduleFindAll,
+  IScheduleUpdate,
 } from '~/appRoot/core/domain/usecases';
 import { formatTime } from '~/appRoot/infra/utils';
 import { Button } from '../../components';
+import { ModalSetting } from '../../components/modal-setting';
 import { AuthContext } from '../../contexts/auth-context';
 import { ScheduleContext } from '../../contexts/schedule-context';
 import { useEstablishmentFindAll } from '../../hooks';
@@ -22,17 +27,34 @@ import { useScheduleFindAll } from '../../hooks/schedule/use-schedule-find-all';
 import styles from './home.module.scss';
 
 interface Props {
+  remoteScheduleDelete: IScheduleDelete;
+  remoteScheduleUpdate: IScheduleUpdate;
   remoteScheduleFindAll: IScheduleFindAll;
+  remoteScheduleDayAvailable: IScheduleDayAvailable;
   remoteEstablishmentFindAll: IEstablishmentFindAll;
 }
 
 function HomePageComponent({
+  remoteScheduleDelete,
+  remoteScheduleUpdate,
   remoteScheduleFindAll,
+  remoteScheduleDayAvailable,
   remoteEstablishmentFindAll,
 }: Props) {
   const router = useRouter();
   const { user } = useContext(AuthContext);
   const { setEstablishment } = useContext(ScheduleContext);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [schedule, setSchedule] = useState<ScheduleModel | null>(null);
+  const handleSetting = useCallback((data: ScheduleModel) => {
+    setIsOpen(true);
+    setSchedule(data);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const scheduleFindAll = useScheduleFindAll({
     remoteScheduleFindAll,
@@ -44,6 +66,17 @@ function HomePageComponent({
 
   return (
     <div className={styles.container}>
+      {schedule && isOpen && (
+        <ModalSetting
+          isOpen={isOpen}
+          onClose={handleClose}
+          schedule={schedule}
+          remoteScheduleDelete={remoteScheduleDelete}
+          remoteScheduleUpdate={remoteScheduleUpdate}
+          remoteScheduleDayAvailable={remoteScheduleDayAvailable}
+        />
+      )}
+
       <Link href='/profile'>
         <header className={styles.header}>
           <div>
@@ -87,6 +120,13 @@ function HomePageComponent({
                     className={styles.home_next_appointment_swiper_slide}
                   >
                     <li className={styles.home_next_appointment}>
+                      <Button
+                        variant='ghost'
+                        onClick={() => handleSetting(schedule)}
+                      >
+                        <FiSettings />
+                      </Button>
+
                       <div className={styles.home_next_appointment_date}>
                         <p className={styles.home_next_appointment_day}>
                           {day}

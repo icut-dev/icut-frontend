@@ -287,6 +287,7 @@ function ProfilePageComponent({
           <Button
             className={styles.outline_button}
             type='button'
+            variant='ghost'
             onClick={() => router.push('/login')}
           >
             Sair

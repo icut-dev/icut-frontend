@@ -22,5 +22,7 @@ export * from './employee/remote-employee-find-all-by-establishment';
 export * from './phone/remote-phone-find-all-by-user-id';
 
 export * from './schedule/remote-schedule-create';
+export * from './schedule/remote-schedule-delete';
+export * from './schedule/remote-schedule-update';
 export * from './schedule/remote-schedule-day-available';
 export * from './schedule/remote-schedule-find-all';

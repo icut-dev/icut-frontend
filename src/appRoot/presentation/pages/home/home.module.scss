@@ -31,6 +31,16 @@
 
 .home_next_appointments {
   margin-bottom: 40px;
+  position: relative;
+
+  button {
+    position:absolute;
+    top: 8px;
+    right: 8px;
+    svg {
+      margin: 0;
+    }
+  }
 
   h2 {
     font-size: 18px;

@@ -103,6 +103,16 @@
   font-size: 14px;
   color: var(--light-200);
 
+  .payment_footer_detail_description {
+    text-align: end;
+    min-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
   & + & {
     margin-top: 8px;
   }

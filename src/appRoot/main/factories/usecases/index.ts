@@ -21,5 +21,7 @@ export * from './establishment/remote-establishment-find-by-id';
 export * from './establishment/remote-establishment-upload-logo';
 
 export * from './schedule/remote-schedule-create';
+export * from './schedule/remote-schedule-delete';
+export * from './schedule/remote-schedule-update';
 export * from './schedule/remote-schedule-find-all';
 export * from './schedule/remote-schedule-day-available';

@@ -83,17 +83,23 @@ function PaymentPageComponent() {
         <ul className={styles.payment_footer_details}>
           <li className={styles.payment_footer_detail}>
             <span>Serviço</span>
-            <span>{service.description_service}</span>
+            <span className={styles.payment_footer_detail_description}>
+              {service.description_service}
+            </span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Data</span>
-            <span>{dayjs(date).format('DD [de] MMMM [de] YYYY')}</span>
+            <span className={styles.payment_footer_detail_description}>
+              {dayjs(date).format('DD [de] MMMM [de] YYYY')}
+            </span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Barbeiro</span>
-            <span>{employee?.user.first_name}</span>
+            <span className={styles.payment_footer_detail_description}>
+              {employee?.user.first_name}
+            </span>
           </li>
         </ul>
 
