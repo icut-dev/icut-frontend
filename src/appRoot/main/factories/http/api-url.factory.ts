@@ -1,2 +1,4 @@
+import { API_URL } from '~/config/vars';
+
 export const makeApiUrl = (path: string): string =>
-  `${process.env.API_URL || 'http://localhost:4444'}${path}`;
+  `${API_URL || 'http://localhost:4444'}${path}`;

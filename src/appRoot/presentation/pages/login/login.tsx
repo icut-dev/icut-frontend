@@ -22,7 +22,7 @@ function LoginPageComponent() {
     resolver: yupResolver(schema),
   });
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loading } = useContext(AuthContext);
 
   const onSubmit = async (data: any) => {
     await signIn({ email: data.email, password: data.password });
@@ -46,7 +46,7 @@ function LoginPageComponent() {
         />
 
         <button type='submit' className={styles.button}>
-          Entrar
+          {loading ? 'Carregando' : 'Entrar'}
         </button>
       </form>
     </div>

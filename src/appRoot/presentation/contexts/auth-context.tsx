@@ -1,14 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { setCookie, destroyCookie, parseCookies } from 'nookies';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useCallback,
+  useEffect,
   useMemo,
   useState,
-  useEffect,
-  ReactNode,
-  useCallback,
-  createContext,
 } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserRole } from '~/appRoot/core/domain/models';
@@ -28,6 +30,8 @@ type AuthContextData = {
   signOut: () => void;
   user: Authentication.Model;
   isAuthenticated: boolean;
+  loading: boolean;
+  setUser: Dispatch<SetStateAction<Authentication.Model>>;
 };
 
 type AuthProviderProps = {
@@ -44,6 +48,7 @@ let authChannel: BroadcastChannel;
 export function AuthProvider({ children, authentication }: AuthProviderProps) {
   const router = useRouter();
   const login = useLogin({ remote: authentication });
+  const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<Authentication.Model>(
     {} as Authentication.Model,
   );
@@ -61,6 +66,7 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
 
   const signIn = useCallback(
     async ({ email, password }: SignInCredentials) => {
+      setLoading(true);
       await login.mutateAsync(
         {
           email,
@@ -70,20 +76,20 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
           onSuccess(data) {
             if (!data) return;
 
-            const { access_token, refresh_token } = data;
+            const { access_token, refresh_token, expires_in } = data;
 
             setCookie(undefined, 'icut.token', access_token, {
-              maxAge: 60 * 60 * 24 * 30, // 30 days
+              maxAge: expires_in,
               path: '/',
             });
 
             setCookie(undefined, 'icut.refreshToken', refresh_token, {
-              maxAge: 60 * 60 * 24 * 30, // 30 days
+              maxAge: expires_in,
               path: '/',
             });
 
             setCookie(undefined, 'icut.user', JSON.stringify(data), {
-              maxAge: 60 * 60 * 24 * 30, // 30 days
+              maxAge: expires_in,
               path: '/',
             });
 
@@ -102,6 +108,8 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
           },
         },
       );
+
+      setLoading(false);
     },
     [login, router],
   );
@@ -141,6 +149,8 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
 
     const { 'icut.user': iCutUser } = parseCookies();
 
+    if (!iCutUser) return;
+
     setUser(JSON.parse(iCutUser || '{}'));
   }, [user]);
 
@@ -150,8 +160,10 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
       signOut,
       isAuthenticated,
       user,
+      loading,
+      setUser,
     }),
-    [isAuthenticated, signIn, signOut, user],
+    [isAuthenticated, signIn, signOut, user, loading, setUser],
   );
 
   return (

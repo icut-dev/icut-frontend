@@ -1,19 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
+import dayjs from 'dayjs';
+import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { HiOutlineClock } from 'react-icons/all';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import {
   IEstablishmentFindAll,
   IScheduleFindAll,
 } from '~/appRoot/core/domain/usecases';
-import { useRouter } from 'next/navigation';
-import dayjs from 'dayjs';
 import { formatTime } from '~/appRoot/infra/utils';
-import { filter, sortBy } from 'lodash';
 import { Button } from '../../components';
 import { AuthContext } from '../../contexts/auth-context';
 import { ScheduleContext } from '../../contexts/schedule-context';
@@ -48,7 +48,7 @@ function HomePageComponent({
         <header className={styles.header}>
           <div>
             <Image
-              src='https://github.com/IagoSoLima.png'
+              src={user.avatar_url}
               alt={user.username}
               width={48}
               height={48}
