@@ -25,35 +25,43 @@ export function Times({ remoteScheduleDayAvailable }: TimesProps) {
     remoteScheduleDayAvailable,
   });
 
+  if (!employee) {
+    return <span>Selecione um funcionário</span>;
+  }
+
   return (
     <ul className={styles.times}>
-      {scheduleDayAvailable.data?.map((t) => {
-        const formatTime = `${String(t.hour).padStart(2, '0')}:${String(
-          t.minutes,
-        ).padStart(2, '0')}`;
-        return (
-          <li
-            key={formatTime}
-            className={`${time === formatTime ? styles.time_selected : ''} ${
-              t.available ? '' : styles.time_disabled
-            }`}
-          >
-            <button
-              type='button'
-              onClick={() => {
-                if (t.available) setTime(formatTime);
-              }}
+      {scheduleDayAvailable.isLoading ? (
+        <li>Carregando...</li>
+      ) : (
+        scheduleDayAvailable.data?.map((t) => {
+          const formatTime = `${String(t.hour).padStart(2, '0')}:${String(
+            t.minutes,
+          ).padStart(2, '0')}`;
+          return (
+            <li
+              key={formatTime}
+              className={`${time === formatTime ? styles.time_selected : ''} ${
+                t.available ? '' : styles.time_disabled
+              }`}
             >
-              <div>
-                <span>{formatTime}</span>
-                {time === formatTime && (
-                  <FiCheckCircle size={20} color='#48BB78' />
-                )}
-              </div>
-            </button>
-          </li>
-        );
-      })}
+              <button
+                type='button'
+                onClick={() => {
+                  if (t.available) setTime(formatTime);
+                }}
+              >
+                <div>
+                  <span>{formatTime}</span>
+                  {time === formatTime && (
+                    <FiCheckCircle size={20} color='#48BB78' />
+                  )}
+                </div>
+              </button>
+            </li>
+          );
+        })
+      )}
     </ul>
   );
 }

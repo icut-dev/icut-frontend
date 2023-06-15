@@ -23,6 +23,13 @@ export namespace UserCreate {
       email_establishment: string;
     };
 
+    address?: {
+      cep: string;
+      city: string;
+      state: string;
+      address: string;
+    };
+
     id_establishment?: number;
   };
 

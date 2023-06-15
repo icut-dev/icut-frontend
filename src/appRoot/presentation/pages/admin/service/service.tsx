@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 import { FiClock, FiEdit } from 'react-icons/fi';
@@ -88,48 +89,62 @@ function AdminServicePageComponent({
             </thead>
 
             <tbody>
-              {serviceFindAllByEstablishment.data?.map((service) => (
-                <tr key={String(service.id)}>
-                  <td style={{ width: '28%' }}>
-                    {service.description_service}
-                  </td>
-
-                  <td style={{ width: '25%' }}>
-                    <div className={styles.time}>
-                      <FiClock />
-                      <span>{formatTime(service.time_duration)}</span>
-                    </div>
-                  </td>
-
-                  <td style={{ width: '10%' }}>
-                    {formatCurrency(service.valor)}
-                  </td>
-
-                  <td style={{ width: '10%' }}>
-                    <span>{service.active ? 'Ativo' : 'Inativo'}</span>
-                  </td>
-
-                  <td className={styles.actions}>
-                    <Button
-                      color='delete'
-                      type='button'
-                      onClick={() => handleDelete(service.id)}
-                    >
-                      Remover
-                    </Button>
-                    <Button
-                      type='button'
-                      onClick={
-                        () => router.push(`/admin/service/${service.id}`)
-                        // eslint-disable-next-line react/jsx-curly-newline
-                      }
-                    >
-                      <FiEdit />
-                      Editar
-                    </Button>
+              {serviceFindAllByEstablishment.isLoading ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center' }}>
+                    Carregando...
                   </td>
                 </tr>
-              ))}
+              ) : serviceFindAllByEstablishment.data?.length ? (
+                serviceFindAllByEstablishment.data?.map((service) => (
+                  <tr key={String(service.id)}>
+                    <td style={{ width: '28%' }}>
+                      {service.description_service}
+                    </td>
+
+                    <td style={{ width: '25%' }}>
+                      <div className={styles.time}>
+                        <FiClock />
+                        <span>{formatTime(service.time_duration)}</span>
+                      </div>
+                    </td>
+
+                    <td style={{ width: '10%' }}>
+                      {formatCurrency(service.valor)}
+                    </td>
+
+                    <td style={{ width: '10%' }}>
+                      <span>{service.active ? 'Ativo' : 'Inativo'}</span>
+                    </td>
+
+                    <td className={styles.actions}>
+                      <Button
+                        color='delete'
+                        type='button'
+                        onClick={() => handleDelete(service.id)}
+                      >
+                        Remover
+                      </Button>
+                      <Button
+                        type='button'
+                        onClick={
+                          () => router.push(`/admin/service/${service.id}`)
+                          // eslint-disable-next-line react/jsx-curly-newline
+                        }
+                      >
+                        <FiEdit />
+                        Editar
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center' }}>
+                    Nenhum serviço cadastrado
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </section>

@@ -37,6 +37,12 @@ interface CreateForm {
   corporateName: string;
   corporateEmail: string;
   representativeName: string;
+
+  street: string;
+  number: string;
+  city: string;
+  state: string;
+  zipCode: string;
 }
 
 const schema = yup.object().shape({
@@ -72,6 +78,12 @@ const schema = yup.object().shape({
   representativeName: yup
     .string()
     .required('Por favor, informe o nome do representante'),
+
+  zipCode: yup.string().required('Por favor, informe o CEP'),
+  street: yup.string().required('Por favor, informe a rua'),
+  number: yup.string().required('Por favor, informe o número'),
+  city: yup.string().required('Por favor, informe a cidade'),
+  state: yup.string().required('Por favor, informe o estado'),
 });
 
 function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
@@ -115,6 +127,13 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
           corporate_name: data.corporateName,
           email_establishment: data.corporateEmail,
           representative_name: data.representativeName,
+        },
+
+        address: {
+          address: data.street + data.number,
+          city: data.city,
+          state: data.state,
+          cep: data.zipCode,
         },
       },
       {
@@ -273,6 +292,43 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
             error={errors.logo}
             {...register('logo')}
           />
+        </Fieldset>
+
+        <Fieldset legendTitle='Endereço'>
+          <InputText
+            placeholder='Ex.: 00000-000'
+            label='CEP'
+            error={errors.zipCode}
+            {...register('zipCode')}
+          />
+
+          <InputRow>
+            <InputText
+              label='Rua'
+              error={errors.street}
+              {...register('street')}
+            />
+
+            <InputText
+              label='N'
+              error={errors.number}
+              {...register('number')}
+            />
+          </InputRow>
+
+          <InputRow>
+            <InputText
+              label='Cidade'
+              error={errors.city}
+              {...register('city')}
+            />
+
+            <InputText
+              label='Estado'
+              error={errors.state}
+              {...register('state')}
+            />
+          </InputRow>
         </Fieldset>
 
         <div className={styles.buttonsContainer}>

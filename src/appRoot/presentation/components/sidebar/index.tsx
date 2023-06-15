@@ -1,8 +1,13 @@
+import { useContext } from 'react';
 import { FiCalendar, FiClipboard, FiSettings, FiUsers } from 'react-icons/fi';
+import { UserRole } from '~/appRoot/core/domain/models';
+import { AuthContext } from '../../contexts/auth-context';
 import { NavLink } from './nav-link';
 import styles from './styles.module.scss';
 
 export function Sidebar() {
+  const { user } = useContext(AuthContext);
+
   return (
     <aside className={styles.container}>
       <div>
@@ -11,17 +16,21 @@ export function Sidebar() {
             Agendamentos
           </NavLink>
 
-          <NavLink href='/admin/service' icon={FiClipboard}>
-            Serviços
-          </NavLink>
+          {user.user_type === UserRole.ADMIN && (
+            <>
+              <NavLink href='/admin/service' icon={FiClipboard}>
+                Serviços
+              </NavLink>
 
-          <NavLink href='/admin/employee' icon={FiUsers}>
-            Funcionários
-          </NavLink>
+              <NavLink href='/admin/employee' icon={FiUsers}>
+                Funcionários
+              </NavLink>
 
-          <NavLink href='/admin/setting' icon={FiSettings}>
-            Configuração
-          </NavLink>
+              <NavLink href='/admin/setting' icon={FiSettings}>
+                Configuração
+              </NavLink>
+            </>
+          )}
         </ul>
       </div>
     </aside>
