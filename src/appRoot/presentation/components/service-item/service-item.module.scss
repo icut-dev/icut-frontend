@@ -10,10 +10,23 @@
   border-radius: 8px;
 }
 
+.list_item_disabled {
+  width: 144px;
+  max-width: 144px;
+}
+
 .list_item_content {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
 
   p {
     color: var(--light-200);
@@ -22,6 +35,12 @@
   svg {
     color: var(--light-200);
   }
+}
+
+.list_item_content_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon_container {

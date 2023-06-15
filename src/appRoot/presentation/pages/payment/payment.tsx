@@ -1,19 +1,23 @@
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import {
   MdPix,
   BsCashCoin,
   BsCreditCard2Back,
   BsCreditCard2Front,
-  HiOutlineChevronLeft,
   CiLock,
 } from 'react-icons/all';
+import { formatCurrency } from '~/appRoot/infra/utils';
 import { PaymentMethod } from '~/appRoot/presentation/pages/payment/components/payment-method';
-import { Header } from '../../components';
+import { Button, Header } from '../../components';
+import { ScheduleContext } from '../../contexts/schedule-context';
 import styles from './payment.module.scss';
 
 function PaymentPageComponent() {
   const router = useRouter();
+  const { date, service, employee, establishment, isScheduling, onSchedule } =
+    useContext(ScheduleContext);
 
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>(null);
 
@@ -25,8 +29,11 @@ function PaymentPageComponent() {
       return;
     }
 
+    onSchedule();
     router.push('/success');
-  }, [paymentMethodId, router]);
+  }, [onSchedule, paymentMethodId, router]);
+
+  if (!service || !employee || !establishment) return null;
 
   return (
     <div className={styles.container}>
@@ -76,24 +83,29 @@ function PaymentPageComponent() {
         <ul className={styles.payment_footer_details}>
           <li className={styles.payment_footer_detail}>
             <span>Serviço</span>
-            <span>Barba</span>
+            <span>{service.description_service}</span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Data</span>
-            <span>24 de maio de 2023</span>
+            <span>{dayjs(date).format('DD [de] MMMM [de] YYYY')}</span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Barbeiro</span>
-            <span>Hugo Hideki</span>
+            <span>{employee?.user.first_name}</span>
           </li>
         </ul>
 
-        <button type='button' className={styles.pay_button} onClick={handlePay}>
+        <Button
+          type='button'
+          className={styles.pay_button}
+          isLoading={isScheduling}
+          onClick={handlePay}
+        >
           <span>Pagar agora</span>
-          <span>R$ 40,00</span>
-        </button>
+          <span>{formatCurrency(service.valor)}</span>
+        </Button>
       </footer>
     </div>
   );

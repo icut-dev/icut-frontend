@@ -127,7 +127,13 @@ function ProfilePageComponent({
   useEffect(() => {
     if (!userFindById.data) return;
 
-    setValue('cpf', userFindById.data.cpf);
+    setValue(
+      'cpf',
+      userFindById.data.cpf.replace(
+        /(\d{3})(\d{3})(\d{3})(\d{2})/,
+        '$1.$2.$3-$4',
+      ),
+    );
     setValue('email', userFindById.data.email);
     setValue('username', userFindById.data.username);
     setValue('firstName', userFindById.data.first_name);
@@ -135,7 +141,10 @@ function ProfilePageComponent({
     replace(
       userFindById.data.list_telephones.map((phone, index) => ({
         id: phone.id_telephone,
-        number: phone.telephone_number,
+        number: phone.telephone_number.replace(
+          /(\d{2})(\d{5})(\d{4})/,
+          '($1) $2-$3',
+        ),
         description: phone.telephone_description,
       })),
     );

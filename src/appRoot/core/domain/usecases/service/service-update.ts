@@ -1,6 +1,11 @@
 export namespace ServiceUpdate {
   export type Params = {
-    id: string;
+    id: number;
+    valor: number;
+    type_service: number;
+    time_duration: string;
+    id_establishment: number;
+    description_service: string;
   };
 
   export type Result = void;

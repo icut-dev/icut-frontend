@@ -1,34 +1,62 @@
+/* eslint-disable @next/next/no-img-element */
+import dayjs from 'dayjs';
+import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { HiOutlineClock } from 'react-icons/all';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import beardIcon from '../../../../../public/assets/beard.svg';
-import clipperIcon from '../../../../../public/assets/clipper.svg';
-import straightRazorIcon from '../../../../../public/assets/razor.svg';
-import transformationIcon from '../../../../../public/assets/transformation.svg';
-import { ServiceItem } from '../../components';
+import {
+  IEstablishmentFindAll,
+  IScheduleFindAll,
+} from '~/appRoot/core/domain/usecases';
+import { formatTime } from '~/appRoot/infra/utils';
+import { Button } from '../../components';
 import { AuthContext } from '../../contexts/auth-context';
+import { ScheduleContext } from '../../contexts/schedule-context';
+import { useEstablishmentFindAll } from '../../hooks';
+import { useScheduleFindAll } from '../../hooks/schedule/use-schedule-find-all';
 import styles from './home.module.scss';
 
-function HomePageComponent() {
+interface Props {
+  remoteScheduleFindAll: IScheduleFindAll;
+  remoteEstablishmentFindAll: IEstablishmentFindAll;
+}
+
+function HomePageComponent({
+  remoteScheduleFindAll,
+  remoteEstablishmentFindAll,
+}: Props) {
+  const router = useRouter();
   const { user } = useContext(AuthContext);
+  const { setEstablishment } = useContext(ScheduleContext);
+
+  const scheduleFindAll = useScheduleFindAll({
+    remoteScheduleFindAll,
+  });
+
+  const establishmentFindAll = useEstablishmentFindAll({
+    remoteEstablishmentFindAll,
+  });
 
   return (
     <div className={styles.container}>
       <Link href='/profile'>
         <header className={styles.header}>
-          <Image
-            src={user.avatar_url}
-            alt={user.username}
-            width={48}
-            height={48}
-            style={{ borderRadius: '8px' }}
-          />
+          <div>
+            <Image
+              src={user.avatar_url}
+              alt={user.username}
+              width={48}
+              height={48}
+              style={{ borderRadius: '8px' }}
+            />
 
-          <span>Olá, {user.username}</span>
+            <span>Olá, {user.username}</span>
+          </div>
         </header>
       </Link>
 
@@ -42,135 +70,92 @@ function HomePageComponent() {
             spaceBetween={24}
             className={styles.home_next_appointments_content}
           >
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
+            {filter(
+              sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
+              (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
+            )?.map((schedule) => {
+              const formatDate = dayjs(schedule.dt_schedule_initial);
 
-                <div className={styles.home_next_appointment_detail}>
-                  <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
-                  </div>
+              const day = formatDate.format('DD');
+              const month = formatDate.format('MMM');
+              const time = formatDate.format('HH:mm');
 
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
+              return (
+                <SwiperSlide
+                  key={schedule.id_schedules}
+                  className={styles.home_next_appointment_swiper_slide}
+                >
+                  <li className={styles.home_next_appointment}>
+                    <div className={styles.home_next_appointment_date}>
+                      <p className={styles.home_next_appointment_day}>{day}</p>
+                      <p className={styles.home_next_appointment_month}>
+                        {month}
+                      </p>
+                      <p className={styles.home_next_appointment_separator}>
+                        -
+                      </p>
+                      <p className={styles.home_next_appointment_time}>
+                        {time}
+                      </p>
+                    </div>
 
-                <div className={styles.home_next_appointment_detail}>
-                  <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
-                  </div>
+                    <div className={styles.home_next_appointment_detail}>
+                      <div>
+                        <p className={styles.home_next_appointment_barber_name}>
+                          {schedule.fk_employee.fk_user.ds_user_name}
+                        </p>
+                        <p className={styles.home_next_appointment_service}>
+                          {schedule.fk_service.ds_service}
+                        </p>
+                      </div>
 
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
+                      <p className={styles.home_next_appointment_duration}>
+                        <HiOutlineClock />{' '}
+                        {formatTime(schedule.fk_service.time_duration)}
+                      </p>
+                    </div>
+                  </li>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
-          {/* <ul className={styles.home_next_appointments_content}>
-            <li className={styles.home_next_appointment}>
-              <div className={styles.home_next_appointment_date}>
-                <p className={styles.home_next_appointment_day}>24</p>
-                <p className={styles.home_next_appointment_month}>Maio</p>
-                <p className={styles.home_next_appointment_separator}>-</p>
-                <p className={styles.home_next_appointment_time}>09:00</p>
-              </div>
-
-              <div className={styles.home_next_appointment_detail}>
-                <div>
-                  <p className={styles.home_next_appointment_barber_name}>
-                    Hugo Hideki
-                  </p>
-                  <p className={styles.home_next_appointment_service}>Barba</p>
-                </div>
-
-                <p className={styles.home_next_appointment_duration}>
-                  <HiOutlineClock /> 30 minutos
-                </p>
-              </div>
-            </li>
-
-            <li className={styles.home_next_appointment}>
-              <div className={styles.home_next_appointment_date}>
-                <p className={styles.home_next_appointment_day}>24</p>
-                <p className={styles.home_next_appointment_month}>Maio</p>
-                <p className={styles.home_next_appointment_separator}>-</p>
-                <p className={styles.home_next_appointment_time}>09:00</p>
-              </div>
-
-              <div className={styles.home_next_appointment_detail}>
-                <div>
-                  <p className={styles.home_next_appointment_barber_name}>
-                    Hugo Hideki
-                  </p>
-                  <p className={styles.home_next_appointment_service}>Barba</p>
-                </div>
-
-                <p className={styles.home_next_appointment_duration}>
-                  <HiOutlineClock /> 30 minutos
-                </p>
-              </div>
-            </li>
-          </ul> */}
         </div>
 
-        <div className={styles.home_services}>
-          <h2 className={styles.title}>Qual serviço você deseja hoje?</h2>
+        <div>
+          <h2 className={styles.home_establishments_title}>
+            Onde deseja agendar?
+          </h2>
 
-          <ul className={styles.list}>
-            <ServiceItem
-              id='1'
-              title='Cabelo'
-              price={40}
-              icon={{ alt: 'clipper', src: clipperIcon }}
-            />
+          <ul className={styles.home_establishments_list}>
+            {establishmentFindAll.data?.map((establishment) => (
+              <li key={establishment.id} className={styles.home_establishment}>
+                <div>
+                  <img
+                    src={establishment.logo}
+                    alt={establishment.corporate_name}
+                  />
 
-            <ServiceItem
-              id='2'
-              title='Barba'
-              price={40}
-              icon={{ alt: 'beard', src: beardIcon }}
-            />
+                  <div className={styles.home_establishment_detail}>
+                    <span className={styles.home_establishment_name}>
+                      {establishment.corporate_name}
+                    </span>
+                    <span className={styles.home_establishment_email}>
+                      {establishment.email_establishment}
+                    </span>
+                  </div>
+                </div>
 
-            <ServiceItem
-              id='3'
-              title='Acabamento'
-              price={40}
-              icon={{ alt: 'straight razor', src: straightRazorIcon }}
-            />
-
-            <ServiceItem
-              id='4'
-              title='Completo'
-              price={40}
-              icon={{ alt: 'transformation', src: transformationIcon }}
-            />
+                <Button
+                  type='button'
+                  onClick={() => {
+                    setEstablishment(establishment);
+                    router.push(`/service/${establishment.id}`);
+                  }}
+                >
+                  Agendar
+                </Button>
+              </li>
+            ))}
           </ul>
         </div>
       </main>

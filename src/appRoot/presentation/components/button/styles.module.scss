@@ -18,12 +18,25 @@
   }
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .primary {
   background: var(--primary-800);
 }
 
 .blackAlpha {
   background: var(--white-400);
+}
+
+.delete {
+  background: var(--red-400);
+}
+
+.secondary {
+  background: var(--secondary-800);
 }
 
 .solid {

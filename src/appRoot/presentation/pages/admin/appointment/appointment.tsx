@@ -1,9 +1,21 @@
+import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
 import { FiClipboard, FiClock } from 'react-icons/fi';
+import { IScheduleFindAll } from '~/appRoot/core/domain/usecases';
+import { dayjs } from '~/appRoot/infra/utils';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
+import { useScheduleFindAll } from '~/appRoot/presentation/hooks/schedule/use-schedule-find-all';
 import styles from './styles.module.scss';
 
-function AdminAppointmentPageComponent() {
+interface Props {
+  remoteScheduleFindAll: IScheduleFindAll;
+}
+
+function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
+  const scheduleFindAll = useScheduleFindAll({
+    remoteScheduleFindAll,
+  });
+
   return (
     <div className={styles.container}>
       <Sidebar />
@@ -16,139 +28,72 @@ function AdminAppointmentPageComponent() {
         </section>
 
         <section className={styles.appointments}>
-          <div className={`${styles.appointment} ${styles.currentDay}`}>
-            <div className={styles.date}>
-              <span className={styles.dayOfWeek}>Qua</span>
-              <span className={styles.day}>07</span>
-            </div>
+          {filter(
+            sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
+            (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
+          )?.map((schedule) => {
+            const formatDateStart = dayjs(schedule.dt_schedule_initial);
+            const formatDateEnd = dayjs(schedule.dt_schedule_end);
 
-            <div className={styles.divider} />
+            const day = formatDateStart.format('DD');
+            const dayOfWeek = formatDateStart.format('ddd');
+            const month = formatDateStart.format('MMMM');
+            const timeStart = formatDateStart.format('HH:mm');
+            const timeEnd = formatDateEnd.format('HH:mm');
 
-            <div className={styles.time}>
-              <span>
-                <FiClock />
-                9:30 - 10:00
-              </span>
-              <span>
-                <FiClipboard />
-                Corte completo
-              </span>
-            </div>
+            const isToday = dayjs().isSame(formatDateStart, 'day');
 
-            <div className={styles.user}>
-              <div>
-                <span className={styles.clientName}>Manoel Martins </span>
-                <span className={styles.phoneNumber}>(11) 98765-4321</span>
+            return (
+              <div
+                key={schedule.id_schedules}
+                className={`${styles.appointment} ${
+                  isToday ? styles.currentDay : ''
+                }`}
+              >
+                <div className={styles.date}>
+                  <span className={styles.dayOfWeek}>{dayOfWeek}</span>
+                  <span className={styles.day}>{day}</span>
+                  <span className={styles.month}>{month}</span>
+                </div>
+
+                <div className={styles.divider} />
+
+                <div className={styles.time}>
+                  <span>
+                    <FiClock />
+                    {timeStart} - {timeEnd}
+                  </span>
+                  <span className={styles.serviceDescription}>
+                    <FiClipboard />
+                    {schedule.fk_service.ds_service}
+                  </span>
+                </div>
+
+                <div className={styles.user}>
+                  <div>
+                    <span className={styles.clientName}>
+                      {schedule.fk_users.ds_username}{' '}
+                    </span>
+                    <span className={styles.phoneNumber}>
+                      {schedule.fk_users.telephone?.[0].nr_telephone.replace(
+                        /(\d{2})(\d{5})(\d{4})/,
+                        '($1) $2-$3',
+                      )}
+                      {schedule.fk_users.telephone.slice(1).length > 0 &&
+                        `, +${schedule.fk_users.telephone.slice(1).length}`}
+                    </span>
+                  </div>
+
+                  <Image
+                    width={24}
+                    height={24}
+                    src='https://github.com/ManoMartins.png'
+                    alt='Manoel Martins'
+                  />
+                </div>
               </div>
-
-              <Image
-                width={24}
-                height={24}
-                src='https://github.com/ManoMartins.png'
-                alt='Manoel Martins'
-              />
-            </div>
-          </div>
-
-          <div className={styles.appointment}>
-            <div className={styles.date}>
-              <span className={styles.dayOfWeek}>Qui</span>
-              <span className={styles.day}>08</span>
-            </div>
-
-            <div className={styles.divider} />
-
-            <div className={styles.time}>
-              <span>
-                <FiClock />
-                9:30 - 10:00
-              </span>
-              <span>
-                <FiClipboard />
-                Corte completo
-              </span>
-            </div>
-
-            <div className={styles.user}>
-              <div>
-                <span className={styles.clientName}>Manoel Martins </span>
-                <span className={styles.phoneNumber}>(11) 98765-4321</span>
-              </div>
-
-              <Image
-                width={24}
-                height={24}
-                src='https://github.com/ManoMartins.png'
-                alt='Manoel Martins'
-              />
-            </div>
-          </div>
-          <div className={styles.appointment}>
-            <div className={styles.date}>
-              <span className={styles.dayOfWeek}>Sex</span>
-              <span className={styles.day}>09</span>
-            </div>
-
-            <div className={styles.divider} />
-
-            <div className={styles.time}>
-              <span>
-                <FiClock />
-                9:30 - 10:00
-              </span>
-              <span>
-                <FiClipboard />
-                Corte completo
-              </span>
-            </div>
-
-            <div className={styles.user}>
-              <div>
-                <span className={styles.clientName}>Manoel Martins </span>
-                <span className={styles.phoneNumber}>(11) 98765-4321</span>
-              </div>
-
-              <Image
-                width={24}
-                height={24}
-                src='https://github.com/ManoMartins.png'
-                alt='Manoel Martins'
-              />
-            </div>
-          </div>
-          <div className={styles.appointment}>
-            <div className={styles.date}>
-              <span className={styles.dayOfWeek}>Sab</span>
-              <span className={styles.day}>10</span>
-            </div>
-
-            <div className={styles.divider} />
-
-            <div className={styles.time}>
-              <span>
-                <FiClock />
-                9:30 - 10:00
-              </span>
-              <span>
-                <FiClipboard />
-                Corte completo
-              </span>
-            </div>
-
-            <div className={styles.user}>
-              <div>
-                <span className={styles.clientName}>Manoel Martins </span>
-                <span className={styles.phoneNumber}>(11) 98765-4321</span>
-              </div>
-
-              <Image
-                width={24}
-                height={24}
-                src='https://github.com/ManoMartins.png'
-                alt='Manoel Martins'
-              />
-            </div>
-          </div>
+            );
+          })}
         </section>
       </main>
     </div>

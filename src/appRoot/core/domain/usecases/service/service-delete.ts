@@ -1,6 +1,6 @@
 export namespace ServiceDelete {
   export type Params = {
-    id: string;
+    id: number;
   };
 
   export type Result = void;

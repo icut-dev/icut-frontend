@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { IEmployeeFindAllByEstablishment } from '~/appRoot/core/domain/usecases';
+import { Button } from '~/appRoot/presentation/components';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
 import { useEmployeeFindAllByEstablishment } from '~/appRoot/presentation/hooks/employee/use-employee-find-by-establishment-id';
@@ -31,13 +32,13 @@ function AdminEmployeePageComponent({
           <div>
             <h1>Funcionários</h1>
 
-            <button
+            <Button
+              color='secondary'
               type='button'
-              className={styles.add_button}
               onClick={() => router.push('/admin/employee/create')}
             >
               Adicionar
-            </button>
+            </Button>
           </div>
         </section>
 
@@ -66,7 +67,10 @@ function AdminEmployeePageComponent({
 
                   <td>
                     <span className={styles.userPhones}>
-                      {employee.user.list_telephones?.[0].telephone_number}
+                      {employee.user.list_telephones?.[0].telephone_number.replace(
+                        /(\d{2})(\d{5})(\d{4})/,
+                        '($1) $2-$3',
+                      )}
                       {employee.user.list_telephones.slice(1).length > 0 &&
                         `, +${employee.user.list_telephones.slice(1).length}`}
                     </span>
@@ -77,7 +81,7 @@ function AdminEmployeePageComponent({
                   </td>
 
                   <td className={styles.actions}>
-                    <button
+                    <Button
                       type='button'
                       onClick={
                         () => router.push(`/admin/employee/${employee.id_user}`)
@@ -86,7 +90,7 @@ function AdminEmployeePageComponent({
                     >
                       <FiEdit />
                       Editar
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}

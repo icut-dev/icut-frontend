@@ -10,7 +10,7 @@ interface InputSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   name: string;
   error?: any;
-  options: Array<{ value: string; label: string }>;
+  options: Array<{ value: string | number; label: string }>;
 }
 
 const BaseInputSelect: ForwardRefRenderFunction<
@@ -32,7 +32,7 @@ const BaseInputSelect: ForwardRefRenderFunction<
       className={styles.input}
       {...rest}
     >
-      {options.map(o => (
+      {options.map((o) => (
         <option key={o.value} value={o.value}>
           {o.label}
         </option>

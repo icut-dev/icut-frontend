@@ -21,7 +21,7 @@ export class RemoteServiceFindAllByEstablishment
   ): Promise<ServiceFindAllByEstablishment.Result> {
     const httpResponse = await this.httpClient.request({
       method: 'get',
-      url: `${this.url}/${params.establishmentId}`,
+      url: `${this.url}/establishment/${params.establishmentId}`,
     });
 
     switch (httpResponse.statusCode) {

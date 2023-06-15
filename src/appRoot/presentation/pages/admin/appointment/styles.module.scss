@@ -66,11 +66,21 @@
 
   .dayOfWeek {
     font-size: 18px;
+    text-transform: capitalize;
+  }
+
+  .month {
+    font-size: 10px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 12px;
+    margin-top: -6px;
   }
 
   .day {
     font-size: 32px;
     font-weight: 600;
+    line-height: 40px;
   }
 }
 
@@ -90,6 +100,16 @@
   svg {
     margin-right: 8px;
   }
+}
+
+.serviceDescription {
+  width: 300px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .user {
