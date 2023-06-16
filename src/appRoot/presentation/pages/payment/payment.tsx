@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
 import { useCallback, useContext, useState } from 'react';
 import {
   MdPix,
@@ -15,7 +14,6 @@ import { ScheduleContext } from '../../contexts/schedule-context';
 import styles from './payment.module.scss';
 
 function PaymentPageComponent() {
-  const router = useRouter();
   const { date, service, employee, establishment, isScheduling, onSchedule } =
     useContext(ScheduleContext);
 
@@ -24,14 +22,8 @@ function PaymentPageComponent() {
   const handlePay = useCallback(() => {
     if (!paymentMethodId) return;
 
-    if (['3', '4'].includes(paymentMethodId)) {
-      router.push('/payment/create');
-      return;
-    }
-
     onSchedule();
-    router.push('/success');
-  }, [onSchedule, paymentMethodId, router]);
+  }, [onSchedule, paymentMethodId]);
 
   if (!service || !employee || !establishment) return null;
 
@@ -42,23 +34,23 @@ function PaymentPageComponent() {
       <p>Escolha o método que deseja utilizar.</p>
 
       <div className={styles.payment_methods_container}>
-        <PaymentMethod
+        {/* <PaymentMethod
           id='1'
           icon={MdPix}
           name='PIX'
           isSelected={paymentMethodId === '1'}
           setSelectPaymentMethod={setPaymentMethodId}
-        />
+        /> */}
 
         <PaymentMethod
-          id='2'
+          id='1'
           icon={BsCashCoin}
-          name='Dinheiro'
-          isSelected={paymentMethodId === '2'}
+          name='À combinar'
+          isSelected={paymentMethodId === '1'}
           setSelectPaymentMethod={setPaymentMethodId}
         />
 
-        <PaymentMethod
+        {/* <PaymentMethod
           id='3'
           icon={BsCreditCard2Back}
           name='Crédito'
@@ -72,7 +64,7 @@ function PaymentPageComponent() {
           name='Débito'
           isSelected={paymentMethodId === '4'}
           setSelectPaymentMethod={setPaymentMethodId}
-        />
+        /> */}
       </div>
 
       <p className={styles.payment_secure}>

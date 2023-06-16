@@ -23,6 +23,7 @@ export class RemoteUserCreate implements IUserCreate {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCodeEnum.ok:
+      case HttpStatusCodeEnum.created:
         return;
       default:
         throw new Error('Não foi possível cadastrar o usuário');

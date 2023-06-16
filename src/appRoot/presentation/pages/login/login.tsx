@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Link from 'next/link';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -44,11 +45,17 @@ function LoginPageComponent() {
           type='password'
           {...register('password')}
         />
-
         <button type='submit' className={styles.button}>
-          {loading ? 'Carregando' : 'Entrar'}
+          {loading ? 'Carregando...' : 'Entrar'}
         </button>
       </form>
+
+      <div className={styles.footer}>
+        <Link href='/register'>
+          Não possui conta? <strong>Clique aqui</strong> para fazer o seu
+          cadastro
+        </Link>
+      </div>
     </div>
   );
 }

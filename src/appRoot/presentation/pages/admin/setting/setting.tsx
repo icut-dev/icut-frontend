@@ -1,7 +1,12 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable @next/next/no-img-element */
 import { yupResolver } from '@hookform/resolvers/yup';
+import Image from 'next/image';
 import { Ref, useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import {
   IEstablishmentFindById,
@@ -9,15 +14,13 @@ import {
   IEstablishmentUploadLogo,
 } from '~/appRoot/core/domain/usecases';
 import { Sidebar, Button, InputText } from '~/appRoot/presentation/components';
+import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
 import {
   useEstablishmentUpdate,
   useEstablishmentFindById,
   useEstablishmentUploadLogo,
 } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
-import { AuthContext } from '~/appRoot/presentation/contexts/auth-context';
-import Image from 'next/image';
-import { toast } from 'react-toastify';
 
 interface Props {
   remoteEstablishmentUpdate: IEstablishmentUpdate;
@@ -148,15 +151,17 @@ function AdminEmployeePageComponent({
 
         <section>
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            <Image
+            <img
               src={
                 image
                   ? URL.createObjectURL(image)
                   : establishmentFindById.data?.logo || ''
               }
               alt={user?.username}
-              width={120}
-              height={120}
+              style={{
+                width: 120,
+                height: 120,
+              }}
               onClick={handleInputFileClick}
             />
 

@@ -85,8 +85,8 @@ function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
                           /(\d{2})(\d{5})(\d{4})/,
                           '($1) $2-$3',
                         )}
-                        {schedule.fk_users.telephone.slice(1).length > 0 &&
-                          `, +${schedule.fk_users.telephone.slice(1).length}`}
+                        {schedule.fk_users?.telephone?.slice(1).length > 0 &&
+                          `, +${schedule.fk_users?.telephone?.slice(1).length}`}
                       </span>
                     </div>
 

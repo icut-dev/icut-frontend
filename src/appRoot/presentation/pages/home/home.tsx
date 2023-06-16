@@ -94,7 +94,7 @@ function HomePageComponent({
       </Link>
 
       <main className={styles.main_container}>
-        {scheduleFindAll.data?.length && (
+        {!!scheduleFindAll.data?.length && (
           <div className={styles.home_next_appointments}>
             <h2>Próximos agendamentos</h2>
 
@@ -193,6 +193,12 @@ function HomePageComponent({
                       </span>
                       <span className={styles.home_establishment_email}>
                         {establishment.email_establishment}
+                      </span>
+                      <span className={styles.home_establishment_address}>
+                        {establishment.address.address},{' '}
+                        {establishment.address.city} -{' '}
+                        {establishment.address.state},{' '}
+                        {establishment.address.cep}
                       </span>
                     </div>
                   </div>

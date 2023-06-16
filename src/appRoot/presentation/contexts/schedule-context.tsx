@@ -1,13 +1,16 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import {
   useMemo,
   useState,
   ReactNode,
   useCallback,
   createContext,
+  useEffect,
 } from 'react';
+import { toast } from 'react-toastify';
 import {
   ServiceModel,
   EmployeeModel,
@@ -46,6 +49,8 @@ export function ScheduleProvider({
   children,
   remoteScheduleCreate,
 }: ScheduleProviderProps) {
+  const router = useRouter();
+
   const scheduleCreate = useScheduleCreate({
     remoteScheduleCreate,
   });
@@ -72,13 +77,28 @@ export function ScheduleProvider({
     const [hours, minutes] = time.split(':');
 
     await scheduleCreate.mutateAsync({
-      payment_method: 1,
+      payment_method: 2,
       date_start: dayjs(date).hour(+hours).minute(+minutes).toDate(),
       service_id: service.id,
       employee: employee.id_employee,
       establishment: establishment.id,
     });
   }, [date, employee, establishment, scheduleCreate, service, time]);
+
+  useEffect(() => {
+    if (scheduleCreate.isSuccess) {
+      router.push('/success');
+    }
+
+    if (scheduleCreate.isError) {
+      toast.error((scheduleCreate.error as Error).message);
+    }
+  }, [
+    router,
+    scheduleCreate.error,
+    scheduleCreate.isError,
+    scheduleCreate.isSuccess,
+  ]);
 
   const values = useMemo(
     () => ({
@@ -108,6 +128,7 @@ export function ScheduleProvider({
       scheduleCreate.isLoading,
     ],
   );
+
   return (
     <ScheduleContext.Provider value={values}>
       {children}
