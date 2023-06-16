@@ -107,8 +107,8 @@ function HomePageComponent({
               {filter(
                 sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
                 (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
-              )?.map((schedule) => {
-                const formatDate = dayjs(schedule.dt_schedule_initial);
+              )?.map((s) => {
+                const formatDate = dayjs(s.dt_schedule_initial);
 
                 const day = formatDate.format('DD');
                 const month = formatDate.format('MMM');
@@ -116,14 +116,14 @@ function HomePageComponent({
 
                 return (
                   <SwiperSlide
-                    key={schedule.id_schedules}
+                    key={s.id_schedules}
                     className={styles.home_next_appointment_swiper_slide}
                   >
                     <li className={styles.home_next_appointment}>
                       <Button
                         data-testid='open-model-setting'
                         variant='ghost'
-                        onClick={() => handleSetting(schedule)}
+                        onClick={() => handleSetting(s)}
                       >
                         <FiSettings />
                       </Button>
@@ -148,16 +148,16 @@ function HomePageComponent({
                           <p
                             className={styles.home_next_appointment_barber_name}
                           >
-                            {schedule.fk_employee.fk_user.ds_user_name}
+                            {s.fk_employee.fk_user.ds_user_name}
                           </p>
                           <p className={styles.home_next_appointment_service}>
-                            {schedule.fk_service.ds_service}
+                            {s.fk_service.ds_service}
                           </p>
                         </div>
 
                         <p className={styles.home_next_appointment_duration}>
                           <HiOutlineClock />{' '}
-                          {formatTime(schedule.fk_service.time_duration)}
+                          {formatTime(s.fk_service.time_duration)}
                         </p>
                       </div>
                     </li>

@@ -77,9 +77,9 @@ function AdminAppointmentPageComponent({
             filter(
               sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
               (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
-            ).map((schedule) => {
-              const formatDateStart = dayjs(schedule.dt_schedule_initial);
-              const formatDateEnd = dayjs(schedule.dt_schedule_end);
+            ).map((s) => {
+              const formatDateStart = dayjs(s.dt_schedule_initial);
+              const formatDateEnd = dayjs(s.dt_schedule_end);
 
               const day = formatDateStart.format('DD');
               const dayOfWeek = formatDateStart.format('ddd');
@@ -91,15 +91,12 @@ function AdminAppointmentPageComponent({
 
               return (
                 <div
-                  key={schedule.id_schedules}
+                  key={s.id_schedules}
                   className={`${styles.appointment} ${
                     isToday ? styles.currentDay : ''
                   }`}
                 >
-                  <Button
-                    variant='ghost'
-                    onClick={() => handleSetting(schedule)}
-                  >
+                  <Button variant='ghost' onClick={() => handleSetting(s)}>
                     <FiSettings />
                   </Button>
 
@@ -118,28 +115,28 @@ function AdminAppointmentPageComponent({
                     </span>
                     <span className={styles.serviceDescription}>
                       <FiClipboard />
-                      {schedule.fk_service.ds_service}
+                      {s.fk_service.ds_service}
                     </span>
                   </div>
 
                   <div className={styles.user}>
                     <div>
                       <span className={styles.clientName}>
-                        {schedule?.fk_users?.ds_user_name}{' '}
+                        {s?.fk_users?.ds_user_name}{' '}
                       </span>
                       <span className={styles.phoneNumber}>
-                        {schedule?.fk_users.telephone?.[0].nr_telephone.replace(
+                        {s?.fk_users.telephone?.[0].nr_telephone.replace(
                           /(\d{2})(\d{5})(\d{4})/,
                           '($1) $2-$3',
                         )}
-                        {schedule?.fk_users?.telephone?.slice(1).length > 0 &&
-                          `, +${schedule.fk_users?.telephone?.slice(1).length}`}
+                        {s?.fk_users?.telephone?.slice(1).length > 0 &&
+                          `, +${s.fk_users?.telephone?.slice(1).length}`}
                       </span>
                     </div>
                     <div>
                       <span className={styles.employeeName}>
                         <strong>Barbeiro: </strong>
-                        {schedule?.fk_employee?.fk_user.ds_user_name}{' '}
+                        {s?.fk_employee?.fk_user.ds_user_name}{' '}
                       </span>
                     </div>
                   </div>
