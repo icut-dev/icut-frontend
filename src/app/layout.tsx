@@ -1,24 +1,29 @@
-import './globals.scss';
 import { Poppins } from 'next/font/google';
+import { ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import './globals.scss';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ClientProvider } from '~/appRoot/presentation/components';
 
 export const metadata = {
   title: 'Icut',
-  description: 'Barbershop system'
+  description: 'Barbershop system',
 };
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin']
+  style: ['normal'],
+  subsets: ['latin'],
 });
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='pt-br'>
-      <body className={`${poppins.className}`}>{children}</body>
+      <body className={poppins.className}>
+        <ToastContainer />
+        <ClientProvider>{children}</ClientProvider>
+      </body>
     </html>
   );
 }

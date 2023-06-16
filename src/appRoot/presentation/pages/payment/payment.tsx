@@ -1,34 +1,31 @@
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
+import { useCallback, useContext, useState } from 'react';
 import {
   MdPix,
   BsCashCoin,
   BsCreditCard2Back,
   BsCreditCard2Front,
-  HiOutlineChevronLeft,
-  CiLock
+  CiLock,
 } from 'react-icons/all';
-
+import { formatCurrency } from '~/appRoot/infra/utils';
 import { PaymentMethod } from '~/appRoot/presentation/pages/payment/components/payment-method';
-
+import { Button, Header } from '../../components';
+import { ScheduleContext } from '../../contexts/schedule-context';
 import styles from './payment.module.scss';
-import { Header } from '../../components';
 
 function PaymentPageComponent() {
-  const router = useRouter();
+  const { date, service, employee, establishment, isScheduling, onSchedule } =
+    useContext(ScheduleContext);
 
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>(null);
 
   const handlePay = useCallback(() => {
     if (!paymentMethodId) return;
 
-    if (['3', '4'].includes(paymentMethodId)) {
-      router.push('/payment/create');
-      return;
-    }
+    onSchedule();
+  }, [onSchedule, paymentMethodId]);
 
-    router.push('/success');
-  }, [paymentMethodId]);
+  if (!service || !employee || !establishment) return null;
 
   return (
     <div className={styles.container}>
@@ -37,23 +34,23 @@ function PaymentPageComponent() {
       <p>Escolha o método que deseja utilizar.</p>
 
       <div className={styles.payment_methods_container}>
-        <PaymentMethod
+        {/* <PaymentMethod
           id='1'
           icon={MdPix}
           name='PIX'
           isSelected={paymentMethodId === '1'}
           setSelectPaymentMethod={setPaymentMethodId}
-        />
+        /> */}
 
         <PaymentMethod
-          id='2'
+          id='1'
           icon={BsCashCoin}
-          name='Dinheiro'
-          isSelected={paymentMethodId === '2'}
+          name='À combinar'
+          isSelected={paymentMethodId === '1'}
           setSelectPaymentMethod={setPaymentMethodId}
         />
 
-        <PaymentMethod
+        {/* <PaymentMethod
           id='3'
           icon={BsCreditCard2Back}
           name='Crédito'
@@ -67,7 +64,7 @@ function PaymentPageComponent() {
           name='Débito'
           isSelected={paymentMethodId === '4'}
           setSelectPaymentMethod={setPaymentMethodId}
-        />
+        /> */}
       </div>
 
       <p className={styles.payment_secure}>
@@ -78,24 +75,36 @@ function PaymentPageComponent() {
         <ul className={styles.payment_footer_details}>
           <li className={styles.payment_footer_detail}>
             <span>Serviço</span>
-            <span>Barba</span>
+            <span className={styles.payment_footer_detail_description}>
+              {service.description_service}
+            </span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Data</span>
-            <span>24 de maio de 2023</span>
+            <span className={styles.payment_footer_detail_description}>
+              {dayjs(date).format('DD [de] MMMM [de] YYYY')}
+            </span>
           </li>
 
           <li className={styles.payment_footer_detail}>
             <span>Barbeiro</span>
-            <span>Hugo Hideki</span>
+            <span className={styles.payment_footer_detail_description}>
+              {employee?.user.first_name}
+            </span>
           </li>
         </ul>
 
-        <button className={styles.pay_button} onClick={handlePay}>
+        <Button
+          data-testid='pay-button'
+          type='button'
+          className={styles.pay_button}
+          isLoading={isScheduling}
+          onClick={handlePay}
+        >
           <span>Pagar agora</span>
-          <span>R$ 40,00</span>
-        </button>
+          <span>{formatCurrency(service.valor)}</span>
+        </Button>
       </footer>
     </div>
   );

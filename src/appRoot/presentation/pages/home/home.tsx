@@ -1,183 +1,222 @@
+/* eslint-disable @next/next/no-img-element */
+import dayjs from 'dayjs';
+import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
-import { HiOutlineClock } from 'react-icons/all';
-import { Pagination, Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCallback, useContext, useState } from 'react';
+import { FiSettings, HiOutlineClock } from 'react-icons/all';
 import 'swiper/css';
 import 'swiper/css/pagination';
-// import "swiper/css/navigation";
-
-import beardIcon from '../../../../../public/assets/beard.svg';
-import clipperIcon from '../../../../../public/assets/clipper.svg';
-import straightRazorIcon from '../../../../../public/assets/razor.svg';
-import transformationIcon from '../../../../../public/assets/transformation.svg';
-
-import { ServiceItem } from '../../components/service-item';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { ScheduleModel } from '~/appRoot/core/domain/models';
+import {
+  IEstablishmentFindAll,
+  IScheduleDayAvailable,
+  IScheduleDelete,
+  IScheduleFindAll,
+  IScheduleUpdate,
+} from '~/appRoot/core/domain/usecases';
+import { formatTime } from '~/appRoot/infra/utils';
+import { Button } from '../../components';
+import { ModalSetting } from '../../components/modal-setting';
+import { AuthContext } from '../../contexts/auth-context';
+import { ScheduleContext } from '../../contexts/schedule-context';
+import { useEstablishmentFindAll } from '../../hooks';
+import { useScheduleFindAll } from '../../hooks/schedule/use-schedule-find-all';
 import styles from './home.module.scss';
-import { useRouter } from 'next/navigation';
 
-function HomePageComponent() {
+interface Props {
+  remoteScheduleDelete: IScheduleDelete;
+  remoteScheduleUpdate: IScheduleUpdate;
+  remoteScheduleFindAll: IScheduleFindAll;
+  remoteScheduleDayAvailable: IScheduleDayAvailable;
+  remoteEstablishmentFindAll: IEstablishmentFindAll;
+}
+
+function HomePageComponent({
+  remoteScheduleDelete,
+  remoteScheduleUpdate,
+  remoteScheduleFindAll,
+  remoteScheduleDayAvailable,
+  remoteEstablishmentFindAll,
+}: Props) {
   const router = useRouter();
+  const { user } = useContext(AuthContext);
+  const { setEstablishment } = useContext(ScheduleContext);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [schedule, setSchedule] = useState<ScheduleModel | null>(null);
+  const handleSetting = useCallback((data: ScheduleModel) => {
+    setIsOpen(true);
+    setSchedule(data);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const scheduleFindAll = useScheduleFindAll({
+    remoteScheduleFindAll,
+  });
+
+  const establishmentFindAll = useEstablishmentFindAll({
+    remoteEstablishmentFindAll,
+  });
 
   return (
     <div className={styles.container}>
-      <header className={styles.header} onClick={() => router.push('/profile')}>
-        <Image
-          src={'https://github.com/IagoSoLima.png'}
-          alt='Iago Lima'
-          width={48}
-          height={48}
-          style={{ borderRadius: '8px' }}
+      {schedule && isOpen && (
+        <ModalSetting
+          isOpen={isOpen}
+          onClose={handleClose}
+          schedule={schedule}
+          remoteScheduleDelete={remoteScheduleDelete}
+          remoteScheduleUpdate={remoteScheduleUpdate}
+          remoteScheduleDayAvailable={remoteScheduleDayAvailable}
         />
+      )}
 
-        <span>Olá, Iago Lima</span>
-      </header>
+      <Link href='/profile'>
+        <header className={styles.header}>
+          <div>
+            <Image
+              src={user.avatar_url}
+              alt={user.username}
+              width={48}
+              height={48}
+              style={{ borderRadius: '8px' }}
+            />
+
+            <span>Olá, {user.username}</span>
+          </div>
+        </header>
+      </Link>
 
       <main className={styles.main_container}>
-        <div className={styles.home_next_appointments}>
-          <h2>
-            Próximos <br /> agendamentos
+        {!!scheduleFindAll.data?.length && (
+          <div className={styles.home_next_appointments}>
+            <h2>Próximos agendamentos</h2>
+
+            <Swiper
+              // pagination={true}
+              slidesPerView='auto'
+              spaceBetween={24}
+              className={styles.home_next_appointments_content}
+            >
+              {filter(
+                sortBy(scheduleFindAll.data, ['dt_schedule_initial']),
+                (sched) => !!dayjs().isBefore(dayjs(sched.dt_schedule_initial)),
+              )?.map((s) => {
+                const formatDate = dayjs(s.dt_schedule_initial);
+
+                const day = formatDate.format('DD');
+                const month = formatDate.format('MMM');
+                const time = formatDate.format('HH:mm');
+
+                return (
+                  <SwiperSlide
+                    key={s.id_schedules}
+                    className={styles.home_next_appointment_swiper_slide}
+                  >
+                    <li className={styles.home_next_appointment}>
+                      <Button
+                        data-testid='open-model-setting'
+                        variant='ghost'
+                        onClick={() => handleSetting(s)}
+                      >
+                        <FiSettings />
+                      </Button>
+
+                      <div className={styles.home_next_appointment_date}>
+                        <p className={styles.home_next_appointment_day}>
+                          {day}
+                        </p>
+                        <p className={styles.home_next_appointment_month}>
+                          {month}
+                        </p>
+                        <p className={styles.home_next_appointment_separator}>
+                          -
+                        </p>
+                        <p className={styles.home_next_appointment_time}>
+                          {time}
+                        </p>
+                      </div>
+
+                      <div className={styles.home_next_appointment_detail}>
+                        <div>
+                          <p
+                            className={styles.home_next_appointment_barber_name}
+                          >
+                            {s.fk_employee.fk_user.ds_user_name}
+                          </p>
+                          <p className={styles.home_next_appointment_service}>
+                            {s.fk_service.ds_service}
+                          </p>
+                        </div>
+
+                        <p className={styles.home_next_appointment_duration}>
+                          <HiOutlineClock />{' '}
+                          {formatTime(s.fk_service.time_duration)}
+                        </p>
+                      </div>
+                    </li>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+        )}
+
+        <div>
+          <h2 className={styles.home_establishments_title}>
+            Onde deseja agendar?
           </h2>
 
-          <Swiper
-            // pagination={true}
-            slidesPerView={'auto'}
-            spaceBetween={24}
-            modules={[Pagination]}
-            className={styles.home_next_appointments_content}
-          >
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
-
-                <div className={styles.home_next_appointment_detail}>
+          <ul className={styles.home_establishments_list}>
+            {establishmentFindAll.isLoading ? (
+              <span>Carregando...</span>
+            ) : (
+              establishmentFindAll.data?.map((establishment, index) => (
+                <li
+                  key={establishment.id}
+                  className={styles.home_establishment}
+                >
                   <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
+                    <img
+                      src={establishment.logo}
+                      alt={establishment.corporate_name}
+                    />
+
+                    <div className={styles.home_establishment_detail}>
+                      <span className={styles.home_establishment_name}>
+                        {establishment.corporate_name}
+                      </span>
+                      <span className={styles.home_establishment_email}>
+                        {establishment.email_establishment}
+                      </span>
+                      <span className={styles.home_establishment_address}>
+                        {establishment.address.address},{' '}
+                        {establishment.address.city} -{' '}
+                        {establishment.address.state},{' '}
+                        {establishment.address.cep}
+                      </span>
+                    </div>
                   </div>
 
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
-            <SwiperSlide className={styles.home_next_appointment_swiper_slide}>
-              <li className={styles.home_next_appointment}>
-                <div className={styles.home_next_appointment_date}>
-                  <p className={styles.home_next_appointment_day}>24</p>
-                  <p className={styles.home_next_appointment_month}>Maio</p>
-                  <p className={styles.home_next_appointment_separator}>-</p>
-                  <p className={styles.home_next_appointment_time}>09:00</p>
-                </div>
-
-                <div className={styles.home_next_appointment_detail}>
-                  <div>
-                    <p className={styles.home_next_appointment_barber_name}>
-                      Hugo Hideki
-                    </p>
-                    <p className={styles.home_next_appointment_service}>
-                      Barba
-                    </p>
-                  </div>
-
-                  <p className={styles.home_next_appointment_duration}>
-                    <HiOutlineClock /> 30 minutos
-                  </p>
-                </div>
-              </li>
-            </SwiperSlide>
-          </Swiper>
-          {/* <ul className={styles.home_next_appointments_content}>
-            <li className={styles.home_next_appointment}>
-              <div className={styles.home_next_appointment_date}>
-                <p className={styles.home_next_appointment_day}>24</p>
-                <p className={styles.home_next_appointment_month}>Maio</p>
-                <p className={styles.home_next_appointment_separator}>-</p>
-                <p className={styles.home_next_appointment_time}>09:00</p>
-              </div>
-
-              <div className={styles.home_next_appointment_detail}>
-                <div>
-                  <p className={styles.home_next_appointment_barber_name}>
-                    Hugo Hideki
-                  </p>
-                  <p className={styles.home_next_appointment_service}>Barba</p>
-                </div>
-
-                <p className={styles.home_next_appointment_duration}>
-                  <HiOutlineClock /> 30 minutos
-                </p>
-              </div>
-            </li>
-
-            <li className={styles.home_next_appointment}>
-              <div className={styles.home_next_appointment_date}>
-                <p className={styles.home_next_appointment_day}>24</p>
-                <p className={styles.home_next_appointment_month}>Maio</p>
-                <p className={styles.home_next_appointment_separator}>-</p>
-                <p className={styles.home_next_appointment_time}>09:00</p>
-              </div>
-
-              <div className={styles.home_next_appointment_detail}>
-                <div>
-                  <p className={styles.home_next_appointment_barber_name}>
-                    Hugo Hideki
-                  </p>
-                  <p className={styles.home_next_appointment_service}>Barba</p>
-                </div>
-
-                <p className={styles.home_next_appointment_duration}>
-                  <HiOutlineClock /> 30 minutos
-                </p>
-              </div>
-            </li>
-          </ul> */}
-        </div>
-
-        <div className={styles.home_services}>
-          <h2 className={styles.title}>
-            Qual serviço <br /> você deseja hoje?
-          </h2>
-
-          <ul className={styles.list}>
-            <ServiceItem
-              id='1'
-              title='Cabelo'
-              price={40}
-              icon={{ alt: 'clipper', src: clipperIcon }}
-            />
-
-            <ServiceItem
-              id='2'
-              title='Barba'
-              price={40}
-              icon={{ alt: 'beard', src: beardIcon }}
-            />
-
-            <ServiceItem
-              id='3'
-              title='Acabamento'
-              price={40}
-              icon={{ alt: 'straight razor', src: straightRazorIcon }}
-            />
-
-            <ServiceItem
-              id='4'
-              title='Completo'
-              price={40}
-              icon={{ alt: 'transformation', src: transformationIcon }}
-            />
+                  <Button
+                    data-testid={`schedule-${index}`}
+                    type='button'
+                    onClick={() => {
+                      setEstablishment(establishment);
+                      router.push(`/service/${establishment.id}`);
+                    }}
+                  >
+                    Agendar
+                  </Button>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </main>

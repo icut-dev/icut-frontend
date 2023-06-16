@@ -14,6 +14,12 @@ const nextConfig = {
     remotePatterns: [
       {
         hostname: 'github.com'
+      },
+      {
+       hostname: 'icut-bucket.s3.sa-east-1.amazonaws.com' 
+      },
+      {
+        hostname: 'cdn.leroymerlin.com.br'
       }
     ]
   }

@@ -1,0 +1,22 @@
+.row {
+  display: flex;
+
+  > * + * {
+    margin-left: 1.5rem;
+  }
+
+  > div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .row {
+    flex-direction: column;
+
+    > * + * {
+      margin-top: 1rem;
+      margin-left: 0rem;
+    }
+  }
+}

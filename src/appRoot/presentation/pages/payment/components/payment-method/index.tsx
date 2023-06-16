@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconType } from 'react-icons';
-
 import styles from './payment-method.module.scss';
 
 interface PaymentMethodProps {
@@ -16,10 +15,12 @@ export function PaymentMethod({
   icon: Icon,
   name,
   isSelected,
-  setSelectPaymentMethod
+  setSelectPaymentMethod,
 }: PaymentMethodProps) {
   return (
     <button
+      data-testid='payment-0'
+      type='button'
       className={`${styles.container} ${isSelected ? styles.selected : ''}`}
       onClick={() => setSelectPaymentMethod(id)}
     >

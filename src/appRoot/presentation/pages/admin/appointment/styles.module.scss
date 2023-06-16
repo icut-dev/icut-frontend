@@ -1,0 +1,154 @@
+.container {
+  display: flex;
+}
+
+.header {
+  margin-bottom: 3rem;
+  position: relative;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  span {
+    display: block;
+    font-size: 14px;
+    color: var(--white-700);
+  }
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    margin-top: 1rem;
+    width: 100%;
+    border-bottom: 1px solid var(--white-200);
+  }
+}
+
+.content {
+  width: 100%;
+  background: var(--white-50);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.appointments {
+  .appointment + .appointment {
+    margin-top: 8px;
+  }
+}
+
+.appointment {
+  position: relative;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--white-200);
+  border-radius: 16px;
+  padding: 16px 0px;
+  color: var(--white-900);
+
+  > * + * {
+    margin-left: 40px;
+  }
+
+  button {
+    position:absolute;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+.currentDay {
+  .date {
+    color: var(--primary-800);
+  }
+}
+
+.date {
+  display: flex;
+  flex-direction: column;
+
+  .dayOfWeek {
+    font-size: 18px;
+    text-transform: capitalize;
+  }
+
+  .month {
+    font-size: 10px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 12px;
+    margin-top: -6px;
+  }
+
+  .day {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+  }
+}
+
+.divider {
+  height: 60px;
+  border: 1px solid var(--white-200);
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
+  padding: 4px 0;
+
+  svg {
+    margin-right: 8px;
+  }
+}
+
+.serviceDescription {
+  width: 300px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
+  padding: 4px 0;
+
+  .clientName {
+    font-weight: 500;
+  }
+
+  .phoneNumber {
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--white-700);
+  }
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.employeeName {
+  font-weight: 300;
+  color: var(--white-600);
+  font-size: 0.875rem;
+
+  strong {
+    font-weight: 400;
+  }
+}
