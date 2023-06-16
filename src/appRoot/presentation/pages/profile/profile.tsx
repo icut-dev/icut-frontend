@@ -214,6 +214,7 @@ function ProfilePageComponent({
           )}
 
           <InputText
+            disabled
             error={errors.username}
             label='Nome de usuário'
             {...register('username')}
@@ -234,12 +235,14 @@ function ProfilePageComponent({
           </InputRow>
 
           <InputText
+            disabled
             error={errors.email}
             label='E-mail'
             {...register('email')}
           />
 
           <InputText
+            disabled
             placeholder='Ex.: 000.000.000-00'
             error={errors.cpf}
             label='CPF'
@@ -247,7 +250,7 @@ function ProfilePageComponent({
           />
         </Fieldset>
 
-        <Fieldset legendTitle='Telefones' legend={legendElement}>
+        <Fieldset legendTitle='Telefones'>
           {fields.map((field, index) => (
             <InputRow key={field.id}>
               <InputText
@@ -265,7 +268,7 @@ function ProfilePageComponent({
                 {...register(`phones.${index}.description`)}
               />
 
-              {fields.length > 1 && (
+              {/* {fields.length > 1 && (
                 <button
                   type='button'
                   onClick={() => remove(index)}
@@ -273,7 +276,7 @@ function ProfilePageComponent({
                 >
                   <FiMinusCircle size={16} />
                 </button>
-              )}
+              )} */}
             </InputRow>
           ))}
         </Fieldset>

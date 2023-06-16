@@ -142,6 +142,7 @@ function AdminCreateEmployeePageComponent({
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Fieldset>
               <InputText
+                disabled
                 error={errors.username}
                 label='Nome de usuário'
                 {...register('username')}
@@ -162,6 +163,7 @@ function AdminCreateEmployeePageComponent({
               </InputRow>
 
               <InputText
+                disabled
                 error={errors.email}
                 label='E-mail'
                 type='email'
@@ -169,6 +171,7 @@ function AdminCreateEmployeePageComponent({
               />
 
               <InputText
+                disabled
                 placeholder='Ex.: 000.000.000-00'
                 error={errors.cpf}
                 label='CPF'
@@ -178,25 +181,27 @@ function AdminCreateEmployeePageComponent({
 
             <Fieldset
               legendTitle='Telefones'
-              legend={legendElement}
+              // legend={legendElement}
               className={styles.fieldset}
             >
               {fields.map((field, index) => (
                 <InputRow key={field.id}>
                   <InputText
+                    disabled
                     placeholder='Ex.: (11) 99999-9999'
                     // @ts-ignore
                     error={errors?.phones?.[index]?.number}
                     {...register(`phones.${index}.number`)}
                   />
                   <InputText
+                    disabled
                     placeholder='Ex.: Celular principal'
                     // @ts-ignore
                     error={errors?.phones?.[index]?.description}
                     {...register(`phones.${index}.description`)}
                   />
 
-                  {fields.length > 1 && (
+                  {/* {fields.length > 1 && (
                     <Button
                       type='button'
                       onClick={() => remove(index)}
@@ -204,7 +209,7 @@ function AdminCreateEmployeePageComponent({
                     >
                       <FiMinusCircle size={16} />
                     </Button>
-                  )}
+                  )} */}
                 </InputRow>
               ))}
             </Fieldset>

@@ -228,6 +228,7 @@ function AdminProfilePageComponent({
           )}
 
           <InputText
+            disabled
             error={errors.username}
             label='Nome de usuário'
             {...register('username')}
@@ -263,7 +264,7 @@ function AdminProfilePageComponent({
           />
         </Fieldset>
 
-        <Fieldset legendTitle='Telefones' legend={legendElement}>
+        <Fieldset legendTitle='Telefones'>
           {fields.map((field, index) => (
             <div key={field.id} className={styles.phonesContainer}>
               <InputText
@@ -280,16 +281,6 @@ function AdminProfilePageComponent({
                 error={errors?.phones?.[index]?.description}
                 {...register(`phones.${index}.description`)}
               />
-
-              {fields.length > 1 && (
-                <button
-                  type='button'
-                  onClick={() => remove(index)}
-                  className={styles.removePhone}
-                >
-                  <FiMinusCircle size={16} />
-                </button>
-              )}
             </div>
           ))}
         </Fieldset>

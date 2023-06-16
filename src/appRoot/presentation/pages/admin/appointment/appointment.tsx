@@ -81,11 +81,11 @@ function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
                         {schedule?.fk_users?.ds_user_name}{' '}
                       </span>
                       <span className={styles.phoneNumber}>
-                        {schedule.fk_users.telephone?.[0].nr_telephone.replace(
+                        {schedule?.fk_users.telephone?.[0].nr_telephone.replace(
                           /(\d{2})(\d{5})(\d{4})/,
                           '($1) $2-$3',
                         )}
-                        {schedule.fk_users?.telephone?.slice(1).length > 0 &&
+                        {schedule?.fk_users?.telephone?.slice(1).length > 0 &&
                           `, +${schedule.fk_users?.telephone?.slice(1).length}`}
                       </span>
                     </div>
