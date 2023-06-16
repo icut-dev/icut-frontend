@@ -1,4 +1,4 @@
-import { EmployeeModel } from '../models';
+import { EmployeeModel } from '../../models';
 
 export namespace EmployeeFindById {
   export type Params = {

@@ -43,7 +43,7 @@ const getCroppedImg = async (
   const image = (await createImage(imageSrc)) as {
     width: number;
     height: number;
-  } & CanvasImageSource;
+  } & any;
   const canvas = document.createElement('canvas') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 

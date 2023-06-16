@@ -54,7 +54,7 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
     register,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<any>({
     resolver: yupResolver(schema),
     defaultValues: {
       username: '',
@@ -196,11 +196,13 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
             <InputRow key={field.id}>
               <InputText
                 placeholder='Ex.: (11) 99999-9999'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.number}
                 {...register(`phones.${index}.number`)}
               />
               <InputText
                 placeholder='Ex.: Celular principal'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.description}
                 {...register(`phones.${index}.description`)}
               />

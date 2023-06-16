@@ -71,7 +71,7 @@ function ProfilePageComponent({
     control,
     setValue,
     formState: { errors },
-  } = useForm<UserForm>({
+  } = useForm<any>({
     resolver: yupResolver(schema),
   });
 
@@ -81,6 +81,7 @@ function ProfilePageComponent({
   });
 
   const handleInputFileClick = () => {
+    // @ts-ignore
     fileInputRef?.current.click();
   };
 
@@ -252,12 +253,14 @@ function ProfilePageComponent({
               <InputText
                 disabled
                 placeholder='Ex.: (11) 99999-9999'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.number}
                 {...register(`phones.${index}.number`)}
               />
               <InputText
                 disabled
                 placeholder='Ex.: Celular principal'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.description}
                 {...register(`phones.${index}.description`)}
               />

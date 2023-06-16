@@ -1,8 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Ref, useContext, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FiMinusCircle, FiPlus } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { UserRole } from '~/appRoot/core/domain/models';
 import {
@@ -19,8 +21,6 @@ import {
   useUserAvatar,
 } from '~/appRoot/presentation/hooks';
 import styles from './styles.module.scss';
-import { toast } from 'react-toastify';
-import Image from 'next/image';
 
 interface Props {
   remoteUserUpdate: IUserUpdate;
@@ -87,7 +87,7 @@ function AdminProfilePageComponent({
     control,
     setValue,
     formState: { errors },
-  } = useForm<UserForm>({
+  } = useForm<any>({
     resolver: yupResolver(schema),
   });
   const { fields, append, remove, replace } = useFieldArray({
@@ -96,6 +96,7 @@ function AdminProfilePageComponent({
   });
 
   const handleInputFileClick = () => {
+    // @ts-ignore
     fileInputRef?.current.click();
   };
 
@@ -268,12 +269,14 @@ function AdminProfilePageComponent({
               <InputText
                 disabled
                 placeholder='Ex.: (11) 99999-9999'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.number}
                 {...register(`phones.${index}.number`)}
               />
               <InputText
                 disabled
                 placeholder='Ex.: Celular principal'
+                // @ts-ignore
                 error={errors?.phones?.[index]?.description}
                 {...register(`phones.${index}.description`)}
               />

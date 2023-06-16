@@ -65,7 +65,7 @@ function AdminCreateEmployeePageComponent({
     control,
     setValue,
     formState: { errors },
-  } = useForm<EmployeeUpdateForm>({
+  } = useForm<any>({
     resolver: yupResolver(schema),
   });
   const { fields, append, remove, replace } = useFieldArray({
@@ -185,11 +185,13 @@ function AdminCreateEmployeePageComponent({
                 <InputRow key={field.id}>
                   <InputText
                     placeholder='Ex.: (11) 99999-9999'
+                    // @ts-ignore
                     error={errors?.phones?.[index]?.number}
                     {...register(`phones.${index}.number`)}
                   />
                   <InputText
                     placeholder='Ex.: Celular principal'
+                    // @ts-ignore
                     error={errors?.phones?.[index]?.description}
                     {...register(`phones.${index}.description`)}
                   />

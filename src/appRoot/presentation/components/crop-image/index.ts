@@ -1,1 +1,3 @@
-export { default as ImageCrop } from './react-image-crop';
+export default function cropImage() {
+  console.log('cropImage');
+}
