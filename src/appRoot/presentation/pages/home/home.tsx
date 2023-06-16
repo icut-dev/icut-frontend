@@ -121,6 +121,7 @@ function HomePageComponent({
                   >
                     <li className={styles.home_next_appointment}>
                       <Button
+                        data-testid='open-model-setting'
                         variant='ghost'
                         onClick={() => handleSetting(schedule)}
                       >

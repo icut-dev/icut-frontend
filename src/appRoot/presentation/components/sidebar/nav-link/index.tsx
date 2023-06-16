@@ -11,7 +11,7 @@ interface NavLinkProps extends LiHTMLAttributes<HTMLLIElement> {
 
 export function NavLink({ children, href, icon: Icon, ...rest }: NavLinkProps) {
   return (
-    <li className={styles.nav_link} {...rest}>
+    <li data-testid={href} className={styles.nav_link} {...rest}>
       <ActiveLink href={href} passHref>
         <div>
           <Icon size={20} />

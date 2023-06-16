@@ -178,6 +178,7 @@ export function ModalSetting({
             </Button>
 
             <Button
+              data-testid='cancel-button'
               color='delete'
               isLoading={scheduleDelete.isLoading}
               onClick={handleCancel}
