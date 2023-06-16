@@ -56,12 +56,13 @@ function ServicePageComponent({
                 <span>Carregando...</span>
               </div>
             ) : (
-              serviceFindAllByEstablishment.data?.map((service) => (
+              serviceFindAllByEstablishment.data?.map((service, index) => (
                 <ServiceItem
                   key={service.id}
                   id={service.id}
                   title={service.description_service}
                   price={service.valor}
+                  index={index}
                   icon={{
                     alt: service.description_service,
                     src: mapIcon[

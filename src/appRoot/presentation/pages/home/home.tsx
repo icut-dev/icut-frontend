@@ -176,7 +176,7 @@ function HomePageComponent({
             {establishmentFindAll.isLoading ? (
               <span>Carregando...</span>
             ) : (
-              establishmentFindAll.data?.map((establishment) => (
+              establishmentFindAll.data?.map((establishment, index) => (
                 <li
                   key={establishment.id}
                   className={styles.home_establishment}
@@ -204,6 +204,7 @@ function HomePageComponent({
                   </div>
 
                   <Button
+                    data-testid={`schedule-${index}`}
                     type='button'
                     onClick={() => {
                       setEstablishment(establishment);

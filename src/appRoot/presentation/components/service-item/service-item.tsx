@@ -14,6 +14,7 @@ interface ServiceItemProps {
     src: string;
     alt: string;
   };
+  index?: number;
   service?: ServiceModel;
 }
 
@@ -22,6 +23,7 @@ export function ServiceItem({
   title,
   price,
   icon,
+  index,
   service,
 }: ServiceItemProps) {
   const { setService } = useContext(ScheduleContext);
@@ -37,7 +39,7 @@ export function ServiceItem({
 
   if (id && service) {
     return (
-      <li>
+      <li data-testid={`service-item-${index}`}>
         <Link href={`/appointment/${id}`} onClick={() => setService(service)}>
           <div className={styles.list_item}>
             <div className={styles.icon_container}>

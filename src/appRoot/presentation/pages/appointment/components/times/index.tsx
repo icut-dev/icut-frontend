@@ -34,13 +34,14 @@ export function Times({ remoteScheduleDayAvailable }: TimesProps) {
       {scheduleDayAvailable.isLoading ? (
         <li>Carregando...</li>
       ) : (
-        scheduleDayAvailable.data?.map((t) => {
+        scheduleDayAvailable.data?.map((t, index) => {
           const formatTime = `${String(t.hour).padStart(2, '0')}:${String(
             t.minutes,
           ).padStart(2, '0')}`;
           return (
             <li
               key={formatTime}
+              data-testid={`time-${index}`}
               className={`${time === formatTime ? styles.time_selected : ''} ${
                 t.available ? '' : styles.time_disabled
               }`}

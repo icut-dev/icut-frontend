@@ -39,7 +39,7 @@ export default function Home() {
             className={`${styles.button_desktop} ${styles.button_login}`}
             onClick={() => router.push('/login')}
           >
-            <span>Fazer Login</span>
+            <span data-testid='login-button'>Fazer Login</span>
             <HiArrowRight size={16} />
           </button>
         </div>

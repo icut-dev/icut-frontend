@@ -25,9 +25,10 @@ export function Employees({
       {employeeFindAllByEstablishment.isLoading ? (
         <li>Carregando...</li>
       ) : (
-        employeeFindAllByEstablishment.data?.map((e) => (
+        employeeFindAllByEstablishment.data?.map((e, index) => (
           <li
             key={e.id_employee}
+            data-testid={`employee-${index}`}
             className={`${
               employee?.id_employee === e.id_employee
                 ? styles.employee_selected

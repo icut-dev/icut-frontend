@@ -19,6 +19,7 @@ export function PaymentMethod({
 }: PaymentMethodProps) {
   return (
     <button
+      data-testid='payment-0'
       type='button'
       className={`${styles.container} ${isSelected ? styles.selected : ''}`}
       onClick={() => setSelectPaymentMethod(id)}

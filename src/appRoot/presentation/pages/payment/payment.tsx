@@ -96,6 +96,7 @@ function PaymentPageComponent() {
         </ul>
 
         <Button
+          data-testid='pay-button'
           type='button'
           className={styles.pay_button}
           isLoading={isScheduling}
