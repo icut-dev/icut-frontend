@@ -343,7 +343,11 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
             Voltar
           </Button>
 
-          <Button type='submit' className={styles.saveButton}>
+          <Button
+            data-testid='register-button'
+            type='submit'
+            className={styles.saveButton}
+          >
             Cadastrar
           </Button>
         </div>
