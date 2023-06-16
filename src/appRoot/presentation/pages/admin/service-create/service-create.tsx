@@ -71,8 +71,8 @@ function AdminServiceCreatePageComponent({ remoteServiceCreate }: Props) {
 
   useEffect(() => {
     if (serviceCreate.isSuccess) {
-      toast.success('Funcionário adicionado com sucesso!');
-      router.push('/admin/employee');
+      toast.success('Serviço adicionado com sucesso!');
+      router.push('/admin/service');
     }
 
     if (serviceCreate.isError) {
@@ -104,6 +104,7 @@ function AdminServiceCreatePageComponent({ remoteServiceCreate }: Props) {
               />
 
               <InputText
+                type='number'
                 error={errors.value}
                 label='Valor do serviço'
                 {...register('value')}

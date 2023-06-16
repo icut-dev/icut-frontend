@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import {
   IServiceFindById,
@@ -86,6 +87,16 @@ function AdminServiceUpdatePageComponent({
   };
 
   useEffect(() => {
+    if (serviceUpdate.isError) {
+      toast.error((serviceUpdate.error as Error).message);
+    }
+
+    if (serviceUpdate.isSuccess) {
+      toast.success('Serviço atualizado com sucesso');
+    }
+  }, [serviceUpdate.error, serviceUpdate.isError, serviceUpdate.isSuccess]);
+
+  useEffect(() => {
     if (!serviceFindById.data) return;
 
     setValue('value', serviceFindById.data.valor);
@@ -113,6 +124,7 @@ function AdminServiceUpdatePageComponent({
               />
 
               <InputText
+                type='number'
                 error={errors.value}
                 label='Valor do serviço'
                 {...register('value')}
