@@ -125,7 +125,7 @@ function AdminAppointmentPageComponent({
                         {s?.fk_users?.ds_user_name}{' '}
                       </span>
                       <span className={styles.phoneNumber}>
-                        {s?.fk_users.telephone?.[0].nr_telephone.replace(
+                        {s?.fk_users.telephone?.[0]?.nr_telephone?.replace(
                           /(\d{2})(\d{5})(\d{4})/,
                           '($1) $2-$3',
                         )}

@@ -52,7 +52,7 @@ function ProfilePageComponent({
   remoteUserAvatar,
 }: ProfileProps) {
   const router = useRouter();
-  const { user } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
   const userUpdate = useUserUpdate({ remoteUserUpdate });
   const avatarUpload = useUserAvatar({ remoteUserAvatar });
 
@@ -294,7 +294,7 @@ function ProfilePageComponent({
             className={styles.outline_button}
             type='button'
             variant='ghost'
-            onClick={() => router.push('/login')}
+            onClick={signOut}
           >
             Sair
           </Button>
