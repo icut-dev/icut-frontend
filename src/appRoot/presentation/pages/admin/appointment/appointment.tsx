@@ -1,24 +1,64 @@
 /* eslint-disable no-nested-ternary */
 import { filter, sortBy } from 'lodash';
 import Image from 'next/image';
-import { FiClipboard, FiClock } from 'react-icons/fi';
-import { IScheduleFindAll } from '~/appRoot/core/domain/usecases';
+import { useCallback, useState } from 'react';
+import { FiClipboard, FiClock, FiSettings } from 'react-icons/fi';
+import { ScheduleModel } from '~/appRoot/core/domain/models';
+import {
+  IScheduleDayAvailable,
+  IScheduleDelete,
+  IScheduleFindAll,
+  IScheduleUpdate,
+} from '~/appRoot/core/domain/usecases';
 import { dayjs } from '~/appRoot/infra/utils';
+import { Button } from '~/appRoot/presentation/components';
+import { ModalSetting } from '~/appRoot/presentation/components/modal-setting';
 import { Sidebar } from '~/appRoot/presentation/components/sidebar';
 import { useScheduleFindAll } from '~/appRoot/presentation/hooks/schedule/use-schedule-find-all';
 import styles from './styles.module.scss';
 
 interface Props {
+  remoteScheduleDelete: IScheduleDelete;
+  remoteScheduleUpdate: IScheduleUpdate;
   remoteScheduleFindAll: IScheduleFindAll;
+  remoteScheduleDayAvailable: IScheduleDayAvailable;
 }
 
-function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
+function AdminAppointmentPageComponent({
+  remoteScheduleDelete,
+  remoteScheduleUpdate,
+  remoteScheduleFindAll,
+  remoteScheduleDayAvailable,
+}: Props) {
   const scheduleFindAll = useScheduleFindAll({
     remoteScheduleFindAll,
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [schedule, setSchedule] = useState<ScheduleModel | null>(null);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const handleSetting = useCallback((data: ScheduleModel) => {
+    setIsOpen(true);
+    setSchedule(data);
+  }, []);
+
   return (
     <div className={styles.container}>
+      {schedule && isOpen && (
+        <ModalSetting
+          isOpen={isOpen}
+          onClose={handleClose}
+          schedule={schedule}
+          remoteScheduleDelete={remoteScheduleDelete}
+          remoteScheduleUpdate={remoteScheduleUpdate}
+          remoteScheduleDayAvailable={remoteScheduleDayAvailable}
+        />
+      )}
+
       <Sidebar />
 
       <main className={styles.content}>
@@ -56,6 +96,13 @@ function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
                     isToday ? styles.currentDay : ''
                   }`}
                 >
+                  <Button
+                    variant='ghost'
+                    onClick={() => handleSetting(schedule)}
+                  >
+                    <FiSettings />
+                  </Button>
+
                   <div className={styles.date}>
                     <span className={styles.dayOfWeek}>{dayOfWeek}</span>
                     <span className={styles.day}>{day}</span>
@@ -89,13 +136,12 @@ function AdminAppointmentPageComponent({ remoteScheduleFindAll }: Props) {
                           `, +${schedule.fk_users?.telephone?.slice(1).length}`}
                       </span>
                     </div>
-
-                    <Image
-                      width={24}
-                      height={24}
-                      src='https://github.com/ManoMartins.png'
-                      alt='Manoel Martins'
-                    />
+                    <div>
+                      <span className={styles.employeeName}>
+                        <strong>Barbeiro: </strong>
+                        {schedule?.fk_employee?.fk_user.ds_user_name}{' '}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );

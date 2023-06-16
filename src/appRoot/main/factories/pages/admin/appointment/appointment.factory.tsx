@@ -1,6 +1,16 @@
 import { AdminAppointmentTag } from '~/appRoot/presentation/pages/admin/appointment';
-import { makeRemoteScheduleFindAll } from '../../../usecases';
+import {
+  makeRemoteScheduleDayAvailable,
+  makeRemoteScheduleDelete,
+  makeRemoteScheduleFindAll,
+  makeRemoteScheduleUpdate,
+} from '../../../usecases';
 
 export const makeAdminAppointment = () => (
-  <AdminAppointmentTag remoteScheduleFindAll={makeRemoteScheduleFindAll()} />
+  <AdminAppointmentTag
+    remoteScheduleUpdate={makeRemoteScheduleUpdate()}
+    remoteScheduleDelete={makeRemoteScheduleDelete()}
+    remoteScheduleFindAll={makeRemoteScheduleFindAll()}
+    remoteScheduleDayAvailable={makeRemoteScheduleDayAvailable()}
+  />
 );

@@ -41,6 +41,7 @@
 }
 
 .appointment {
+  position: relative;
   height: 100px;
   display: flex;
   align-items: center;
@@ -51,6 +52,12 @@
 
   > * + * {
     margin-left: 40px;
+  }
+
+  button {
+    position:absolute;
+    top: 8px;
+    right: 8px;
   }
 }
 
@@ -133,5 +140,15 @@
 
   img {
     border-radius: 50%;
+  }
+}
+
+.employeeName {
+  font-weight: 300;
+  color: var(--white-600);
+  font-size: 0.875rem;
+
+  strong {
+    font-weight: 400;
   }
 }
