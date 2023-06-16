@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { FiEdit } from 'react-icons/fi';
@@ -54,46 +55,61 @@ function AdminEmployeePageComponent({
             </thead>
 
             <tbody>
-              {employeeFindByEstablishment.data?.map((employee) => (
-                <tr key={employee.id_employee}>
-                  <td>
-                    <span className={styles.userName}>
-                      {employee.user.username}
-                    </span>
-                    <span className={styles.userEmail}>
-                      {employee.user.email}
-                    </span>
-                  </td>
-
-                  <td>
-                    <span className={styles.userPhones}>
-                      {employee.user.list_telephones?.[0].telephone_number.replace(
-                        /(\d{2})(\d{5})(\d{4})/,
-                        '($1) $2-$3',
-                      )}
-                      {employee.user.list_telephones.slice(1).length > 0 &&
-                        `, +${employee.user.list_telephones.slice(1).length}`}
-                    </span>
-                  </td>
-
-                  <td>
-                    <span>{employee.user.active ? 'Ativo' : 'Inativo'}</span>
-                  </td>
-
-                  <td className={styles.actions}>
-                    <Button
-                      type='button'
-                      onClick={
-                        () => router.push(`/admin/employee/${employee.id_user}`)
-                        // eslint-disable-next-line react/jsx-curly-newline
-                      }
-                    >
-                      <FiEdit />
-                      Editar
-                    </Button>
+              {employeeFindByEstablishment.isLoading ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center' }}>
+                    Carregando...
                   </td>
                 </tr>
-              ))}
+              ) : employeeFindByEstablishment.data?.length ? (
+                employeeFindByEstablishment.data?.map((employee) => (
+                  <tr key={employee.id_employee}>
+                    <td>
+                      <span className={styles.userName}>
+                        {employee.user.username}
+                      </span>
+                      <span className={styles.userEmail}>
+                        {employee.user.email}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span className={styles.userPhones}>
+                        {employee.user.list_telephones?.[0].telephone_number.replace(
+                          /(\d{2})(\d{5})(\d{4})/,
+                          '($1) $2-$3',
+                        )}
+                        {employee.user.list_telephones.slice(1).length > 0 &&
+                          `, +${employee.user.list_telephones.slice(1).length}`}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span>{employee.user.active ? 'Ativo' : 'Inativo'}</span>
+                    </td>
+
+                    <td className={styles.actions}>
+                      <Button
+                        type='button'
+                        onClick={
+                          () =>
+                            router.push(`/admin/employee/${employee.id_user}`)
+                          // eslint-disable-next-line react/jsx-curly-newline
+                        }
+                      >
+                        <FiEdit />
+                        Editar
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center' }}>
+                    Nenhum serviço cadastrado
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </section>

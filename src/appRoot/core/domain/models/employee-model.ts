@@ -9,6 +9,7 @@ export type EmployeeModel = {
     first_name: string;
     last_name: string;
     active: boolean;
+    avatar_image: string;
     list_telephones: [
       {
         id_telephone: number;

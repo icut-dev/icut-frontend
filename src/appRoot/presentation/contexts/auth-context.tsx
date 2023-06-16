@@ -55,13 +55,11 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
   const isAuthenticated = !!user;
 
   const signOut = useCallback(() => {
-    destroyCookie({}, 'icut.token', { path: '' });
-    destroyCookie({}, 'icut.refreshToken', { path: '' });
-    destroyCookie({}, 'icut.user', { path: '' });
-
-    authChannel.postMessage('signOut');
-
+    destroyCookie({}, 'icut.token', { path: '/' });
+    destroyCookie({}, 'icut.refreshToken', { path: '/' });
+    destroyCookie({}, 'icut.user', { path: '/' });
     router.push('/');
+    setUser({} as Authentication.Model);
   }, [router]);
 
   const signIn = useCallback(
@@ -103,8 +101,6 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
             }
 
             setUser(data);
-
-            authChannel.postMessage('signIn');
           },
         },
       );
@@ -113,26 +109,6 @@ export function AuthProvider({ children, authentication }: AuthProviderProps) {
     },
     [login, router],
   );
-
-  useEffect(() => {
-    authChannel = new BroadcastChannel('auth');
-
-    // eslint-disable-next-line prettier/prettier
-    authChannel.onmessage = (message) => {
-      switch (message.data) {
-        case 'signOut':
-          signOut();
-          break;
-
-        case 'signIn':
-          router.push('/home');
-          break;
-
-        default:
-          break;
-      }
-    };
-  }, [router, signOut]);
 
   useEffect(() => {
     if (login.isError) {

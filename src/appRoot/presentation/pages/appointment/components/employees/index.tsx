@@ -37,10 +37,7 @@ export function Employees({
           >
             <button type='button' onClick={() => setEmployee(e)}>
               <div>
-                <img
-                  src='https://github.com/ThallesRodri.png'
-                  alt={e.user.first_name}
-                />
+                <img src={e.user.avatar_image} alt={e.user.first_name} />
                 <span>{e.user.first_name}</span>
               </div>
 
