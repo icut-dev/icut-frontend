@@ -312,7 +312,7 @@ function AdminRegisterPageComponent({ remoteUserCreate }: Props) {
             />
 
             <InputText
-              label='N'
+              label='Nº'
               error={errors.number}
               {...register('number')}
             />
