@@ -108,8 +108,9 @@ function AdminRegisterPageComponent({ remoteCreateUser }: Props) {
 
     if (userCreate.isSuccess) {
       toast.success('Usuário criado com sucesso');
+      router.push('/login');
     }
-  }, [userCreate.error, userCreate.isError, userCreate.isSuccess]);
+  }, [router, userCreate.error, userCreate.isError, userCreate.isSuccess]);
 
   const legendElement = (
     <button
